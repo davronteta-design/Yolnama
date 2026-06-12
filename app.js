@@ -257,17 +257,17 @@ const TRANSLATIONS = {
     statsBusy: 'Band',
     statsHoliday: 'Dam olish',
     statsTourists: 'Turistlar',
-    searchPlaceholder: 'Shahar, mijoz, ekskursiya yoki guruh bo'yicha qidirish',
+    searchPlaceholder: 'Shahar, mijoz, ekskursiya yoki guruh bo\'yicha qidirish',
     statusAll: 'Barcha statuslar',
-    paymentAll: 'Barcha to'lovlar',
+    paymentAll: 'Barcha to\'lovlar',
     guideAll: 'Barcha gidlar',
     driverAll: 'Barcha haydovchilar',
     resetBtn: 'Tozalash',
     resultsLabel: 'Yozuvlar',
     toolbarTitle: 'Qidiruv va filtrlar',
-    toolbarHint: 'Joriy oy bo'yicha tez qidiruv',
+    toolbarHint: 'Joriy oy bo\'yicha tez qidiruv',
     noEvents: 'Bu oy uchun yozuvlar yoʻq',
-    noResults: 'Filtrlar bo'yicha hech narsa topilmadi',
+    noResults: 'Filtrlar bo\'yicha hech narsa topilmadi',
     modalCreate: 'Yangi yozuv',
     modalEdit: 'Yozuvni tahrirlash',
     modalDuplicate: 'Yozuv nusxasi',
@@ -291,7 +291,7 @@ const TRANSLATIONS = {
     priceLabel: 'Narx',
     currencyLabel: 'Valyuta',
     groupLabel: 'Turistlar soni',
-    paymentStatusLabel: 'To'lov holati',
+    paymentStatusLabel: 'To\'lov holati',
     notesLabel: 'Izohlar',
     routeStartLabel: 'Boshlanish sanasi',
     routeEndLabel: 'Tugash sanasi',
@@ -309,15 +309,15 @@ const TRANSLATIONS = {
     tourPlaceholder: 'Samarqand yuragi / Group Silk Road',
     guidePlaceholder: 'Ibrohim Qoʻliyev',
     driverPlaceholder: 'Ali Hasan',
-    notesPlaceholder: 'Qo'shimcha maʼlumot...',
+    notesPlaceholder: 'Qo\'shimcha maʼlumot...',
     routeClientPlaceholder: 'Kompaniya nomi',
     routeNotesPlaceholder: '15 kishilik guruh, Shahrisabzsiz...',
     routeDayCityPlaceholder: 'Shahar',
     routeDayTourPlaceholder: 'Ekskursiya / guruh',
     deleteConfirm: 'Ushbu yozuv oʻchirilsinmi?',
     routeGenerateFirst: 'Avval yoʻnalish kunlarini yarating',
-    invalidDateRange: 'Tugash sanasi boshlanish sanasidan oldin bo'lishi mumkin emas',
-    invalidTimeRange: 'Tugash vaqti boshlanish vaqtidan oldin bo'lishi mumkin emas',
+    invalidDateRange: 'Tugash sanasi boshlanish sanasidan oldin bo\'lishi mumkin emas',
+    invalidTimeRange: 'Tugash vaqti boshlanish vaqtidan oldin bo\'lishi mumkin emas',
     bookingSaved: 'Yozuv saqlandi',
     bookingDeleted: 'Yozuv oʻchirildi',
     routeGenerated: 'Yoʻnalish kunlari yaratildi',
@@ -326,9 +326,9 @@ const TRANSLATIONS = {
     duplicateReady: 'Yozuv nusxa olish uchun tayyorlandi',
     exportSuccess: 'Excel fayli muvaffaqiyatli yuklab olinshdi',
     paymentStatuses: {
-      unpaid: 'To'lanmagan',
-      partial: 'Qisman to'landi',
-      paid: 'To'landi'
+      unpaid: 'To\'lanmagan',
+      partial: 'Qisman to\'landi',
+      paid: 'To\'landi'
     },
     months: ['Yanvar','Fevral','Mart','Aprel','May','Iyun','Iyul','Avgust','Sentabr','Oktabr','Noyabr','Dekabr'],
     weekdays: ['Du','Se','Cho','Pa','Ju','Sha','Yak'],
@@ -349,7 +349,7 @@ const TRANSLATIONS = {
       time: 'Vaqt',
       group: 'Turistlar',
       price: 'Narx',
-      paymentStatus: 'To'lov holati',
+      paymentStatus: 'To\'lov holati',
       notes: 'Izohlar',
       noValue: '—'
     }
@@ -387,7 +387,7 @@ const state = {
   filters: { search: '', status: 'all', payment: 'all', guide: 'all', driver: 'all' },
   bookings: [],
   formDefaults: { ...DEFAULT_FORM_DEFAULTS },
-  routeDaysData: [] // for temporary route editing
+  routeDaysData: []
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1237,7 +1237,6 @@ function generateRouteDaysRows() {
 }
 
 function editRouteDays() {
-  // Toggle edit mode on existing route days
   const container = document.getElementById('routeDaysContainer');
   if (!container) return;
   const rows = container.querySelectorAll('.route-day-row');
@@ -1426,7 +1425,6 @@ function exportToExcel() {
     return;
   }
 
-  // Build CSV data
   const headers = [
     'Date', 'Status', 'City', 'Client', 'Tour', 'Guide', 'Driver',
     'Start Time', 'End Time', 'Price', 'Currency', 'Group Size', 'Payment Status', 'Notes'
