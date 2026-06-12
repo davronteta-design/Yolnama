@@ -32,7 +32,6 @@
       min-height: 100vh;
     }
 
-    /* Навигационная панель (Header) */
     .navbar {
       background: linear-gradient(135deg, #49d98f 0%, #31c978 100%);
       padding: 16px 28px;
@@ -43,17 +42,18 @@
       box-shadow: var(--shadow);
       margin-bottom: 24px;
       color: #fff;
+      flex-wrap: wrap;
+      gap: 12px;
     }
-    .brand { display: flex; align-items: center; gap: 14px; }
+    .brand { display: flex; align-items: center; gap: 14px; flex: 1; min-width: 300px; }
     .brand i { font-size: 1.8rem; }
     .brand h1 { font-size: 1.42rem; font-weight: 800; letter-spacing: -0.02em; margin: 0; }
     .brand p { font-size: 0.84rem; opacity: 0.88; }
     .header-title { display: flex; flex-direction: column; gap: 2px; }
     .brand-logo-image { width: 56px; height: 56px; border-radius: 15px; object-fit: cover; flex-shrink: 0; box-shadow: 0 10px 22px rgba(49,201,120,0.18); }
 
-    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .nav-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
-    /* Кнопки */
     .btn {
       padding: 10px 18px;
       border-radius: 10px;
@@ -74,23 +74,20 @@
     .btn-danger { background: #ef4444; color: #fff; }
     .btn-danger:hover { background: #dc2626; }
 
-    /* Селектор языка */
     .lang-select-wrapper { background: rgba(255,255,255,0.15); padding: 4px 8px; border-radius: 8px; display: flex; align-items: center; gap: 6px; }
     .lang-select-wrapper i { font-size: 0.9rem; }
     .lang-select-wrapper select { background: transparent; border: none; color: white; font-weight: 600; font-size: 0.88rem; outline: none; cursor: pointer; }
     .lang-select-wrapper select option { color: var(--text); }
 
-    /* Основная сетка контента */
     .main-layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; align-items: start; }
 
-    /* Левая боковая панель статистики */
     .sidebar { display: flex; flex-direction: column; gap: 20px; }
     .sidebar-card { background: var(--surface); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); }
     .sidebar-card h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 
     .stats-subgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .stat-mini-box { background: var(--surface2); border-radius: 12px; padding: 14px; text-align: center; border: 1px solid var(--border); }
-    .stat-mini-box .stat-num { font-size: 1.5rem; font-weight: 700; margin-bottom: 2px; }
+    .stat-mini-box { background: var(--surface2); border-radius: 12px; padding: 14px; text-align: center; border: 1px solid var(--border); border-top: 3px solid var(--primary); }
+    .stat-mini-box .stat-num { font-size: 1.5rem; font-weight: 700; margin-bottom: 2px; color: var(--primary); }
     .stat-mini-box .stat-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
 
     .income-amount { font-size: 1.6rem; font-weight: 700; color: #24b96a; margin-top: 4px; }
@@ -98,12 +95,10 @@
     .legend-list { display: flex; flex-direction: column; gap: 8px; }
     .legend-item { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; padding: 8px 12px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); }
 
-    /* Правая панель — Календарь */
     .calendar-container { background: var(--surface); border-radius: 20px; padding: 28px; box-shadow: var(--shadow); }
     .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 14px; }
     .calendar-header h2 { font-size: 1.45rem; font-weight: 700; }
     .calendar-header-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .calendar-divider { width: 1px; height: 24px; background: var(--border); margin: 0 4px; }
 
     .toolbar-panel {
       margin: 0 0 22px;
@@ -112,15 +107,6 @@
       background: linear-gradient(180deg, #fbfefc 0%, #f1faf5 100%);
       border: 1px solid #cff3df;
       box-shadow: 0 12px 28px rgba(49, 201, 120, 0.12);
-      position: relative;
-      overflow: hidden;
-    }
-    .toolbar-panel::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 3px;
-      background: linear-gradient(90deg, #49d98f 0%, #31c978 100%);
     }
     .toolbar-head {
       display: flex;
@@ -130,24 +116,15 @@
       margin-bottom: 14px;
       flex-wrap: wrap;
     }
-    .toolbar-head strong {
-      font-size: 0.95rem;
-      font-weight: 700;
-    }
-    .toolbar-head span {
-      color: var(--text-muted);
-      font-size: 0.84rem;
-    }
+    .toolbar-head strong { font-size: 0.95rem; font-weight: 700; }
+    .toolbar-head span { color: var(--text-muted); font-size: 0.84rem; }
     .toolbar-controls {
       display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(180px, .8fr) auto;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 12px;
       align-items: center;
     }
-    .toolbar-field {
-      position: relative;
-      min-width: 0;
-    }
+    .toolbar-field { position: relative; min-width: 0; }
     .toolbar-field i {
       position: absolute;
       left: 14px;
@@ -157,8 +134,7 @@
       font-size: 0.9rem;
       pointer-events: none;
     }
-    .toolbar-input,
-    .toolbar-select {
+    .toolbar-input, .toolbar-select {
       width: 100%;
       min-height: 46px;
       border-radius: 14px;
@@ -171,11 +147,8 @@
       outline: none;
       transition: all .2s ease;
     }
-    .toolbar-select {
-      padding-left: 14px;
-    }
-    .toolbar-input:focus,
-    .toolbar-select:focus {
+    .toolbar-select { padding-left: 14px; }
+    .toolbar-input:focus, .toolbar-select:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 4px rgba(49, 201, 120, 0.16);
     }
@@ -201,9 +174,7 @@
       font-size: 0.9rem;
       box-shadow: 0 6px 16px rgba(49, 201, 120, 0.12);
     }
-    .results-summary-label {
-      color: var(--text-muted);
-    }
+    .results-summary-label { color: var(--text-muted); }
     .btn-reset {
       min-height: 46px;
       padding-inline: 18px;
@@ -217,7 +188,6 @@
       background: #f8fbff;
     }
 
-    /* Сетка календаря */
     .weekday-label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); padding: 10px 0; text-align: center; }
     .day-cell {
       background: var(--surface2);
@@ -236,22 +206,10 @@
     .day-cell.today { background: #e9fff3; border-color: #31c978; box-shadow: inset 0 0 0 1px #31c978, 0 8px 18px rgba(49,201,120,0.14); }
     .day-cell.today .day-num { background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 14px rgba(49,201,120,0.22); }
     .day-cell.weekend-cell { background: #fdf2f2; }
-    .day-cell.weekend-cell.other-month { opacity: 0.25; }
 
     .day-num { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; display: inline-block; }
     .day-income-tag { font-size: 0.72rem; color: #28a868; font-weight: 700; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .calendar-board {
-      overflow-x: auto;
-      overflow-y: visible;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 4px;
-    }
-    .calendar-sheet {
-      min-width: 100%;
-    }
-
-    /* Пилюли броней */
     .booking-pill {
       font-size: 0.75rem;
       padding: 3px 6px;
@@ -261,15 +219,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-    }
-    .booking-pill.compact {
-      font-size: 0;
-      line-height: 0;
-      min-height: 8px;
-      height: 8px;
-      padding: 0;
-      border-radius: 999px;
-      box-shadow: none;
+      border-left: 3px solid;
     }
     .more-bookings-btn {
       margin-top: auto;
@@ -290,10 +240,11 @@
 
     .list-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s ease; }
     .list-item:hover { background: #fff; border-color: var(--primary); transform: translateX(2px); }
-    .list-title-row { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
-    .list-primary { font-weight:700; margin-top:6px; }
-    .list-meta { font-size:0.85rem; color:var(--text-muted); margin-top:4px; }
-    .list-status-chip { padding:4px 10px; border-radius:999px; font-size:0.78rem; font-weight:700; }
+    .list-main { display: flex; flex-direction: column; gap: 6px; }
+    .list-title-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .list-primary { font-weight: 700; }
+    .list-meta { font-size: 0.85rem; color: var(--text-muted); }
+    .list-status-chip { padding: 4px 10px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; }
     .empty-state {
       text-align: center;
       color: var(--text-muted);
@@ -302,27 +253,28 @@
       border: 1px dashed var(--border);
       border-radius: 14px;
     }
-    .detail-stack { display:flex; flex-direction:column; gap:10px; }
+
+    .detail-stack { display: flex; flex-direction: column; gap: 10px; }
     .detail-row {
-      display:flex;
-      justify-content:space-between;
-      gap:16px;
-      align-items:flex-start;
-      padding:10px 12px;
-      border-radius:12px;
-      background:var(--surface2);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: var(--surface2);
     }
-    .detail-row span { color:var(--text-muted); font-size:0.84rem; }
-    .detail-row strong { text-align:right; }
-    .detail-status { padding:4px 10px; border-radius:999px; }
+    .detail-row span { color: var(--text-muted); font-size: 0.84rem; }
+    .detail-row strong { text-align: right; }
+    .detail-status { padding: 4px 10px; border-radius: 999px; display: inline-flex; align-items: center; gap: 4px; }
     .detail-notes {
-      padding:12px;
-      border-radius:12px;
-      background:var(--surface2);
-      border:1px solid var(--border);
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
     }
-    .detail-notes span { display:block; color:var(--text-muted); font-size:0.84rem; margin-bottom:6px; }
-    .detail-notes p { white-space:pre-wrap; word-break:break-word; }
+    .detail-notes span { display: block; color: var(--text-muted); font-size: 0.84rem; margin-bottom: 6px; }
+    .detail-notes p { white-space: pre-wrap; word-break: break-word; }
 
     .toast-container {
       position: fixed;
@@ -345,17 +297,13 @@
       font-size: 0.9rem;
     }
     .toast.show { opacity: 1; transform: translateY(0); }
-    .toast-success { background: #166534; }
-    .toast-error { background: #b91c1c; }
-    .toast-info { background: #209058; }
+    .toast.toast-success { background: #166534; }
+    .toast.toast-error { background: #b91c1c; }
+    .toast.toast-info { background: #209058; }
+    .toast.toast-warning { background: #b45309; }
 
-    /* Список (List View) */
-    .list-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s ease; }
-    .list-item:hover { background: #fff; border-color: var(--primary); transform: translateX(2px); }
-
-    /* Модальные окна */
     .modal-backdrop {
-      position: fixed; top:0; left:0; width:100%; height:100%;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px);
       display: flex; align-items: center; justify-content: center;
       opacity: 0; pointer-events: none; transition: all 0.25s ease; z-index: 1000;
@@ -371,34 +319,39 @@
     .modal-header h3 { font-size: 1.2rem; font-weight: 700; }
     .close-modal-btn { background: none; border: none; font-size: 1.2rem; color: var(--text-muted); cursor: pointer; }
 
-    /* Формы */
     .form-group { margin-bottom: 16px; }
     .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--text); }
     .form-control {
       width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);
       font-family: inherit; font-size: 0.92rem; outline: none; transition: border-color 0.2s;
+      background: var(--surface2);
     }
-    .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(40,168,104,0.12); }
+    .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(40,168,104,0.12); background: var(--surface); }
     
     .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
 
-    /* Радио-кнопки типов статуса */
     .status-radio-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
     .status-radio-label {
       border: 1px solid var(--border); border-radius: 10px; padding: 10px;
       display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.88rem; font-weight: 500;
+      background: var(--surface2); transition: all 0.2s ease;
     }
     .status-radio-label input { display: none; }
     .status-radio-label:has(input:checked) { border-color: var(--primary); background: #0f241a; color: var(--primary); font-weight: 600; }
 
-    /* Динамическая генерация дней для маршрута */
     .route-day-row {
       background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
-      padding: 12px; margin-bottom: 8px; display: grid; grid-template-columns: 100px 1fr 120px; gap: 8px; align-items: center;
+      padding: 12px; margin-bottom: 8px; display: grid; grid-template-columns: 100px 1fr 1fr 1fr; gap: 8px; align-items: center;
     }
     .route-day-date { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
 
-    /* Адаптивность */
+    .modal-actions {
+      display: flex; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);
+    }
+    .modal-actions-split { justify-content: space-between; }
+    .modal-actions-right { margin-left: auto; }
+
     @media (max-width: 992px) {
       .main-layout { grid-template-columns: 1fr; }
       .sidebar { order: 2; }
@@ -408,20 +361,18 @@
 
     @media (max-width: 768px) {
       body { padding: 10px; }
-      .brand-logo-image { width: 50px; height: 50px; border-radius: 14px; }
       .navbar {
         padding: 14px 14px;
         border-radius: 14px;
-        align-items: flex-start;
+        flex-direction: column;
         gap: 12px;
-        flex-wrap: wrap;
+        align-items: stretch;
       }
       .brand { width: 100%; }
       .brand h1 { font-size: 1.2rem; }
       .brand p { font-size: 0.78rem; }
-      .nav-actions { width: 100%; flex-wrap: wrap; justify-content: stretch; }
-      .nav-actions > * { flex: 1 1 100%; }
-      .nav-actions button { justify-content: center; }
+      .nav-actions { width: 100%; }
+      .nav-actions button { flex: 1; justify-content: center; }
       .main-layout { gap: 16px; }
       .sidebar { gap: 14px; }
       .sidebar-card { padding: 16px; }
@@ -431,41 +382,27 @@
       .calendar-header-actions {
         width: 100%;
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 8px;
       }
-      #todayBtn { grid-column: span 2; }
-      .calendar-header-actions .btn {
-        width: 100%;
-        justify-content: center;
-        padding: 10px 8px;
-        min-height: 40px;
-        font-size: 0.8rem;
-      }
-      .calendar-divider { display: none; }
+      .calendar-header-actions .btn { width: 100%; justify-content: center; padding: 10px 8px; min-height: 40px; font-size: 0.8rem; }
       .toolbar-panel { padding: 14px; margin-bottom: 16px; border-radius: 16px; }
-      .toolbar-head { margin-bottom: 10px; }
-      .toolbar-head strong { font-size: 0.9rem; }
-      .toolbar-head span { font-size: 0.78rem; }
+      .toolbar-controls { grid-template-columns: 1fr; }
       .toolbar-input, .toolbar-select, .btn-reset { min-height: 42px; }
       .results-row { align-items: stretch; gap: 10px; margin-top: 10px; padding-top: 10px; }
-      .results-summary,
-      .btn-reset { width: 100%; justify-content: center; }
-      .calendar-board { margin-inline: -2px; }
-      #weekdaysHeader,
-      #calendarGrid { gap: 4px !important; }
-      .weekday-label { font-size: 0.68rem; padding: 6px 0; }
+      .results-summary, .btn-reset { width: 100%; justify-content: center; }
       .day-cell { min-height: 74px; padding: 5px; gap: 3px; border-radius: 10px; }
       .day-num { font-size: 0.78rem; margin-bottom: 0; }
       .day-income-tag { font-size: 0.58rem; margin-bottom: 0; }
       .booking-pill { font-size: 0.62rem; padding: 2px 4px; }
-      .booking-pill.compact { min-height: 8px; height: 8px; padding: 0; }
       .more-bookings-btn { font-size: 0.6rem; padding: 1px 6px; }
-      .form-row-2 { grid-template-columns: 1fr; }
+      .form-row-2, .form-row-3 { grid-template-columns: 1fr; }
       .status-radio-group { grid-template-columns: 1fr; }
       .route-day-row { grid-template-columns: 1fr; }
       .detail-row { flex-direction: column; gap: 6px; }
       .detail-row strong { text-align: left; }
+      .modal-content { max-width: 100%; border-radius: 20px 20px 0 0; }
+      .modal-backdrop.active .modal-content { transform: translateY(0) scale(1); }
       .toast-container { left: 10px; right: 10px; bottom: 10px; }
       .toast { width: 100%; }
     }
@@ -475,10 +412,10 @@
 
   <header class="navbar">
     <div class="brand">
-      <img src="data:image/png;base64,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" alt="Yolnama" class="brand-logo-image">
+      <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAB4AHgDASIAAhEBAxEB/8QAHAABAQADAAMBAAAAAAAAAAAAAAIFBgcBAwQI/8QANxAAAQIEAwUHAwMEAwEAAAAAAQACAwQFEQYSIRMUMXGhBxUiQVFhkTKBsRYXciMzQkMkJcHw/8QAGwEAAgMBAQEAAAAAAAAAAAAAAQIAAwQFBgf/xAAkEQACAgICAgICAwAAAAAAAAAAAQIDBBESITFBBVETcSJh4f/aAAwDAQACEQMRAD8A/Ki3/BXZ1NVqGycqjnycg7VrQP6kUeovwHufhOyjCjK1PuqM+zNISrgGsI0ixONj7DQnmPddy5KmyzXSOB8r8pKmX4afPt/RgqThSh0ljRJ06BnH+yI3O8/c3Pws0AGgBoAHoAvJKglUb35PMzsnY9ze2CVJKEqSVAAlSShKklQIJUkoSoJRGSBKhwDhZwBHoV5JUkqDIw1VwzR6mwiakIGc/wCyG3I/5C5ni7AkzSWPmqc581JjVzSP6kMep9R7j4XYyVB1Txm0bsbPux309r6Z+aUW69pGHG0qdbPSbMsnMuILQNIb+NuR1I+6LQntbPXUXRvgrI+GdfwTTW0nCtOlQ2z9kIkT3e7xHqbfZZsleAA1oa0WAFgpJWN99nz+ybsm5vywSpJQlSSoAEqSUJUkqBBKkldN7KMHS1Ugvq9WhCNAa8sgQXDwuI4uI8x5W5roZxFhoTwoxm5MRi7Z7DJ4L8Mt7Zb+VrqyNe1ts62P8W7K1ZZNR3437PzYSpJXT+1vBsrS4LKvSYQgwHPDI8Fo8LSeDmjyHlbkuXEpXHi9GTIxp49jrmCVJKEqSVCkEqSUJUFQZIxGLpBtSw7PS5F3bMvZ/Juo/CLKPs5pB4HQonjPidHDz5Y0XFLZnSVJKEqSVUcYEqSUJUkqBBKzMvTYExhuNNw8xmYTjm10sLeXI3WEJWx4LjNfEm5KJqyNDvboeh6JkaMeKlPi/Z1fsdnYMzgyDLwyNrKxHsiN89XFwPw7ouezHZfiKJiHZDZiR2t992o+m/HL9Wa3tx81rdFrVRwvV4kWQihkVhMOIxwuyIAeBH/xW9/vHMbvl7mhbe317c5b/wAct+qsUotJS9HXrycW6qEMnacDae2Wegy2Co0vEI2s3EYyG3z0cHE/Deq41NUyBL4ZgTkTMJqK8ZddLG+luQuprlbqWKavDi1CKHxXkQ4bGizIYJ4NC+vHEZrIknIwtGQYd7dB0HVCT5dlGXkRyZyt10lpGsEqSUJUFIc5IFSShKkqDaBRQSiITOkqSUJUkpDKCVJKEqCoMkeyXjOgTEKMz6obg4cwbrsxkKb+me/9iN7z5dvmP8Aby3ta9v/AFcTJW5HE8v+3ndO0i77ntksctr8b8Pp0TRejdh2xhy5fXX7NPmYzpiYixn/AFRHFx5k3XoJQlSSgZQSpJQlSSoEEqSUJUkqBSBKKHODQSeA1REdRbPZhCotqeGpCYBu/ZBj/wCTdD1F/usuSuOdmuJW0mddIzj8snMuBuidIb+F+R0B+y7Be6k46Y2fjPHua9PtHklSShKgpTIkCpJQlSVBtAqCUJUkohBKklCVJKgwJUkoSpJUCkCVBQqSURkjF4nnRIUKcjE2dsyxn8joPyi0LHldbUptspKuvKwDcuB0e/15Dh8oroR67PSYGKoVbmu2aot0wnjqZpUNkrUWvmpMaNIPjhj0HqPY/KImaT8m26iF8eNi2jo9NxLSKkwGWnoOY/4Pdkd8FZQODhdpBHqERZ5R0zyeZjxos4xPBUEoiBlJJUkoigxJKklEUCiSVDnBou4gD3RERkjE1Gv0yQaTMTkLMP8ABhzO+AtCxLjCPUmOl5FrpeVOjiT43j39B7IitjFeT0ODh1KKsa2zVERFYdU//9k=" alt="Yolnama" class="brand-logo-image">
       <div class="header-title">
-        <h1>Yolnama</h1>
-        <p>Операционная система для гидов и водителей</p>
+        <h1 id="appTitle">Yolnama</h1>
+        <p id="appSubtitle">Операционная система для гидов и водителей</p>
       </div>
     </div>
     
@@ -491,8 +428,9 @@
           <option value="uz">UZ</option>
         </select>
       </div>
-      <button id="addRouteBtn" class="btn btn-primary"><i class="fas fa-route"></i> Маршрут</button>
-      <button id="addBookingBtn" class="btn btn-primary" style="background: rgba(255,255,255,0.2); color:#fff;"><i class="fas fa-plus"></i> Добавить</button>
+      <button id="exportExcelBtn" class="btn btn-primary"><i class="fas fa-file-excel"></i> <span id="exportBtnText">Экспорт Excel</span></button>
+      <button id="addRouteBtn" class="btn btn-primary"><i class="fas fa-route"></i> <span id="addRouteBtnText">Маршрут</span></button>
+      <button id="addBookingBtn" class="btn btn-primary" style="background: rgba(255,255,255,0.2); color:#fff;"><i class="fas fa-plus"></i> <span id="addBookingBtnText">Добавить</span></button>
     </div>
   </header>
 
@@ -503,21 +441,21 @@
       <div class="sidebar-card">
         <h3 id="statTitle"><i class="fas fa-chart-pie"></i> Статистика месяца</h3>
         <div class="stats-subgrid">
-          <div class="stat-mini-box" style="border-top: 3px solid #2563eb;">
-            <div id="excursions-count" class="stat-num" style="color: #2563eb;">0</div>
-            <div class="stat-label">Экскурсии</div>
+          <div class="stat-mini-box">
+            <div id="excursions-count" class="stat-num">0</div>
+            <div class="stat-label" id="statsExcursionsLabel">Экскурсии</div>
           </div>
-          <div class="stat-mini-box" style="border-top: 3px solid #dc2626;">
-            <div id="busy-count" class="stat-num" style="color: #dc2626;">0</div>
-            <div class="stat-label">Занят</div>
+          <div class="stat-mini-box">
+            <div id="busy-count" class="stat-num">0</div>
+            <div class="stat-label" id="statsBusyLabel">Занят</div>
           </div>
-          <div class="stat-mini-box" style="border-top: 3px solid #16a34a;">
-            <div id="holiday-count" class="stat-num" style="color: #16a34a;">0</div>
-            <div class="stat-label">Выходной</div>
+          <div class="stat-mini-box">
+            <div id="holiday-count" class="stat-num">0</div>
+            <div class="stat-label" id="statsHolidayLabel">Выходной</div>
           </div>
-          <div class="stat-mini-box" style="border-top: 3px solid #7c3aed;">
-            <div id="tourists-count" class="stat-num" style="color: #7c3aed;">0</div>
-            <div class="stat-label">Туристы</div>
+          <div class="stat-mini-box">
+            <div id="tourists-count" class="stat-num">0</div>
+            <div class="stat-label" id="statsTouristsLabel">Туристы</div>
           </div>
         </div>
       </div>
@@ -532,10 +470,10 @@
       <div class="sidebar-card">
         <h3 id="legendTitle"><i class="fas fa-tags"></i> Обозначения</h3>
         <div class="legend-list">
-          <div class="legend-item"><i class="fas fa-map-marked-alt" style="color: #2563eb;"></i> <span>Экскурсия</span></div>
-          <div class="legend-item"><i class="fas fa-ban" style="color: #dc2626;"></i> <span>Занят</span></div>
-          <div class="legend-item"><i class="fas fa-umbrella-beach" style="color: #16a34a;"></i> <span>Выходной</span></div>
-          <div class="legend-item"><i class="fas fa-user-clock" style="color: #d97706;"></i> <span>Личное</span></div>
+          <div class="legend-item"><i class="fas fa-map-marked-alt" style="color: #2563eb;"></i> <span id="legendExcursion">Экскурсия</span></div>
+          <div class="legend-item"><i class="fas fa-ban" style="color: #dc2626;"></i> <span id="legendBusy">Занят</span></div>
+          <div class="legend-item"><i class="fas fa-umbrella-beach" style="color: #16a34a;"></i> <span id="legendHoliday">Выходной</span></div>
+          <div class="legend-item"><i class="fas fa-user-clock" style="color: #d97706;"></i> <span id="legendPersonal">Личное</span></div>
         </div>
       </div>
 
@@ -547,12 +485,11 @@
         <h2 id="currentMonthLabel">Загрузка...</h2>
         
         <div class="calendar-header-actions">
-          <button id="todayBtn" class="btn btn-secondary">Сегодня</button>
+          <button id="todayBtn" class="btn btn-secondary"><i class="fas fa-calendar-check"></i> <span id="todayBtnText">Сегодня</span></button>
           <button id="prevMonthBtn" class="btn btn-secondary"><i class="fas fa-chevron-left"></i></button>
           <button id="nextMonthBtn" class="btn btn-secondary"><i class="fas fa-chevron-right"></i></button>
-          <div class="calendar-divider"></div>
-          <button id="viewGridBtn" class="btn btn-secondary active"><i class="fas fa-th"></i> Сетка</button>
-          <button id="viewListBtn" class="btn btn-secondary"><i class="fas fa-list"></i> Список</button>
+          <button id="viewGridBtn" class="btn btn-secondary active"><i class="fas fa-th"></i> <span id="viewGridBtnText">Сетка</span></button>
+          <button id="viewListBtn" class="btn btn-secondary"><i class="fas fa-list"></i> <span id="viewListBtnText">Список</span></button>
         </div>
       </div>
 
@@ -566,12 +503,25 @@
         <div class="toolbar-controls">
           <div class="toolbar-field">
             <i class="fas fa-search"></i>
-            <input type="text" id="bookingSearch" class="toolbar-input" placeholder="Поиск по городу, клиенту, экскурсии или группе">
+            <input type="text" id="bookingSearch" class="toolbar-input" placeholder="Поиск по городу, клиенту, экскурсии">
           </div>
           <div class="toolbar-field">
+            <i class="fas fa-tag"></i>
             <select id="statusFilter" class="toolbar-select"></select>
           </div>
-          <button id="resetFiltersBtn" class="btn btn-secondary btn-reset" type="button"><i class="fas fa-rotate-left"></i> Сбросить</button>
+          <div class="toolbar-field">
+            <i class="fas fa-credit-card"></i>
+            <select id="paymentFilter" class="toolbar-select"></select>
+          </div>
+          <div class="toolbar-field">
+            <i class="fas fa-person"></i>
+            <select id="guideFilter" class="toolbar-select"></select>
+          </div>
+          <div class="toolbar-field">
+            <i class="fas fa-car"></i>
+            <select id="driverFilter" class="toolbar-select"></select>
+          </div>
+          <button id="resetFiltersBtn" class="btn btn-secondary btn-reset" type="button"><i class="fas fa-rotate-left"></i> <span id="resetBtnText">Сбросить</span></button>
         </div>
         <div class="results-row">
           <div id="resultsSummary" class="results-summary">Записей: 0</div>
@@ -579,25 +529,19 @@
       </div>
 
       <div id="calendar-grid-view">
-        <div class="calendar-board">
-          <div class="calendar-sheet">
-            <div id="weekdaysHeader" style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 8px;">
-              </div>
-            <div id="calendarGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;">
-              </div>
-          </div>
-        </div>
+        <div id="weekdaysHeader" style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 8px;"></div>
+        <div id="calendarGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;"></div>
       </div>
 
       <div id="calendar-list-view" style="display: none;">
-        <div id="list-view-container">
-          </div>
+        <div id="list-view-container"></div>
       </div>
 
     </section>
 
   </main>
 
+  <!-- BOOKING MODAL -->
   <div id="bookingModal" class="modal-backdrop">
     <div class="modal-content">
       <div class="modal-header">
@@ -612,19 +556,19 @@
           <div class="status-radio-group">
             <label class="status-radio-label">
               <input type="radio" name="status" value="excursion" id="statusExcursion" checked>
-              <i class="fas fa-map-marked-alt"></i> <span data-status-label="excursion">Экскурсия</span>
+              <i class="fas fa-map-marked-alt"></i> <span id="statusExcursionText">Экскурсия</span>
             </label>
             <label class="status-radio-label">
               <input type="radio" name="status" value="busy" id="statusBusy">
-              <i class="fas fa-ban"></i> <span data-status-label="busy">Занят</span>
+              <i class="fas fa-ban"></i> <span id="statusBusyText">Занят</span>
             </label>
             <label class="status-radio-label">
               <input type="radio" name="status" value="holiday" id="statusHoliday">
-              <i class="fas fa-umbrella-beach"></i> <span data-status-label="holiday">Выходной</span>
+              <i class="fas fa-umbrella-beach"></i> <span id="statusHolidayText">Выходной</span>
             </label>
             <label class="status-radio-label">
               <input type="radio" name="status" value="personal" id="statusPersonal">
-              <i class="fas fa-user-clock"></i> <span data-status-label="personal">Личное</span>
+              <i class="fas fa-user-clock"></i> <span id="statusPersonalText">Личное</span>
             </label>
           </div>
         </div>
@@ -647,7 +591,17 @@
           </div>
           <div class="form-group">
             <label id="lblTour">Экскурсия / группа</label>
-            <input type="text" id="bookingTour" class="form-control" placeholder="Сердце Самарканда / Group Silk Road">
+            <input type="text" id="bookingTour" class="form-control" placeholder="Сердце Самарканда">
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label id="lblGuide">Гид</label>
+              <input type="text" id="bookingGuide" class="form-control" placeholder="Иван Петров">
+            </div>
+            <div class="form-group">
+              <label id="lblDriver">Водитель</label>
+              <input type="text" id="bookingDriver" class="form-control" placeholder="Али Хасанов">
+            </div>
           </div>
           <div class="form-row-2">
             <div class="form-group">
@@ -659,7 +613,7 @@
               <input type="time" id="bookingEnd" class="form-control" value="18:00">
             </div>
           </div>
-          <div class="form-row-2">
+          <div class="form-row-3">
             <div class="form-group">
               <label id="lblPrice">Стоимость</label>
               <input type="number" id="bookingPrice" class="form-control" placeholder="0" min="0">
@@ -671,6 +625,14 @@
                 <option value="USD">USD ($)</option>
                 <option value="EUR">EUR (€)</option>
                 <option value="RUB">RUB (₽)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label id="lblPaymentStatus">Статус оплаты</label>
+              <select id="bookingPaymentStatus" class="form-control">
+                <option value="unpaid">Не оплачено</option>
+                <option value="partial">Частичная оплата</option>
+                <option value="paid">Оплачено</option>
               </select>
             </div>
           </div>
@@ -685,19 +647,20 @@
           <textarea id="bookingNotes" class="form-control" rows="3" placeholder="Дополнительная информация..."></textarea>
         </div>
 
-        <div style="display: flex; justify-content: space-between; margin-top: 20px; gap:8px;">
-          <button type="button" id="deleteBookingBtn" class="btn btn-danger" style="display: none;">Удалить</button>
-          <div style="display: flex; gap: 8px; margin-left: auto;">
-            <button type="button" id="cancelBookingBtn" class="btn btn-secondary">Отмена</button>
-            <button type="submit" id="saveBookingBtn" class="btn btn-secondary" style="background: var(--primary); color:white; border-color:var(--primary);">Сохранить</button>
+        <div class="modal-actions modal-actions-split">
+          <button type="button" id="deleteBookingBtn" class="btn btn-danger" style="display: none;"><i class="fas fa-trash"></i> <span id="deleteBtn">Удалить</span></button>
+          <div class="modal-actions-right">
+            <button type="button" id="cancelBookingBtn" class="btn btn-secondary"><span id="cancelBtn">Отмена</span></button>
+            <button type="submit" id="saveBookingBtn" class="btn btn-secondary" style="background: var(--primary); color:white; border-color:var(--primary);"><span id="saveBtn">Сохранить</span></button>
           </div>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- ROUTE MODAL -->
   <div id="routeModal" class="modal-backdrop">
-    <div class="modal-content" style="max-width: 650px;">
+    <div class="modal-content" style="max-width: 660px;">
       <div class="modal-header">
         <h3 id="routeModalTitle">Бронь маршрута</h3>
         <button id="closeRouteModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
@@ -714,18 +677,32 @@
           </div>
         </div>
 
-        <button type="button" id="btnGenerateRouteDays" class="btn btn-secondary" style="width: 100%; margin-bottom: 16px; justify-content: center; background:#f1f5f9;"><i class="fas fa-gears"></i> Сгенерировать дни</button>
+        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+          <button type="button" id="btnGenerateRouteDays" class="btn btn-secondary" style="flex: 1; justify-content: center; background:#f1f5f9;"><i class="fas fa-gears"></i> <span id="btnGenerateRouteDaysText">Сгенерировать дни</span></button>
+          <button type="button" id="btnEditRouteDays" class="btn btn-secondary" style="flex: 1; justify-content: center; background:#f1f5f9;"><i class="fas fa-pencil"></i> <span id="btnEditRouteDaysText">Редактировать дни</span></button>
+        </div>
 
-        <div id="routeDaysContainer" style="max-height: 220px; overflow-y: auto; margin-bottom: 16px; padding-right: 4px;"></div>
+        <div id="routeDaysContainer" style="max-height: 280px; overflow-y: auto; margin-bottom: 16px; padding-right: 4px;"></div>
 
         <div class="form-row-2">
           <div class="form-group">
             <label id="lblRouteClient">Заказчик</label>
-            <input type="text" id="routeClient" class="form-control" required placeholder="Название компании">
+            <input type="text" id="routeClient" class="form-control" placeholder="Название компании">
           </div>
           <div class="form-group">
             <label id="lblRouteGroup">Количество туристов</label>
             <input type="number" id="routeGroupSize" class="form-control" placeholder="15" min="0">
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label id="lblRouteGuide">Гид по умолчанию</label>
+            <input type="text" id="routeGuide" class="form-control" placeholder="Иван Петров">
+          </div>
+          <div class="form-group">
+            <label id="lblRouteDriver">Водитель по умолчанию</label>
+            <input type="text" id="routeDriver" class="form-control" placeholder="Али Хасанов">
           </div>
         </div>
 
@@ -741,7 +718,6 @@
               <option value="USD">USD ($)</option>
               <option value="EUR">EUR (€)</option>
               <option value="RUB">RUB (₽)</option>
-              <option value="KZT">KZT (₸)</option>
             </select>
           </div>
         </div>
@@ -751,1327 +727,30 @@
           <textarea id="routeNotes" class="form-control" rows="2" placeholder="Группа из 15 человек, без Шахрисабза..."></textarea>
         </div>
 
-        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px;">
-          <button type="button" id="cancelRouteBtn" class="btn btn-secondary">Отмена</button>
-          <button type="submit" id="saveRouteBtn" class="btn btn-secondary" style="background: var(--primary); color:white; border-color:var(--primary);">Сохранить</button>
+        <div class="modal-actions modal-actions-right">
+          <button type="button" id="cancelRouteBtn" class="btn btn-secondary"><span id="cancelRouteBtn">Отмена</span></button>
+          <button type="submit" id="saveRouteBtn" class="btn btn-secondary" style="background: var(--primary); color:white; border-color:var(--primary);"><span id="saveRouteBtn">Сохранить</span></button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- DETAIL MODAL -->
   <div id="detailModal" class="modal-backdrop">
     <div class="modal-content">
       <div class="modal-header">
         <h3 id="detailModalTitle">Информация о дне</h3>
         <button id="closeDetailModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
       </div>
-      <div id="detailBody" style="margin-bottom: 20px;">
-        </div>
-      <div style="display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap;">
-        <button id="closeDetailModal2" class="btn btn-secondary">Закрыть</button>
-        <button id="detailDuplicateBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Дублировать запись</button>
-        <button id="detailEditBtn" class="btn btn-secondary" style="background: var(--primary); color:white; border-color:var(--primary);"><i class="fas fa-edit"></i> Редактировать</button>
+      <div id="detailBody" style="margin-bottom: 20px;"></div>
+      <div class="modal-actions">
+        <button id="closeDetailModal2" class="btn btn-secondary"><span id="closeDetailModal2Text">Закрыть</span></button>
+        <button id="detailDuplicateBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> <span id="detailDuplicateBtnText">Дублировать</span></button>
+        <button id="detailEditBtn" class="btn btn-secondary" style="background: var(--primary); color:white; border-color:var(--primary);"><i class="fas fa-pen"></i> <span id="detailEditBtnText">Редактировать</span></button>
       </div>
     </div>
   </div>
 
-  <script>
-/* ===================================================
-   YOLNAMA — SPRINT 7 BRAND REFRESH
-   Мобильный календарь, фильтры, дублирование, улучшенный UX
-   =================================================== */
-
-'use strict';
-
-const API = 'tables/bookings';
-const STORAGE_KEYS = {
-  bookings: 'tour_flow_bookings',
-  settings: 'tour_flow_settings'
-};
-
-const STATUS_ORDER = ['excursion', 'busy', 'holiday', 'personal'];
-
-const TRANSLATIONS = {
-  ru: {
-    title: 'Yolnama',
-    subtitle: 'Операционная система для гидов и водителей',
-    gridBtn: 'Сетка',
-    listBtn: 'Список',
-    todayBtn: 'Сегодня',
-    addSingleBtn: 'Добавить',
-    addMultiBtn: 'Маршрут',
-    statTitle: 'Статистика месяца',
-    incomeTitle: 'Доход за месяц',
-    legendTitle: 'Обозначения',
-    statsExcursions: 'Экскурсии',
-    statsBusy: 'Занят',
-    statsHoliday: 'Выходной',
-    statsTourists: 'Туристы',
-    searchPlaceholder: 'Поиск по городу, клиенту, экскурсии или группе',
-    statusAll: 'Все статусы',
-    resetBtn: 'Сбросить',
-    resultsLabel: 'Записей',
-    toolbarTitle: 'Поиск и фильтры',
-    toolbarHint: 'Быстрый поиск по текущему месяцу',
-    noEvents: 'Нет записей за выбранный месяц',
-    noResults: 'По выбранным фильтрам ничего не найдено',
-    modalCreate: 'Новая запись',
-    modalEdit: 'Редактировать запись',
-    modalDuplicate: 'Дублировать запись',
-    routeModalTitle: 'Бронь маршрута',
-    detailModalTitle: 'Информация о дне',
-    detailEdit: 'Редактировать',
-    detailDuplicate: 'Дублировать запись',
-    detailClose: 'Закрыть',
-    deleteBtn: 'Удалить',
-    cancelBtn: 'Отмена',
-    saveBtn: 'Сохранить',
-    statusLabel: 'Статус / Тип дня',
-    dateLabel: 'Дата',
-    cityLabel: 'Город',
-    clientLabel: 'Заказчик',
-    tourLabel: 'Экскурсия / группа',
-    startLabel: 'Начало',
-    endLabel: 'Окончание',
-    priceLabel: 'Стоимость',
-    currencyLabel: 'Валюта',
-    groupLabel: 'Количество туристов',
-    notesLabel: 'Заметки / Пожелания',
-    routeStartLabel: 'Дата начала',
-    routeEndLabel: 'Дата окончания',
-    routeClientLabel: 'Заказчик',
-    routeGroupLabel: 'Количество туристов',
-    routePriceLabel: 'Стоимость по умолчанию',
-    routeCurrencyLabel: 'Валюта по умолчанию',
-    routeNotesLabel: 'Общие заметки',
-    routeGenerateBtn: 'Сгенерировать дни',
-    cityPlaceholder: 'Самарканд, Бухара...',
-    clientPlaceholder: 'Восток Тур',
-    tourPlaceholder: 'Сердце Самарканда / Group Silk Road',
-    notesPlaceholder: 'Дополнительная информация...',
-    routeClientPlaceholder: 'Название компании',
-    routeNotesPlaceholder: 'Группа из 15 человек, без Шахрисабза...',
-    routeDayCityPlaceholder: 'Город',
-    routeDayTourPlaceholder: 'Экскурсия / группа',
-    deleteConfirm: 'Удалить эту запись?',
-    routeGenerateFirst: 'Сначала сгенерируйте дни маршрута',
-    invalidDateRange: 'Дата окончания не может быть раньше даты начала',
-    invalidTimeRange: 'Время окончания не может быть раньше времени начала',
-    bookingSaved: 'Запись сохранена',
-    bookingDeleted: 'Запись удалена',
-    routeGenerated: 'Дни маршрута созданы',
-    routeSaved: 'Маршрут сохранён',
-    filtersReset: 'Фильтры сброшены',
-    duplicateReady: 'Запись подготовлена для дублирования',
-    months: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
-    weekdays: ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
-    statuses: {
-      excursion: 'Экскурсия',
-      busy: 'Занят',
-      holiday: 'Выходной',
-      personal: 'Личное'
-    },
-    details: {
-      date: 'Дата',
-      status: 'Статус',
-      city: 'Город',
-      client: 'Заказчик',
-      tour: 'Экскурсия / группа',
-      time: 'Время',
-      group: 'Туристы',
-      price: 'Стоимость',
-      notes: 'Заметки',
-      noValue: '—'
-    }
-  },
-  en: {
-    title: 'Yolnama',
-    subtitle: 'Operating system for guides and drivers',
-    gridBtn: 'Grid',
-    listBtn: 'List',
-    todayBtn: 'Today',
-    addSingleBtn: 'Add',
-    addMultiBtn: 'Route',
-    statTitle: 'Monthly stats',
-    incomeTitle: 'Monthly income',
-    legendTitle: 'Legend',
-    statsExcursions: 'Tours',
-    statsBusy: 'Busy',
-    statsHoliday: 'Holiday',
-    statsTourists: 'Tourists',
-    searchPlaceholder: 'Search by city, client, excursion or group',
-    statusAll: 'All statuses',
-    resetBtn: 'Reset',
-    resultsLabel: 'Records',
-    toolbarTitle: 'Search and filters',
-    toolbarHint: 'Quick search in current month',
-    noEvents: 'No records for this month',
-    noResults: 'No records match current filters',
-    modalCreate: 'New record',
-    modalEdit: 'Edit record',
-    modalDuplicate: 'Duplicate record',
-    routeModalTitle: 'Route booking',
-    detailModalTitle: 'Day details',
-    detailEdit: 'Edit',
-    detailDuplicate: 'Duplicate',
-    detailClose: 'Close',
-    deleteBtn: 'Delete',
-    cancelBtn: 'Cancel',
-    saveBtn: 'Save',
-    statusLabel: 'Status / Day type',
-    dateLabel: 'Date',
-    cityLabel: 'City',
-    clientLabel: 'Client',
-    tourLabel: 'Excursion / group',
-    startLabel: 'Start',
-    endLabel: 'End',
-    priceLabel: 'Price',
-    currencyLabel: 'Currency',
-    groupLabel: 'Tourists count',
-    notesLabel: 'Notes',
-    routeStartLabel: 'Start date',
-    routeEndLabel: 'End date',
-    routeClientLabel: 'Client',
-    routeGroupLabel: 'Tourists count',
-    routePriceLabel: 'Default price',
-    routeCurrencyLabel: 'Default currency',
-    routeNotesLabel: 'Common notes',
-    routeGenerateBtn: 'Generate days',
-    cityPlaceholder: 'Samarkand, Bukhara...',
-    clientPlaceholder: 'Vostok Tour',
-    tourPlaceholder: 'Heart of Samarkand / Group Silk Road',
-    notesPlaceholder: 'Additional information...',
-    routeClientPlaceholder: 'Company name',
-    routeNotesPlaceholder: 'Group of 15 people, without Shakhrisabz...',
-    routeDayCityPlaceholder: 'City',
-    routeDayTourPlaceholder: 'Excursion / group',
-    deleteConfirm: 'Delete this record?',
-    routeGenerateFirst: 'Generate route days first',
-    invalidDateRange: 'End date cannot be earlier than start date',
-    invalidTimeRange: 'End time cannot be earlier than start time',
-    bookingSaved: 'Record saved',
-    bookingDeleted: 'Record deleted',
-    routeGenerated: 'Route days generated',
-    routeSaved: 'Route saved',
-    filtersReset: 'Filters reset',
-    duplicateReady: 'Record is ready to be duplicated',
-    months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
-    weekdays: ['Mo','Tu','We','Th','Fr','Sa','Su'],
-    statuses: {
-      excursion: 'Excursion',
-      busy: 'Busy',
-      holiday: 'Holiday',
-      personal: 'Personal'
-    },
-    details: {
-      date: 'Date',
-      status: 'Status',
-      city: 'City',
-      client: 'Client',
-      tour: 'Excursion / group',
-      time: 'Time',
-      group: 'Tourists',
-      price: 'Price',
-      notes: 'Notes',
-      noValue: '—'
-    }
-  },
-  uz: {
-    title: 'Yolnama',
-    subtitle: 'Gidlar va haydovchilar uchun platforma',
-    gridBtn: 'Setka',
-    listBtn: 'Roʻyxat',
-    todayBtn: 'Bugun',
-    addSingleBtn: 'Qoʻshish',
-    addMultiBtn: 'Yoʻnalish',
-    statTitle: 'Oylik statistika',
-    incomeTitle: 'Oylik daromad',
-    legendTitle: 'Belgilar',
-    statsExcursions: 'Ekskursiyalar',
-    statsBusy: 'Band',
-    statsHoliday: 'Dam olish',
-    statsTourists: 'Turistlar',
-    searchPlaceholder: 'Shahar, mijoz, ekskursiya yoki guruh bo‘yicha qidirish',
-    statusAll: 'Barcha statuslar',
-    resetBtn: 'Tozalash',
-    resultsLabel: 'Yozuvlar',
-    toolbarTitle: 'Qidiruv va filtrlar',
-    toolbarHint: 'Joriy oy bo‘yicha tez qidiruv',
-    noEvents: 'Bu oy uchun yozuvlar yoʻq',
-    noResults: 'Filtrlar bo‘yicha hech narsa topilmadi',
-    modalCreate: 'Yangi yozuv',
-    modalEdit: 'Yozuvni tahrirlash',
-    modalDuplicate: 'Yozuv nusxasi',
-    routeModalTitle: 'Yoʻnalish broni',
-    detailModalTitle: 'Kun maʼlumoti',
-    detailEdit: 'Tahrirlash',
-    detailDuplicate: 'Nusxa olish',
-    detailClose: 'Yopish',
-    deleteBtn: 'Oʻchirish',
-    cancelBtn: 'Bekor qilish',
-    saveBtn: 'Saqlash',
-    statusLabel: 'Status / kun turi',
-    dateLabel: 'Sana',
-    cityLabel: 'Shahar',
-    clientLabel: 'Mijoz',
-    tourLabel: 'Ekskursiya / guruh',
-    startLabel: 'Boshlanish',
-    endLabel: 'Tugash',
-    priceLabel: 'Narx',
-    currencyLabel: 'Valyuta',
-    groupLabel: 'Turistlar soni',
-    notesLabel: 'Izohlar',
-    routeStartLabel: 'Boshlanish sanasi',
-    routeEndLabel: 'Tugash sanasi',
-    routeClientLabel: 'Mijoz',
-    routeGroupLabel: 'Turistlar soni',
-    routePriceLabel: 'Standart narx',
-    routeCurrencyLabel: 'Standart valyuta',
-    routeNotesLabel: 'Umumiy izohlar',
-    routeGenerateBtn: 'Kunlarni yaratish',
-    cityPlaceholder: 'Samarqand, Buxoro...',
-    clientPlaceholder: 'Vostok Tour',
-    tourPlaceholder: 'Samarqand yuragi / Group Silk Road',
-    notesPlaceholder: 'Qo‘shimcha maʼlumot...',
-    routeClientPlaceholder: 'Kompaniya nomi',
-    routeNotesPlaceholder: '15 kishilik guruh, Shahrisabzsiz...',
-    routeDayCityPlaceholder: 'Shahar',
-    routeDayTourPlaceholder: 'Ekskursiya / guruh',
-    deleteConfirm: 'Ushbu yozuv oʻchirilsinmi?',
-    routeGenerateFirst: 'Avval yoʻnalish kunlarini yarating',
-    invalidDateRange: 'Tugash sanasi boshlanish sanasidan oldin bo‘lishi mumkin emas',
-    invalidTimeRange: 'Tugash vaqti boshlanish vaqtidan oldin bo‘lishi mumkin emas',
-    bookingSaved: 'Yozuv saqlandi',
-    bookingDeleted: 'Yozuv oʻchirildi',
-    routeGenerated: 'Yoʻnalish kunlari yaratildi',
-    routeSaved: 'Yoʻnalish saqlandi',
-    filtersReset: 'Filtrlar tozalandi',
-    duplicateReady: 'Yozuv nusxa olish uchun tayyorlandi',
-    months: ['Yanvar','Fevral','Mart','Aprel','May','Iyun','Iyul','Avgust','Sentabr','Oktabr','Noyabr','Dekabr'],
-    weekdays: ['Du','Se','Cho','Pa','Ju','Sha','Yak'],
-    statuses: {
-      excursion: 'Ekskursiya',
-      busy: 'Band',
-      holiday: 'Dam olish',
-      personal: 'Shaxsiy'
-    },
-    details: {
-      date: 'Sana',
-      status: 'Status',
-      city: 'Shahar',
-      client: 'Mijoz',
-      tour: 'Ekskursiya / guruh',
-      time: 'Vaqt',
-      group: 'Turistlar',
-      price: 'Narx',
-      notes: 'Izohlar',
-      noValue: '—'
-    }
-  }
-};
-
-const STATUS_CONFIG = {
-  excursion: { icon: 'fa-map-marked-alt', color: '#2563eb', bg: '#dbeafe' },
-  busy: { icon: 'fa-ban', color: '#dc2626', bg: '#fee2e2' },
-  holiday: { icon: 'fa-umbrella-beach', color: '#16a34a', bg: '#dcfce7' },
-  personal: { icon: 'fa-user-clock', color: '#d97706', bg: '#fef3c7' }
-};
-
-const DEFAULT_FORM_DEFAULTS = {
-  client_name: '',
-  currency: 'UZS',
-  group_size: '',
-  start_time: '09:00',
-  end_time: '18:00'
-};
-
-const state = {
-  currentYear: new Date().getFullYear(),
-  currentMonth: new Date().getMonth(),
-  currentView: 'grid',
-  currentLang: 'ru',
-  filters: { search: '', status: 'all' },
-  bookings: [],
-  formDefaults: { ...DEFAULT_FORM_DEFAULTS }
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-  loadSettings();
-  loadBookings();
-  initDOMEvents();
-  updateInterfaceLanguage();
-  syncControlsFromState();
-  render();
-});
-
-function initDOMEvents() {
-  safeClick('prevMonthBtn', () => changeMonth(-1));
-  safeClick('nextMonthBtn', () => changeMonth(1));
-  safeClick('todayBtn', goToToday);
-  safeClick('viewGridBtn', () => switchView('grid'));
-  safeClick('viewListBtn', () => switchView('list'));
-  safeClick('addBookingBtn', () => openBookingModal());
-  safeClick('closeBookingModal', closeBookingModal);
-  safeClick('cancelBookingBtn', closeBookingModal);
-  safeSubmit('bookingForm', onBookingFormSubmit);
-  safeClick('deleteBookingBtn', onDeleteBookingClick);
-
-  safeClick('addRouteBtn', openRouteModal);
-  safeClick('closeRouteModal', closeRouteModal);
-  safeClick('cancelRouteBtn', closeRouteModal);
-  safeClick('btnGenerateRouteDays', generateRouteDaysRows);
-  safeSubmit('routeForm', onRouteFormSubmit);
-
-  safeClick('closeDetailModal', closeDetailModal);
-  safeClick('closeDetailModal2', closeDetailModal);
-  safeClick('detailDuplicateBtn', onDuplicateBookingClick);
-
-  const searchInput = document.getElementById('bookingSearch');
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      state.filters.search = e.target.value.trim();
-      persistSettings();
-      render();
-    });
-  }
-
-  const statusFilter = document.getElementById('statusFilter');
-  if (statusFilter) {
-    statusFilter.addEventListener('change', (e) => {
-      state.filters.status = e.target.value;
-      persistSettings();
-      render();
-    });
-  }
-
-  safeClick('resetFiltersBtn', resetFilters);
-
-  const langSelect = document.getElementById('langSelect');
-  if (langSelect) {
-    langSelect.value = state.currentLang;
-    langSelect.addEventListener('change', (e) => {
-      state.currentLang = e.target.value;
-      persistSettings();
-      updateInterfaceLanguage();
-      render();
-    });
-  }
-
-  document.querySelectorAll('input[name="status"]').forEach((radio) => {
-    radio.addEventListener('change', (e) => toggleConditionalFields(e.target.value));
-  });
-
-  document.querySelectorAll('.modal-backdrop').forEach((backdrop) => {
-    backdrop.addEventListener('click', (e) => {
-      if (e.target !== backdrop) return;
-      backdrop.classList.remove('active');
-      updateBodyModalState();
-    });
-  });
-
-  window.addEventListener('resize', renderResultsSummary);
-}
-
-function getT() {
-  return TRANSLATIONS[state.currentLang] || TRANSLATIONS.ru;
-}
-
-function loadSettings() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEYS.settings);
-    if (!raw) return;
-    const settings = JSON.parse(raw);
-    if (typeof settings.currentYear === 'number') state.currentYear = settings.currentYear;
-    if (typeof settings.currentMonth === 'number') state.currentMonth = settings.currentMonth;
-    if (typeof settings.currentView === 'string') state.currentView = settings.currentView;
-    if (typeof settings.currentLang === 'string') state.currentLang = settings.currentLang;
-    if (settings.filters && typeof settings.filters === 'object') {
-      state.filters.search = typeof settings.filters.search === 'string' ? settings.filters.search : '';
-      state.filters.status = typeof settings.filters.status === 'string' ? settings.filters.status : 'all';
-    }
-    if (settings.formDefaults && typeof settings.formDefaults === 'object') {
-      state.formDefaults = {
-        ...DEFAULT_FORM_DEFAULTS,
-        ...settings.formDefaults
-      };
-    }
-  } catch (error) {
-    console.warn('Settings load failed', error);
-  }
-}
-
-function persistSettings() {
-  const payload = {
-    currentYear: state.currentYear,
-    currentMonth: state.currentMonth,
-    currentView: state.currentView,
-    currentLang: state.currentLang,
-    filters: state.filters,
-    formDefaults: state.formDefaults
-  };
-  localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(payload));
-}
-
-function loadBookings() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEYS.bookings);
-    const parsed = raw ? JSON.parse(raw) : [];
-    state.bookings = normalizeBookingsArray(parsed);
-  } catch (error) {
-    console.warn('Bookings load failed', error);
-    state.bookings = [];
-  }
-}
-
-function persistBookings() {
-  state.bookings = normalizeBookingsArray(state.bookings);
-  localStorage.setItem(STORAGE_KEYS.bookings, JSON.stringify(state.bookings));
-}
-
-function normalizeBookingsArray(bookings) {
-  return (Array.isArray(bookings) ? bookings : [])
-    .map((item) => ({
-      id: String(item?.id || generateId()),
-      date: String(item?.date || ''),
-      status: STATUS_ORDER.includes(item?.status) ? item.status : 'excursion',
-      city: String(item?.city || '').trim(),
-      client_name: String(item?.client_name || '').trim(),
-      tour_name: String(item?.tour_name || '').trim(),
-      start_time: String(item?.start_time || '').trim(),
-      end_time: String(item?.end_time || '').trim(),
-      price: Number(item?.price || 0),
-      currency: String(item?.currency || 'UZS').trim() || 'UZS',
-      group_size: Number(item?.group_size || 0),
-      notes: String(item?.notes || '').trim()
-    }))
-    .sort((a, b) => `${a.date}-${a.id}`.localeCompare(`${b.date}-${b.id}`));
-}
-
-function updateInterfaceLanguage() {
-  const t = getT();
-
-  document.title = `${t.title} — ${t.subtitle}`;
-  setTxtBySelector('.header-title h1', t.title);
-  setTxtBySelector('.header-title p', t.subtitle);
-  setTxt('statTitle', t.statTitle);
-  setTxt('incomeTitle', t.incomeTitle);
-  setTxt('legendTitle', t.legendTitle);
-  setTxt('toolbarTitle', t.toolbarTitle);
-  setTxt('toolbarHint', t.toolbarHint);
-  setTxt('todayBtn', t.todayBtn);
-  setHtml('viewGridBtn', `<i class="fas fa-th"></i> ${t.gridBtn}`);
-  setHtml('viewListBtn', `<i class="fas fa-list"></i> ${t.listBtn}`);
-  setHtml('addRouteBtn', `<i class="fas fa-route"></i> ${t.addMultiBtn}`);
-  setHtml('addBookingBtn', `<i class="fas fa-plus"></i> ${t.addSingleBtn}`);
-  setTxt('resetFiltersBtn', t.resetBtn);
-  setTxt('modalTitle', t.modalCreate);
-  setTxt('routeModalTitle', t.routeModalTitle);
-  setTxt('detailModalTitle', t.detailModalTitle);
-  setHtml('detailEditBtn', `<i class="fas fa-pen"></i> ${t.detailEdit}`);
-  setHtml('detailDuplicateBtn', `<i class="fas fa-copy"></i> ${t.detailDuplicate}`);
-  setTxt('closeDetailModal2', t.detailClose);
-  setTxt('cancelBookingBtn', t.cancelBtn);
-  setTxt('saveBookingBtn', t.saveBtn);
-  setTxt('deleteBookingBtn', t.deleteBtn);
-  setTxt('cancelRouteBtn', t.cancelBtn);
-  setTxt('saveRouteBtn', t.saveBtn);
-  setHtml('btnGenerateRouteDays', `<i class="fas fa-gears"></i> ${t.routeGenerateBtn}`);
-
-  setTxt('lblStatus', t.statusLabel);
-  setTxt('lblDate', t.dateLabel);
-  setTxt('lblCity', t.cityLabel);
-  setTxt('lblClient', t.clientLabel);
-  setTxt('lblTour', t.tourLabel);
-  setTxt('lblStart', t.startLabel);
-  setTxt('lblEnd', t.endLabel);
-  setTxt('lblPrice', t.priceLabel);
-  setTxt('lblCurrency', t.currencyLabel);
-  setTxt('lblGroup', t.groupLabel);
-  setTxt('lblNotes', t.notesLabel);
-  setTxt('lblRouteStart', t.routeStartLabel);
-  setTxt('lblRouteEnd', t.routeEndLabel);
-  setTxt('lblRouteClient', t.routeClientLabel);
-  setTxt('lblRouteGroup', t.routeGroupLabel);
-  setTxt('lblRoutePrice', t.routePriceLabel);
-  setTxt('lblRouteCurrency', t.routeCurrencyLabel);
-  setTxt('lblRouteNotes', t.routeNotesLabel);
-
-  setPlaceholder('bookingSearch', t.searchPlaceholder);
-  setPlaceholder('bookingCity', t.cityPlaceholder);
-  setPlaceholder('bookingClient', t.clientPlaceholder);
-  setPlaceholder('bookingTour', t.tourPlaceholder);
-  setPlaceholder('bookingNotes', t.notesPlaceholder);
-  setPlaceholder('routeClient', t.routeClientPlaceholder);
-  setPlaceholder('routeNotes', t.routeNotesPlaceholder);
-
-  const labels = document.querySelectorAll('.stat-mini-box .stat-label');
-  if (labels.length >= 4) {
-    labels[0].textContent = t.statsExcursions;
-    labels[1].textContent = t.statsBusy;
-    labels[2].textContent = t.statsHoliday;
-    labels[3].textContent = t.statsTourists;
-  }
-
-  const legendLabels = document.querySelectorAll('.legend-item span');
-  if (legendLabels.length >= 4) {
-    legendLabels[0].textContent = t.statuses.excursion;
-    legendLabels[1].textContent = t.statuses.busy;
-    legendLabels[2].textContent = t.statuses.holiday;
-    legendLabels[3].textContent = t.statuses.personal;
-  }
-
-  const statusLabelNodes = document.querySelectorAll('[data-status-label]');
-  statusLabelNodes.forEach((node) => {
-    const key = node.getAttribute('data-status-label');
-    if (key && t.statuses[key]) node.textContent = t.statuses[key];
-  });
-
-  renderStatusFilterOptions();
-  renderWeekdays();
-  syncControlsFromState();
-  renderResultsSummary();
-  renderRouteDayPlaceholders();
-}
-
-function renderStatusFilterOptions() {
-  const select = document.getElementById('statusFilter');
-  if (!select) return;
-  const t = getT();
-  const currentValue = state.filters.status;
-  select.innerHTML = [
-    `<option value="all">${t.statusAll}</option>`,
-    ...STATUS_ORDER.map((status) => `<option value="${status}">${t.statuses[status]}</option>`)
-  ].join('');
-  select.value = currentValue || 'all';
-}
-
-function syncControlsFromState() {
-  const langSelect = document.getElementById('langSelect');
-  if (langSelect) langSelect.value = state.currentLang;
-
-  const search = document.getElementById('bookingSearch');
-  if (search) search.value = state.filters.search;
-
-  const status = document.getElementById('statusFilter');
-  if (status) status.value = state.filters.status;
-
-  const gridBtn = document.getElementById('viewGridBtn');
-  const listBtn = document.getElementById('viewListBtn');
-  if (gridBtn) gridBtn.classList.toggle('active', state.currentView === 'grid');
-  if (listBtn) listBtn.classList.toggle('active', state.currentView === 'list');
-}
-
-function goToToday() {
-  const now = new Date();
-  state.currentYear = now.getFullYear();
-  state.currentMonth = now.getMonth();
-  persistSettings();
-  render();
-}
-
-function changeMonth(direction) {
-  state.currentMonth += direction;
-  if (state.currentMonth > 11) {
-    state.currentMonth = 0;
-    state.currentYear += 1;
-  } else if (state.currentMonth < 0) {
-    state.currentMonth = 11;
-    state.currentYear -= 1;
-  }
-  persistSettings();
-  render();
-}
-
-function switchView(view) {
-  state.currentView = view;
-  persistSettings();
-  syncControlsFromState();
-  render();
-}
-
-function resetFilters() {
-  state.filters = { search: '', status: 'all' };
-  persistSettings();
-  syncControlsFromState();
-  render();
-  showToast(getT().filtersReset, 'info');
-}
-
-function render() {
-  const t = getT();
-  setTxt('currentMonthLabel', `${t.months[state.currentMonth]} ${state.currentYear}`);
-  syncControlsFromState();
-  renderWeekdays();
-  calculateAndRenderStats();
-  renderResultsSummary();
-
-  const gridView = document.getElementById('calendar-grid-view');
-  const listView = document.getElementById('calendar-list-view');
-  if (state.currentView === 'grid') {
-    if (gridView) gridView.style.display = 'block';
-    if (listView) listView.style.display = 'none';
-    renderGrid();
-  } else {
-    if (gridView) gridView.style.display = 'none';
-    if (listView) listView.style.display = 'block';
-    renderList();
-  }
-}
-
-function renderWeekdays() {
-  const header = document.getElementById('weekdaysHeader');
-  if (!header) return;
-  const t = getT();
-  header.innerHTML = t.weekdays.map((day) => `<div class="weekday-label">${day}</div>`).join('');
-}
-
-function getCurrentMonthBookings() {
-  const prefix = `${state.currentYear}-${String(state.currentMonth + 1).padStart(2, '0')}`;
-  return state.bookings.filter((booking) => booking.date.startsWith(prefix));
-}
-
-function getVisibleBookings() {
-  let items = getCurrentMonthBookings();
-  const search = state.filters.search.trim().toLowerCase();
-  const status = state.filters.status;
-
-  if (status && status !== 'all') {
-    items = items.filter((booking) => booking.status === status);
-  }
-
-  if (search) {
-    items = items.filter((booking) => {
-      const haystack = [
-        booking.city,
-        booking.client_name,
-        booking.tour_name,
-        booking.notes,
-        booking.currency,
-        booking.group_size
-      ].join(' ').toLowerCase();
-      return haystack.includes(search);
-    });
-  }
-
-  return items.sort((a, b) => `${a.date}-${a.start_time}-${a.id}`.localeCompare(`${b.date}-${b.start_time}-${b.id}`));
-}
-
-function calculateAndRenderStats() {
-  const visible = getVisibleBookings();
-  const excursions = visible.filter((booking) => booking.status === 'excursion');
-  const busy = visible.filter((booking) => booking.status === 'busy').length;
-  const holiday = visible.filter((booking) => booking.status === 'holiday').length;
-  const tourists = excursions.reduce((sum, booking) => sum + (Number(booking.group_size) || 0), 0);
-
-  setTxt('excursions-count', excursions.length);
-  setTxt('busy-count', busy);
-  setTxt('holiday-count', holiday);
-  setTxt('tourists-count', tourists);
-
-  const incomeMap = {};
-  excursions.forEach((booking) => {
-    if (!booking.price) return;
-    const currency = booking.currency || 'UZS';
-    incomeMap[currency] = (incomeMap[currency] || 0) + Number(booking.price || 0);
-  });
-
-  const incomeNode = document.getElementById('total-income');
-  if (!incomeNode) return;
-  const entries = Object.entries(incomeMap);
-  if (!entries.length) {
-    incomeNode.innerHTML = '<div class="income-amount">0 UZS</div>';
-    return;
-  }
-
-  incomeNode.innerHTML = entries
-    .map(([currency, value]) => `<div class="income-amount">${formatCurrency(value, currency)}</div>`)
-    .join('');
-}
-
-function renderResultsSummary() {
-  const node = document.getElementById('resultsSummary');
-  if (!node) return;
-  const t = getT();
-  const count = getVisibleBookings().length;
-  node.innerHTML = `<span class="results-summary-label">${t.resultsLabel}</span><strong>${count}</strong>`;
-}
-
-function renderGrid() {
-  const grid = document.getElementById('calendarGrid');
-  if (!grid) return;
-  grid.innerHTML = '';
-
-  const compactMobile = isCompactMobile();
-  const bookingsMap = new Map();
-  getVisibleBookings().forEach((booking) => {
-    const arr = bookingsMap.get(booking.date) || [];
-    arr.push(booking);
-    bookingsMap.set(booking.date, arr);
-  });
-
-  const firstDay = new Date(state.currentYear, state.currentMonth, 1).getDay();
-  const startOffset = firstDay === 0 ? 6 : firstDay - 1;
-  const daysInMonth = new Date(state.currentYear, state.currentMonth + 1, 0).getDate();
-  const prevDaysInMonth = new Date(state.currentYear, state.currentMonth, 0).getDate();
-  const totalCells = Math.ceil((startOffset + daysInMonth) / 7) * 7;
-  const visiblePills = compactMobile ? 2 : (window.innerWidth < 768 ? 2 : 3);
-  const today = toDateString(new Date());
-
-  for (let i = 0; i < totalCells; i += 1) {
-    let dayNumber;
-    let month = state.currentMonth;
-    let year = state.currentYear;
-    let isCurrentMonth = true;
-
-    if (i < startOffset) {
-      dayNumber = prevDaysInMonth - startOffset + i + 1;
-      month = state.currentMonth === 0 ? 11 : state.currentMonth - 1;
-      year = state.currentMonth === 0 ? state.currentYear - 1 : state.currentYear;
-      isCurrentMonth = false;
-    } else if (i >= startOffset + daysInMonth) {
-      dayNumber = i - startOffset - daysInMonth + 1;
-      month = state.currentMonth === 11 ? 0 : state.currentMonth + 1;
-      year = state.currentMonth === 11 ? state.currentYear + 1 : state.currentYear;
-      isCurrentMonth = false;
-    } else {
-      dayNumber = i - startOffset + 1;
-    }
-
-    const cellDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayNumber).padStart(2, '0')}`;
-    const dayBookings = bookingsMap.get(cellDate) || [];
-
-    const cell = document.createElement('div');
-    cell.className = 'day-cell';
-    if (!isCurrentMonth) cell.classList.add('other-month');
-    if (cellDate === today) cell.classList.add('today');
-    if (i % 7 === 5 || i % 7 === 6) cell.classList.add('weekend-cell');
-
-    cell.innerHTML = `<div class="day-num">${dayNumber}</div>`;
-
-    const incomeLabel = getDayIncomeLabel(dayBookings);
-    if (incomeLabel) {
-      const tag = document.createElement('div');
-      tag.className = 'day-income-tag';
-      tag.textContent = incomeLabel;
-      cell.appendChild(tag);
-    }
-
-    dayBookings.slice(0, visiblePills).forEach((booking) => cell.appendChild(createBookingPill(booking)));
-
-    if (dayBookings.length > visiblePills) {
-      const more = document.createElement('button');
-      more.type = 'button';
-      more.className = 'more-bookings-btn';
-      more.textContent = `+${dayBookings.length - visiblePills}`;
-      more.title = `${dayBookings.length} записи`;
-      more.addEventListener('click', (e) => {
-        e.stopPropagation();
-        switchView('list');
-      });
-      cell.appendChild(more);
-    }
-
-    cell.addEventListener('click', () => openBookingModal(null, cellDate));
-    grid.appendChild(cell);
-  }
-}
-
-function getDayIncomeLabel(bookings) {
-  const totals = {};
-  bookings.forEach((booking) => {
-    if (booking.status !== 'excursion' || !booking.price) return;
-    const currency = booking.currency || 'UZS';
-    totals[currency] = (totals[currency] || 0) + Number(booking.price || 0);
-  });
-  const entries = Object.entries(totals);
-  if (entries.length !== 1) return '';
-  const [currency, value] = entries[0];
-  return formatCurrency(value, currency);
-}
-
-function createBookingPill(booking) {
-  const pill = document.createElement('div');
-  pill.className = 'booking-pill';
-  const conf = STATUS_CONFIG[booking.status] || STATUS_CONFIG.excursion;
-  const label = getBookingPillLabel(booking);
-  pill.style.backgroundColor = conf.bg;
-  pill.style.color = conf.color;
-  pill.style.borderLeft = `3px solid ${conf.color}`;
-  if (isCompactMobile()) {
-    pill.classList.add('compact');
-    pill.textContent = '';
-  } else {
-    pill.textContent = label;
-  }
-  pill.setAttribute('title', label);
-  pill.addEventListener('click', (e) => {
-    e.stopPropagation();
-    openDetailModal(booking);
-  });
-  return pill;
-}
-
-function getBookingPillLabel(booking) {
-  const t = getT();
-  if (booking.status !== 'excursion') return t.statuses[booking.status] || t.statuses.excursion;
-  if (booking.tour_name) return booking.city ? `[${booking.city}] ${booking.tour_name}` : booking.tour_name;
-  if (booking.client_name) return booking.city ? `[${booking.city}] ${booking.client_name}` : booking.client_name;
-  return booking.city ? `[${booking.city}] ${t.statuses.excursion}` : t.statuses.excursion;
-}
-
-function renderList() {
-  const container = document.getElementById('list-view-container');
-  if (!container) return;
-  const t = getT();
-  const visible = getVisibleBookings();
-
-  if (!visible.length) {
-    container.innerHTML = `<div class="empty-state">${state.filters.search || state.filters.status !== 'all' ? t.noResults : t.noEvents}</div>`;
-    return;
-  }
-
-  container.innerHTML = visible
-    .map((booking) => {
-      const conf = STATUS_CONFIG[booking.status] || STATUS_CONFIG.excursion;
-      return `
-        <div class="list-item" data-booking-id="${escapeHtml(booking.id)}">
-          <div class="list-main">
-            <div class="list-title-row">
-              <strong>${escapeHtml(booking.date)}</strong>
-              <span class="list-status-chip" style="background:${conf.bg}; color:${conf.color};">${escapeHtml(getStatusLabel(booking.status))}</span>
-            </div>
-            <div class="list-primary">${escapeHtml(getListPrimaryLabel(booking))}</div>
-            <div class="list-meta">${escapeHtml(getListMeta(booking))}</div>
-          </div>
-        </div>
-      `;
-    })
-    .join('');
-
-  container.querySelectorAll('[data-booking-id]').forEach((item) => {
-    item.addEventListener('click', () => {
-      const booking = state.bookings.find((entry) => entry.id === item.dataset.bookingId);
-      if (booking) openDetailModal(booking);
-    });
-  });
-}
-
-function getStatusLabel(status) {
-  return getT().statuses[status] || getT().statuses.excursion;
-}
-
-function getListPrimaryLabel(booking) {
-  if (booking.status !== 'excursion') return getStatusLabel(booking.status);
-  return booking.tour_name || booking.client_name || getStatusLabel('excursion');
-}
-
-function getListMeta(booking) {
-  const parts = [];
-  if (booking.city) parts.push(booking.city);
-  if (booking.client_name) parts.push(booking.client_name);
-  if (booking.start_time || booking.end_time) parts.push([booking.start_time, booking.end_time].filter(Boolean).join('–'));
-  if (booking.price) parts.push(formatCurrency(booking.price, booking.currency));
-  if (booking.group_size) parts.push(`${booking.group_size}`);
-  return parts.join(' • ');
-}
-
-function openBookingModal(booking = null, defaultDate = null, mode = 'create') {
-  const modal = document.getElementById('bookingModal');
-  if (!modal) return;
-  const t = getT();
-  const isEditing = Boolean(booking && booking.id && mode === 'edit');
-  const title = isEditing ? t.modalEdit : mode === 'duplicate' ? t.modalDuplicate : t.modalCreate;
-
-  setTxt('modalTitle', title);
-  setVal('bookingId', isEditing ? booking.id : '');
-  setVal('bookingDate', booking?.date || defaultDate || toDateString(new Date()));
-  setVal('bookingCity', booking?.city || '');
-  setVal('bookingClient', booking?.client_name || state.formDefaults.client_name || '');
-  setVal('bookingTour', booking?.tour_name || '');
-  setVal('bookingStart', booking?.start_time || state.formDefaults.start_time || '09:00');
-  setVal('bookingEnd', booking?.end_time || state.formDefaults.end_time || '18:00');
-  setVal('bookingPrice', booking?.price || '');
-  setVal('bookingGroup', booking?.group_size || state.formDefaults.group_size || '');
-  setVal('bookingNotes', booking?.notes || '');
-  setVal('bookingCurrency', booking?.currency || state.formDefaults.currency || 'UZS');
-
-  const status = booking?.status || 'excursion';
-  const radio = document.querySelector(`input[name="status"][value="${status}"]`);
-  if (radio) radio.checked = true;
-  toggleConditionalFields(status);
-
-  const deleteBtn = document.getElementById('deleteBookingBtn');
-  if (deleteBtn) deleteBtn.style.display = isEditing ? 'inline-flex' : 'none';
-
-  modal.classList.add('active');
-  updateBodyModalState();
-}
-
-function closeBookingModal() {
-  const modal = document.getElementById('bookingModal');
-  if (!modal) return;
-  modal.classList.remove('active');
-  updateBodyModalState();
-}
-
-function toggleConditionalFields(status) {
-  const node = document.getElementById('conditionalFields');
-  if (!node) return;
-  node.style.display = status === 'excursion' ? 'block' : 'none';
-}
-
-function onBookingFormSubmit(event) {
-  event.preventDefault();
-  const t = getT();
-  const id = getVal('bookingId');
-  const status = document.querySelector('input[name="status"]:checked')?.value || 'excursion';
-  const startTime = getVal('bookingStart');
-  const endTime = getVal('bookingEnd');
-
-  if (status === 'excursion' && startTime && endTime && endTime < startTime) {
-    showToast(t.invalidTimeRange, 'error');
-    return;
-  }
-
-  const data = {
-    id: id || generateId(),
-    date: getVal('bookingDate'),
-    status,
-    city: status === 'excursion' ? getVal('bookingCity').trim() : '',
-    client_name: status === 'excursion' ? getVal('bookingClient').trim() : '',
-    tour_name: status === 'excursion' ? getVal('bookingTour').trim() : '',
-    start_time: status === 'excursion' ? startTime : '',
-    end_time: status === 'excursion' ? endTime : '',
-    price: status === 'excursion' ? Number(getVal('bookingPrice') || 0) : 0,
-    currency: status === 'excursion' ? (getVal('bookingCurrency') || 'UZS') : 'UZS',
-    group_size: status === 'excursion' ? Number(getVal('bookingGroup') || 0) : 0,
-    notes: getVal('bookingNotes').trim()
-  };
-
-  const existingIndex = state.bookings.findIndex((booking) => booking.id === data.id);
-  if (existingIndex >= 0) {
-    state.bookings[existingIndex] = data;
-  } else {
-    state.bookings.push(data);
-  }
-
-  saveFormDefaultsFromBooking(data);
-  persistBookings();
-  persistSettings();
-  closeBookingModal();
-  render();
-  showToast(t.bookingSaved, 'success');
-}
-
-function onDeleteBookingClick() {
-  const t = getT();
-  const id = getVal('bookingId');
-  if (!id) return;
-  if (!window.confirm(t.deleteConfirm)) return;
-  state.bookings = state.bookings.filter((booking) => booking.id !== id);
-  persistBookings();
-  closeBookingModal();
-  closeDetailModal();
-  render();
-  showToast(t.bookingDeleted, 'success');
-}
-
-function openRouteModal() {
-  const modal = document.getElementById('routeModal');
-  if (!modal) return;
-  document.getElementById('routeForm')?.reset();
-  const today = toDateString(new Date());
-  setVal('routeStart', today);
-  setVal('routeEnd', today);
-  setVal('routeClient', state.formDefaults.client_name || '');
-  setVal('routeGroupSize', state.formDefaults.group_size || '');
-  setVal('routePrice', '');
-  setVal('routeCurrency', state.formDefaults.currency || 'UZS');
-  setVal('routeNotes', '');
-  setHtml('routeDaysContainer', '');
-  modal.classList.add('active');
-  updateBodyModalState();
-}
-
-function closeRouteModal() {
-  const modal = document.getElementById('routeModal');
-  if (!modal) return;
-  modal.classList.remove('active');
-  updateBodyModalState();
-}
-
-function generateRouteDaysRows() {
-  const t = getT();
-  const startStr = getVal('routeStart');
-  const endStr = getVal('routeEnd');
-  const container = document.getElementById('routeDaysContainer');
-  if (!container || !startStr || !endStr) return;
-  if (endStr < startStr) {
-    showToast(t.invalidDateRange, 'error');
-    return;
-  }
-
-  const parts = [];
-  let current = new Date(`${startStr}T00:00:00`);
-  const end = new Date(`${endStr}T00:00:00`);
-  while (current <= end) {
-    const date = toDateString(current);
-    parts.push(`
-      <div class="route-day-row" data-date="${date}">
-        <div class="route-day-date">📅 ${date}</div>
-        <input type="text" class="form-control route-day-city" placeholder="${escapeHtml(t.routeDayCityPlaceholder)}">
-        <input type="text" class="form-control route-day-tour" placeholder="${escapeHtml(t.routeDayTourPlaceholder)}">
-      </div>
-    `);
-    current.setDate(current.getDate() + 1);
-  }
-  container.innerHTML = parts.join('');
-  showToast(t.routeGenerated, 'success');
-}
-
-function renderRouteDayPlaceholders() {
-  const t = getT();
-  document.querySelectorAll('.route-day-city').forEach((node) => {
-    node.placeholder = t.routeDayCityPlaceholder;
-  });
-  document.querySelectorAll('.route-day-tour').forEach((node) => {
-    node.placeholder = t.routeDayTourPlaceholder;
-  });
-}
-
-function onRouteFormSubmit(event) {
-  event.preventDefault();
-  const t = getT();
-  const rows = Array.from(document.querySelectorAll('.route-day-row'));
-  if (!rows.length) {
-    showToast(t.routeGenerateFirst, 'error');
-    return;
-  }
-
-  const startStr = getVal('routeStart');
-  const endStr = getVal('routeEnd');
-  if (endStr < startStr) {
-    showToast(t.invalidDateRange, 'error');
-    return;
-  }
-
-  const payload = collectRouteFormData(rows);
-  payload.bookings.forEach((booking) => state.bookings.push(booking));
-  saveFormDefaultsFromRoute(payload.defaults);
-  persistBookings();
-  persistSettings();
-  closeRouteModal();
-  render();
-  showToast(t.routeSaved, 'success');
-}
-
-function collectRouteFormData(rows) {
-  const client = getVal('routeClient').trim();
-  const groupSize = Number(getVal('routeGroupSize') || 0);
-  const price = Number(getVal('routePrice') || 0);
-  const currency = getVal('routeCurrency') || 'UZS';
-  const notes = getVal('routeNotes').trim();
-
-  const bookings = rows.map((row) => ({
-    id: generateId(),
-    date: row.dataset.date,
-    status: 'excursion',
-    city: row.querySelector('.route-day-city')?.value.trim() || '',
-    client_name: client,
-    tour_name: row.querySelector('.route-day-tour')?.value.trim() || '',
-    start_time: state.formDefaults.start_time || '09:00',
-    end_time: state.formDefaults.end_time || '18:00',
-    price,
-    currency,
-    group_size: groupSize,
-    notes
-  }));
-
-  return {
-    bookings,
-    defaults: {
-      client_name: client,
-      group_size: groupSize,
-      currency,
-      start_time: state.formDefaults.start_time || '09:00',
-      end_time: state.formDefaults.end_time || '18:00'
-    }
-  };
-}
-
-function saveFormDefaultsFromBooking(booking) {
-  if (booking.status !== 'excursion') return;
-  state.formDefaults = {
-    ...state.formDefaults,
-    client_name: booking.client_name || state.formDefaults.client_name,
-    currency: booking.currency || state.formDefaults.currency,
-    group_size: booking.group_size || state.formDefaults.group_size,
-    start_time: booking.start_time || state.formDefaults.start_time,
-    end_time: booking.end_time || state.formDefaults.end_time
-  };
-}
-
-function saveFormDefaultsFromRoute(defaults) {
-  state.formDefaults = {
-    ...state.formDefaults,
-    ...defaults
-  };
-}
-
-function openDetailModal(booking) {
-  const modal = document.getElementById('detailModal');
-  const body = document.getElementById('detailBody');
-  if (!modal || !body) return;
-  const t = getT();
-  const conf = STATUS_CONFIG[booking.status] || STATUS_CONFIG.excursion;
-  const noValue = t.details.noValue;
-  const timeText = [booking.start_time, booking.end_time].filter(Boolean).join(' — ');
-
-  body.innerHTML = `
-    <div class="detail-stack">
-      <div class="detail-row"><span>${escapeHtml(t.details.date)}</span><strong>${escapeHtml(booking.date || noValue)}</strong></div>
-      <div class="detail-row"><span>${escapeHtml(t.details.status)}</span><strong class="detail-status" style="background:${conf.bg}; color:${conf.color};">${escapeHtml(getStatusLabel(booking.status))}</strong></div>
-      ${booking.status === 'excursion' ? `
-        <div class="detail-row"><span>${escapeHtml(t.details.city)}</span><strong>${escapeHtml(booking.city || noValue)}</strong></div>
-        <div class="detail-row"><span>${escapeHtml(t.details.client)}</span><strong>${escapeHtml(booking.client_name || noValue)}</strong></div>
-        <div class="detail-row"><span>${escapeHtml(t.details.tour)}</span><strong>${escapeHtml(booking.tour_name || noValue)}</strong></div>
-        <div class="detail-row"><span>${escapeHtml(t.details.time)}</span><strong>${escapeHtml(timeText || noValue)}</strong></div>
-        <div class="detail-row"><span>${escapeHtml(t.details.group)}</span><strong>${escapeHtml(String(booking.group_size || 0))}</strong></div>
-        <div class="detail-row"><span>${escapeHtml(t.details.price)}</span><strong>${escapeHtml(formatCurrency(booking.price || 0, booking.currency || 'UZS'))}</strong></div>
-      ` : ''}
-      <div class="detail-notes">
-        <span>${escapeHtml(t.details.notes)}</span>
-        <p>${escapeHtml(booking.notes || noValue)}</p>
-      </div>
-    </div>
-  `;
-
-  const editBtn = document.getElementById('detailEditBtn');
-  if (editBtn) {
-    editBtn.onclick = () => {
-      closeDetailModal();
-      openBookingModal(booking, booking.date, 'edit');
-    };
-  }
-
-  const duplicateBtn = document.getElementById('detailDuplicateBtn');
-  if (duplicateBtn) {
-    duplicateBtn.onclick = () => {
-      closeDetailModal();
-      openBookingModal({ ...booking, id: '' }, booking.date, 'duplicate');
-      showToast(t.duplicateReady, 'info');
-    };
-  }
-
-  modal.classList.add('active');
-  updateBodyModalState();
-}
-
-function onDuplicateBookingClick() {
-  const modal = document.getElementById('detailModal');
-  if (!modal || !modal.classList.contains('active')) return;
-}
-
-function closeDetailModal() {
-  const modal = document.getElementById('detailModal');
-  if (!modal) return;
-  modal.classList.remove('active');
-  updateBodyModalState();
-}
-
-function updateBodyModalState() {
-  const isOpen = Array.from(document.querySelectorAll('.modal-backdrop')).some((node) => node.classList.contains('active'));
-  document.body.classList.toggle('modal-open', isOpen);
-}
-
-function isCompactMobile() {
-  return window.innerWidth <= 640;
-}
-
-function showToast(message, type = 'info') {
-  let container = document.getElementById('toastContainer');
-  if (!container) {
-    container = document.createElement('div');
-    container.id = 'toastContainer';
-    container.className = 'toast-container';
-    document.body.appendChild(container);
-  }
-
-  const toast = document.createElement('div');
-  toast.className = `toast toast-${type}`;
-  toast.textContent = message;
-  container.appendChild(toast);
-  requestAnimationFrame(() => toast.classList.add('show'));
-
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => toast.remove(), 220);
-  }, 2400);
-}
-
-function formatCurrency(value, currency) {
-  const locale = state.currentLang === 'en' ? 'en-US' : state.currentLang === 'uz' ? 'uz-UZ' : 'ru-RU';
-  return `${Number(value || 0).toLocaleString(locale, { maximumFractionDigits: 0 })} ${currency || 'UZS'}`;
-}
-
-function toDateString(value) {
-  const date = new Date(value);
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-}
-
-function generateId() {
-  return `id-${Math.random().toString(36).slice(2, 11)}`;
-}
-
-function safeClick(id, callback) {
-  const node = document.getElementById(id);
-  if (node) node.addEventListener('click', callback);
-}
-
-function safeSubmit(id, callback) {
-  const node = document.getElementById(id);
-  if (node) node.addEventListener('submit', callback);
-}
-
-function getVal(id) {
-  return document.getElementById(id)?.value || '';
-}
-
-function setVal(id, value) {
-  const node = document.getElementById(id);
-  if (node) node.value = value;
-}
-
-function setTxt(id, value) {
-  const node = document.getElementById(id);
-  if (node) node.textContent = value;
-}
-
-function setHtml(id, value) {
-  const node = document.getElementById(id);
-  if (node) node.innerHTML = value;
-}
-
-function setTxtBySelector(selector, value) {
-  const node = document.querySelector(selector);
-  if (node) node.textContent = value;
-}
-
-function setPlaceholder(id, value) {
-  const node = document.getElementById(id);
-  if (node) node.placeholder = value;
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
-
-</script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+  <script src="app.js"></script>
 </body>
 </html>
