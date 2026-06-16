@@ -217,6 +217,89 @@
       color: var(--primary);
       background: #f8fbff;
     }
+    .toolbar-toggle-btn {
+      display: none;
+      min-height: 42px;
+      border-radius: 999px;
+      padding: 0 14px;
+      white-space: nowrap;
+      justify-content: center;
+    }
+    .toolbar-panel-body[hidden] {
+      display: none !important;
+    }
+
+    .form-hint-panel {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 6px 0 16px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .form-hint-panel[hidden] {
+      display: none !important;
+    }
+    .form-hint-panel i {
+      margin-top: 2px;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+    .form-hint-panel strong {
+      display: block;
+      margin-bottom: 2px;
+      color: inherit;
+    }
+    .form-hint-panel .hint-text {
+      min-width: 0;
+      flex: 1;
+      word-break: break-word;
+    }
+    .form-hint-panel ul {
+      margin: 6px 0 0 18px;
+      padding: 0;
+    }
+    .form-hint-panel li + li {
+      margin-top: 3px;
+    }
+    .form-hint-panel.is-success {
+      background: #ecfdf3;
+      border-color: #86efac;
+      color: #166534;
+    }
+    .form-hint-panel.is-error {
+      background: #fef2f2;
+      border-color: #fca5a5;
+      color: #b91c1c;
+    }
+    .form-hint-panel.is-muted {
+      background: #f8fafc;
+      border-color: var(--border);
+      color: var(--text-muted);
+    }
+    .form-control.is-conflict {
+      border-color: #f87171 !important;
+      box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.14) !important;
+    }
+    .route-day-row.has-conflict {
+      border-color: #fca5a5;
+      background: #fff1f2;
+    }
+    .route-day-row.has-conflict .route-day-date {
+      color: #b91c1c;
+    }
+    .route-day-conflict {
+      font-size: 0.78rem;
+      color: #b91c1c;
+      background: rgba(254, 226, 226, 0.88);
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
 
     /* Сетка календаря */
     .weekday-label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); padding: 10px 0; text-align: center; }
@@ -551,9 +634,12 @@
       }
       .calendar-divider { display: none; }
       .toolbar-panel { padding: 14px; margin-bottom: 16px; border-radius: 16px; }
-      .toolbar-head { margin-bottom: 10px; }
+      .toolbar-head { margin-bottom: 10px; align-items: flex-start; }
       .toolbar-head strong { font-size: 0.9rem; }
       .toolbar-head span { font-size: 0.78rem; }
+      .toolbar-toggle-btn { display: inline-flex; margin-left: auto; }
+      .toolbar-panel.mobile-collapsed .toolbar-head { margin-bottom: 0; }
+      .toolbar-panel.mobile-collapsed { padding-bottom: 12px; }
       .toolbar-input, .toolbar-select, .btn-reset { min-height: 42px; }
       .results-row { align-items: stretch; gap: 10px; margin-top: 10px; padding-top: 10px; }
       .results-summary,
@@ -593,7 +679,7 @@
       <img src="data:image/png;base64,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" alt="Yolnama" class="brand-logo-image">
       <div class="header-title">
         <h1>Yolnama</h1>
-        <p>Платформа для гидов и водителей</p>
+        <p>Операционная система для гидов и водителей</p>
       </div>
     </div>
     
@@ -671,25 +757,30 @@
         </div>
       </div>
 
-      <div class="toolbar-panel">
+      <div id="toolbarPanel" class="toolbar-panel">
         <div class="toolbar-head">
           <div>
             <strong id="toolbarTitle">Поиск и фильтры</strong><br>
             <span id="toolbarHint">Быстрый поиск по текущему месяцу</span>
           </div>
+          <button id="toolbarToggleBtn" class="btn btn-secondary toolbar-toggle-btn" type="button" aria-expanded="true">
+            <i class="fas fa-chevron-up"></i> Свернуть
+          </button>
         </div>
-        <div class="toolbar-controls">
-          <div class="toolbar-field">
-            <i class="fas fa-search"></i>
-            <input type="text" id="bookingSearch" class="toolbar-input" placeholder="Поиск по городу, клиенту, экскурсии или группе">
+        <div id="toolbarPanelBody" class="toolbar-panel-body">
+          <div class="toolbar-controls">
+            <div class="toolbar-field">
+              <i class="fas fa-search"></i>
+              <input type="text" id="bookingSearch" class="toolbar-input" placeholder="Поиск по городу, клиенту, экскурсии или группе">
+            </div>
+            <div class="toolbar-field">
+              <select id="statusFilter" class="toolbar-select"></select>
+            </div>
+            <button id="resetFiltersBtn" class="btn btn-secondary btn-reset" type="button"><i class="fas fa-rotate-left"></i> Сбросить</button>
           </div>
-          <div class="toolbar-field">
-            <select id="statusFilter" class="toolbar-select"></select>
+          <div class="results-row">
+            <div id="resultsSummary" class="results-summary">Записей: 0</div>
           </div>
-          <button id="resetFiltersBtn" class="btn btn-secondary btn-reset" type="button"><i class="fas fa-rotate-left"></i> Сбросить</button>
-        </div>
-        <div class="results-row">
-          <div id="resultsSummary" class="results-summary">Записей: 0</div>
         </div>
       </div>
 
@@ -795,6 +886,8 @@
           </div>
         </div>
 
+        <div id="bookingAvailabilityHint" class="form-hint-panel is-muted" hidden></div>
+
         <div class="form-group">
           <label id="lblNotes">Заметки / Пожелания</label>
           <textarea id="bookingNotes" class="form-control" rows="3" placeholder="Дополнительная информация..."></textarea>
@@ -830,6 +923,8 @@
         </div>
 
         <button type="button" id="btnGenerateRouteDays" class="btn btn-secondary" style="width: 100%; margin-bottom: 16px; justify-content: center; background:#f1f5f9;"><i class="fas fa-gears"></i> Сгенерировать дни</button>
+
+        <div id="routeAvailabilityHint" class="form-hint-panel is-muted" hidden></div>
 
         <div id="routeDaysContainer" class="route-days-container" style="max-height: 320px; overflow-y: auto; margin-bottom: 16px; padding-right: 4px;"></div>
 
@@ -910,7 +1005,7 @@ const STATUS_ORDER = ['excursion', 'busy', 'holiday', 'personal'];
 const TRANSLATIONS = {
   ru: {
     title: 'Yolnama',
-    subtitle: 'Платформа для гидов и водителей',
+    subtitle: 'Операционная система для гидов и водителей',
     gridBtn: 'Сетка',
     listBtn: 'Список',
     todayBtn: 'Сегодня',
@@ -929,6 +1024,8 @@ const TRANSLATIONS = {
     resultsLabel: 'Записей',
     toolbarTitle: 'Поиск и фильтры',
     toolbarHint: 'Быстрый поиск по текущему месяцу',
+    toolbarCollapse: 'Свернуть',
+    toolbarExpand: 'Показать',
     noEvents: 'Нет записей за выбранный месяц',
     noResults: 'По выбранным фильтрам ничего не найдено',
     modalCreate: 'Новая запись',
@@ -986,6 +1083,11 @@ const TRANSLATIONS = {
     routeSaved: 'Маршрут сохранён',
     filtersReset: 'Фильтры сброшены',
     duplicateReady: 'Запись подготовлена для дублирования',
+    slotCheckHint: 'Выберите дату и время, чтобы сразу увидеть занятость',
+    slotAvailable: 'Свободно — запись можно сохранить',
+    routeCheckHint: 'Сгенерируйте дни маршрута, чтобы проверить занятые даты и время',
+    routeAllClear: 'Конфликтов нет — маршрут можно сохранить',
+    routeConflictsFound: 'Есть занятые даты или время. Исправьте отмеченные строки.',
     months: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
     weekdays: ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
     statuses: {
@@ -1028,6 +1130,8 @@ const TRANSLATIONS = {
     resultsLabel: 'Records',
     toolbarTitle: 'Search and filters',
     toolbarHint: 'Quick search in current month',
+    toolbarCollapse: 'Collapse',
+    toolbarExpand: 'Show',
     noEvents: 'No records for this month',
     noResults: 'No records match current filters',
     modalCreate: 'New record',
@@ -1085,6 +1189,11 @@ const TRANSLATIONS = {
     routeSaved: 'Route saved',
     filtersReset: 'Filters reset',
     duplicateReady: 'Record is ready to be duplicated',
+    slotCheckHint: 'Choose a date and time to check availability instantly',
+    slotAvailable: 'Free — you can save this record',
+    routeCheckHint: 'Generate route days to check busy dates and time slots',
+    routeAllClear: 'No conflicts — the route can be saved',
+    routeConflictsFound: 'Some dates or time slots are busy. Fix the highlighted rows.',
     months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
     weekdays: ['Mo','Tu','We','Th','Fr','Sa','Su'],
     statuses: {
@@ -1127,6 +1236,8 @@ const TRANSLATIONS = {
     resultsLabel: 'Yozuvlar',
     toolbarTitle: 'Qidiruv va filtrlar',
     toolbarHint: 'Joriy oy bo‘yicha tez qidiruv',
+    toolbarCollapse: 'Yigʻish',
+    toolbarExpand: 'Koʻrsatish',
     noEvents: 'Bu oy uchun yozuvlar yoʻq',
     noResults: 'Filtrlar bo‘yicha hech narsa topilmadi',
     modalCreate: 'Yangi yozuv',
@@ -1184,6 +1295,11 @@ const TRANSLATIONS = {
     routeSaved: 'Yoʻnalish saqlandi',
     filtersReset: 'Filtrlar tozalandi',
     duplicateReady: 'Yozuv nusxa olish uchun tayyorlandi',
+    slotCheckHint: 'Bandlikni darhol ko‘rish uchun sana va vaqtni tanlang',
+    slotAvailable: 'Boʻsh — yozuvni saqlash mumkin',
+    routeCheckHint: 'Band sanalar va vaqtlarni tekshirish uchun yoʻnalish kunlarini yarating',
+    routeAllClear: 'Konflikt yoʻq — yoʻnalishni saqlash mumkin',
+    routeConflictsFound: 'Band sanalar yoki vaqtlar bor. Belgilangan qatorlarni tuzating.',
     months: ['Yanvar','Fevral','Mart','Aprel','May','Iyun','Iyul','Avgust','Sentabr','Oktabr','Noyabr','Dekabr'],
     weekdays: ['Du','Se','Cho','Pa','Ju','Sha','Yak'],
     statuses: {
@@ -1229,7 +1345,8 @@ const state = {
   currentLang: 'ru',
   filters: { search: '', status: 'all' },
   bookings: [],
-  formDefaults: { ...DEFAULT_FORM_DEFAULTS }
+  formDefaults: { ...DEFAULT_FORM_DEFAULTS },
+  ui: { filtersCollapsedMobile: true }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1283,6 +1400,10 @@ function initDOMEvents() {
   }
 
   safeClick('resetFiltersBtn', resetFilters);
+  safeClick('toolbarToggleBtn', toggleMobileToolbarPanel);
+
+  bindBookingAvailabilityListeners();
+  bindRouteAvailabilityListeners();
 
   const langSelect = document.getElementById('langSelect');
   if (langSelect) {
@@ -1307,7 +1428,12 @@ function initDOMEvents() {
     });
   });
 
-  window.addEventListener('resize', renderResultsSummary);
+  window.addEventListener('resize', () => {
+    renderResultsSummary();
+    updateMobileToolbarState();
+    updateBookingAvailabilityHint();
+    updateRouteAvailabilityHint();
+  });
 }
 
 function getT() {
@@ -1333,6 +1459,9 @@ function loadSettings() {
         ...settings.formDefaults
       };
     }
+    if (settings.ui && typeof settings.ui === 'object') {
+      state.ui.filtersCollapsedMobile = settings.ui.filtersCollapsedMobile !== false;
+    }
   } catch (error) {
     console.warn('Settings load failed', error);
   }
@@ -1345,7 +1474,8 @@ function persistSettings() {
     currentView: state.currentView,
     currentLang: state.currentLang,
     filters: state.filters,
-    formDefaults: state.formDefaults
+    formDefaults: state.formDefaults,
+    ui: state.ui
   };
   localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(payload));
 }
@@ -1469,6 +1599,9 @@ function updateInterfaceLanguage() {
   syncControlsFromState();
   renderResultsSummary();
   renderRouteDayPlaceholders();
+  updateMobileToolbarState();
+  updateBookingAvailabilityHint();
+  updateRouteAvailabilityHint();
 }
 
 function renderStatusFilterOptions() {
@@ -1497,6 +1630,7 @@ function syncControlsFromState() {
   const listBtn = document.getElementById('viewListBtn');
   if (gridBtn) gridBtn.classList.toggle('active', state.currentView === 'grid');
   if (listBtn) listBtn.classList.toggle('active', state.currentView === 'list');
+  updateMobileToolbarState();
 }
 
 function goToToday() {
@@ -1554,6 +1688,9 @@ function render() {
     if (listView) listView.style.display = 'block';
     renderList();
   }
+  updateMobileToolbarState();
+  updateBookingAvailabilityHint();
+  updateRouteAvailabilityHint();
 }
 
 function renderWeekdays() {
@@ -1588,6 +1725,257 @@ function timeToMinutes(value) {
 
 function getSameDateBookings(dateString, ignoreId = '') {
   return state.bookings.filter((booking) => booking.date === dateString && (!ignoreId || booking.id !== ignoreId));
+}
+
+function isMobileViewport() {
+  return window.innerWidth <= 768;
+}
+
+function toggleMobileToolbarPanel() {
+  if (!isMobileViewport()) return;
+  state.ui.filtersCollapsedMobile = !state.ui.filtersCollapsedMobile;
+  persistSettings();
+  updateMobileToolbarState();
+}
+
+function updateMobileToolbarState() {
+  const panel = document.getElementById('toolbarPanel');
+  const body = document.getElementById('toolbarPanelBody');
+  const button = document.getElementById('toolbarToggleBtn');
+  if (!panel || !body || !button) return;
+
+  const mobile = isMobileViewport();
+  const collapsed = mobile ? Boolean(state.ui.filtersCollapsedMobile) : false;
+  panel.classList.toggle('mobile-collapsed', collapsed);
+  body.hidden = collapsed;
+  button.hidden = !mobile;
+
+  const t = getT();
+  button.setAttribute('aria-expanded', String(!collapsed));
+  button.innerHTML = `<i class="fas ${collapsed ? 'fa-chevron-down' : 'fa-chevron-up'}"></i> ${collapsed ? t.toolbarExpand : t.toolbarCollapse}`;
+}
+
+function bindBookingAvailabilityListeners() {
+  ['bookingDate', 'bookingStart', 'bookingEnd'].forEach((id) => {
+    const node = document.getElementById(id);
+    if (!node) return;
+    node.addEventListener('input', updateBookingAvailabilityHint);
+    node.addEventListener('change', updateBookingAvailabilityHint);
+  });
+  document.querySelectorAll('input[name="status"]').forEach((radio) => {
+    radio.addEventListener('change', updateBookingAvailabilityHint);
+  });
+}
+
+function bindRouteAvailabilityListeners() {
+  ['routeStart', 'routeEnd'].forEach((id) => {
+    const node = document.getElementById(id);
+    if (!node) return;
+    node.addEventListener('input', updateRouteAvailabilityHint);
+    node.addEventListener('change', updateRouteAvailabilityHint);
+  });
+
+  const container = document.getElementById('routeDaysContainer');
+  if (container) {
+    container.addEventListener('input', updateRouteAvailabilityHint);
+    container.addEventListener('change', updateRouteAvailabilityHint);
+  }
+}
+
+function setFieldConflictState(ids, isConflict) {
+  ids.forEach((id) => {
+    const node = document.getElementById(id);
+    if (node) node.classList.toggle('is-conflict', Boolean(isConflict));
+  });
+}
+
+function setHintPanelState(id, options = {}) {
+  const node = document.getElementById(id);
+  if (!node) return;
+  const type = options.type || 'muted';
+  const title = options.title || '';
+  const message = options.message || '';
+  const items = Array.isArray(options.items) ? options.items.filter(Boolean) : [];
+
+  if (!message && !items.length) {
+    node.hidden = true;
+    node.innerHTML = '';
+    node.className = 'form-hint-panel is-muted';
+    return;
+  }
+
+  const iconMap = { success: 'fa-circle-check', error: 'fa-triangle-exclamation', muted: 'fa-circle-info' };
+  const safeTitle = title ? `<strong>${escapeHtml(title)}</strong>` : '';
+  const safeMessage = message ? `<div>${escapeHtml(message)}</div>` : '';
+  const safeItems = items.length
+    ? `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`
+    : '';
+
+  node.hidden = false;
+  node.className = `form-hint-panel is-${type}`;
+  node.innerHTML = `
+    <i class="fas ${iconMap[type] || iconMap.muted}"></i>
+    <div class="hint-text">${safeTitle}${safeMessage}${safeItems}</div>
+  `;
+}
+
+function getBookingFormCandidate() {
+  const status = document.querySelector('input[name="status"]:checked')?.value || 'excursion';
+  return {
+    id: getVal('bookingId'),
+    date: getVal('bookingDate'),
+    status,
+    start_time: status === 'excursion' ? getVal('bookingStart') : '',
+    end_time: status === 'excursion' ? getVal('bookingEnd') : ''
+  };
+}
+
+function updateBookingAvailabilityHint() {
+  const saveBtn = document.getElementById('saveBookingBtn');
+  const bookingModal = document.getElementById('bookingModal');
+  if (!saveBtn || !bookingModal) return;
+
+  const t = getT();
+  const candidate = getBookingFormCandidate();
+  const ignoreId = getVal('bookingId');
+  const status = candidate.status;
+  const startTime = candidate.start_time;
+  const endTime = candidate.end_time;
+
+  setFieldConflictState(['bookingDate', 'bookingStart', 'bookingEnd'], false);
+
+  if (!bookingModal.classList.contains('active')) {
+    saveBtn.disabled = false;
+    setHintPanelState('bookingAvailabilityHint', { type: 'muted', message: '' });
+    return;
+  }
+
+  if (!candidate.date) {
+    saveBtn.disabled = false;
+    setHintPanelState('bookingAvailabilityHint', { type: 'muted', message: t.slotCheckHint });
+    return;
+  }
+
+  if (status === 'excursion' && startTime && endTime && endTime < startTime) {
+    saveBtn.disabled = true;
+    setFieldConflictState(['bookingStart', 'bookingEnd'], true);
+    setHintPanelState('bookingAvailabilityHint', { type: 'error', message: t.invalidTimeRange });
+    return;
+  }
+
+  const conflictMessage = getBookingConflictMessage(candidate, ignoreId);
+  if (conflictMessage) {
+    saveBtn.disabled = true;
+    setFieldConflictState(['bookingDate', 'bookingStart', 'bookingEnd'], true);
+    setHintPanelState('bookingAvailabilityHint', { type: 'error', message: conflictMessage });
+    return;
+  }
+
+  if (status === 'excursion' && (!startTime || !endTime)) {
+    saveBtn.disabled = false;
+    setHintPanelState('bookingAvailabilityHint', { type: 'muted', message: t.slotCheckHint });
+    return;
+  }
+
+  saveBtn.disabled = false;
+  setHintPanelState('bookingAvailabilityHint', { type: 'success', message: t.slotAvailable });
+}
+
+function buildRouteRowCandidate(row) {
+  return {
+    id: '',
+    date: row.dataset.date || '',
+    status: 'excursion',
+    start_time: row.querySelector('.route-day-start')?.value || state.formDefaults.start_time || '09:00',
+    end_time: row.querySelector('.route-day-end')?.value || state.formDefaults.end_time || '18:00'
+  };
+}
+
+function updateRouteAvailabilityHint() {
+  const routeModal = document.getElementById('routeModal');
+  const saveBtn = document.getElementById('saveRouteBtn');
+  const container = document.getElementById('routeDaysContainer');
+  if (!routeModal || !saveBtn || !container) return;
+
+  const t = getT();
+  const startStr = getVal('routeStart');
+  const endStr = getVal('routeEnd');
+  const rows = Array.from(container.querySelectorAll('.route-day-row'));
+
+  rows.forEach((row) => {
+    row.classList.remove('has-conflict');
+    let note = row.querySelector('.route-day-conflict');
+    if (!note) {
+      note = document.createElement('div');
+      note.className = 'route-day-conflict';
+      note.hidden = true;
+      row.querySelector('.route-day-editor')?.appendChild(note);
+    }
+    note.hidden = true;
+    note.textContent = '';
+  });
+
+  if (!routeModal.classList.contains('active')) {
+    saveBtn.disabled = false;
+    setHintPanelState('routeAvailabilityHint', { type: 'muted', message: '' });
+    return;
+  }
+
+  if (!startStr || !endStr) {
+    saveBtn.disabled = true;
+    setHintPanelState('routeAvailabilityHint', { type: 'muted', message: t.routeCheckHint });
+    return;
+  }
+
+  if (endStr < startStr) {
+    saveBtn.disabled = true;
+    setHintPanelState('routeAvailabilityHint', { type: 'error', message: t.invalidDateRange });
+    return;
+  }
+
+  if (isPastDate(startStr) || isPastDate(endStr)) {
+    saveBtn.disabled = true;
+    setHintPanelState('routeAvailabilityHint', { type: 'error', message: t.pastDateBlocked });
+    return;
+  }
+
+  if (!rows.length) {
+    saveBtn.disabled = true;
+    setHintPanelState('routeAvailabilityHint', { type: 'muted', message: t.routeCheckHint });
+    return;
+  }
+
+  const conflictItems = [];
+  rows.forEach((row) => {
+    const candidate = buildRouteRowCandidate(row);
+    let message = '';
+    if (candidate.start_time && candidate.end_time && candidate.end_time < candidate.start_time) {
+      message = t.invalidTimeRange;
+    } else {
+      message = getBookingConflictMessage(candidate);
+    }
+
+    const note = row.querySelector('.route-day-conflict');
+    if (message && note) {
+      row.classList.add('has-conflict');
+      note.hidden = false;
+      note.textContent = message;
+      conflictItems.push(`${candidate.date}: ${message}`);
+    }
+  });
+
+  if (conflictItems.length) {
+    saveBtn.disabled = true;
+    setHintPanelState('routeAvailabilityHint', {
+      type: 'error',
+      message: t.routeConflictsFound,
+      items: conflictItems.slice(0, 4)
+    });
+    return;
+  }
+
+  saveBtn.disabled = false;
+  setHintPanelState('routeAvailabilityHint', { type: 'success', message: t.routeAllClear });
 }
 
 function getBookingConflictMessage(candidate, ignoreId = '') {
@@ -1932,6 +2320,7 @@ function openBookingModal(booking = null, defaultDate = null, mode = 'create') {
 
   modal.classList.add('active');
   updateBodyModalState();
+  updateBookingAvailabilityHint();
 }
 
 function closeBookingModal() {
@@ -1939,12 +2328,14 @@ function closeBookingModal() {
   if (!modal) return;
   modal.classList.remove('active');
   updateBodyModalState();
+  setHintPanelState('bookingAvailabilityHint', { type: 'muted', message: '' });
 }
 
 function toggleConditionalFields(status) {
   const node = document.getElementById('conditionalFields');
   if (!node) return;
   node.style.display = status === 'excursion' ? 'block' : 'none';
+  updateBookingAvailabilityHint();
 }
 
 function onBookingFormSubmit(event) {
@@ -2035,6 +2426,7 @@ function openRouteModal() {
   setHtml('routeDaysContainer', '');
   modal.classList.add('active');
   updateBodyModalState();
+  updateRouteAvailabilityHint();
 }
 
 function closeRouteModal() {
@@ -2042,6 +2434,7 @@ function closeRouteModal() {
   if (!modal) return;
   modal.classList.remove('active');
   updateBodyModalState();
+  setHintPanelState('routeAvailabilityHint', { type: 'muted', message: '' });
 }
 
 function submitRouteForm() {
@@ -2121,6 +2514,7 @@ function generateRouteDaysRows() {
   }
   container.innerHTML = parts.join('');
   bindRouteDayRowActions();
+  updateRouteAvailabilityHint();
   showToast(t.routeGenerated, 'success');
 }
 
@@ -2140,6 +2534,7 @@ function renderRouteDayPlaceholders() {
 
 function onRouteFormSubmit(event) {
   event.preventDefault();
+  updateRouteAvailabilityHint();
   const t = getT();
   const rows = Array.from(document.querySelectorAll('.route-day-row'));
   if (!rows.length) {
