@@ -142,8 +142,8 @@
     .sdc-income-label.income-partial,.sdc-income-amount.income-partial { color:#d97706; }
     .sdc-income-label.income-unpaid,.sdc-income-amount.income-unpaid  { color:#dc2626; }
     .smb-note { padding:12px 14px 0; color:var(--text-muted); font-size:0.82rem; }
-    .smb-table { padding:12px 14px 14px; }
-    .smb-head, .smb-row { display:grid; grid-template-columns:minmax(130px,1.2fr) repeat(4, minmax(90px,1fr)); gap:8px; align-items:center; }
+    .smb-table { padding:12px 14px 14px; overflow-x:auto; }
+    .smb-head, .smb-row { display:grid; grid-template-columns:minmax(130px,1.2fr) repeat(5, minmax(100px,1fr)); gap:8px; align-items:start; min-width:900px; }
     .smb-head { padding:0 0 10px; color:var(--text-muted); font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; }
     .smb-row { padding:10px 0; border-top:1px solid var(--border); }
     .smb-month { font-weight:700; }
@@ -151,9 +151,11 @@
     .smb-cell { display:flex; align-items:baseline; justify-content:flex-start; gap:4px; font-variant-numeric:tabular-nums; }
     .smb-cell strong { font-size:0.98rem; }
     .smb-cell span { color:#2563eb; font-size:0.86rem; }
+    .smb-income-cell { display:flex; flex-direction:column; gap:4px; align-items:flex-start; }
+    .smb-income-line { font-size:0.86rem; font-weight:700; color:#15803d; white-space:nowrap; }
+    .smb-empty { color:var(--text-muted); }
     .smb-row.is-empty { opacity:.56; }
-    @media (max-width:760px) { .smb-head, .smb-row { grid-template-columns:minmax(110px,1.2fr) repeat(2, minmax(80px,1fr)); } .smb-head .smb-col:nth-child(n+4), .smb-row > :nth-child(n+4) { display:none; } }
-    @media (max-width:480px) { #statsModalBody { grid-template-columns:1fr; } .stats-income-card, .stats-monthly-card { grid-column:1; } .smb-head, .smb-row { grid-template-columns:1fr 1fr; } .smb-head .smb-col:nth-child(n+3), .smb-row > :nth-child(n+3) { display:none; } }
+    @media (max-width:480px) { #statsModalBody { grid-template-columns:1fr; } .stats-income-card, .stats-monthly-card { grid-column:1; } }
 
     .legend-list { display: flex; flex-direction: column; gap: 8px; }
     .legend-item { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; padding: 8px 12px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); }
@@ -2355,6 +2357,15 @@ function accumulateIncomeByPayment(booking, paidMap, unpaidMap) {
   addAmountToMap(unpaidMap, currency, split.unpaid);
 }
 
+function getRouteRowsTotalPrice() {
+  const rows = Array.from(document.querySelectorAll('.route-day-row'));
+  if (!rows.length) return toMoneyNumber(getVal('routePrice'));
+  return rows.reduce((sum, row) => {
+    const rowValue = row.querySelector('.route-day-price')?.value;
+    return sum + toMoneyNumber(rowValue || getVal('routePrice'));
+  }, 0);
+}
+
 function syncPaymentSplitFields(prefix) {
   const paymentSelect = document.getElementById(prefix + 'PaymentStatus');
   const priceInput = document.getElementById(prefix + 'Price');
@@ -2364,7 +2375,7 @@ function syncPaymentSplitFields(prefix) {
   if (!paymentSelect || !priceInput || !paidInput || !unpaidInput || !wrap) return;
 
   const status = paymentSelect.value || 'unpaid';
-  const total = toMoneyNumber(priceInput.value);
+  const total = prefix === 'route' ? getRouteRowsTotalPrice() : toMoneyNumber(priceInput.value);
   const normalizedPaid = normalizePaidAmount(total, status, paidInput.value);
   const unpaid = Math.max(0, total - normalizedPaid);
 
@@ -2863,7 +2874,14 @@ function collectExistingRouteRowValues() {
 
 function bindRouteDayRowActions() {
   document.querySelectorAll('.route-day-remove').forEach((button) => {
-    button.onclick = () => button.closest('.route-day-row')?.remove();
+    button.onclick = () => {
+      button.closest('.route-day-row')?.remove();
+      updatePaymentStatusSelect();
+    };
+  });
+
+  document.querySelectorAll('.route-day-price').forEach((node) => {
+    node.oninput = () => updatePaymentStatusSelect();
   });
 }
 
@@ -2915,6 +2933,7 @@ function generateRouteDaysRows() {
   container.innerHTML = parts.join('');
   bindRouteDayRowActions();
   syncRouteDefaultPriceToRows();
+  updatePaymentStatusSelect();
   updateRouteAvailabilityHint();
   showToast(t.routeGenerated, 'success');
 }
@@ -2925,6 +2944,35 @@ function syncRouteDefaultPriceToRows() {
   document.querySelectorAll('.route-day-price').forEach((node) => {
     node.value = defaultPrice;
   });
+}
+
+function distributeRoutePaidAmounts(bookings, totalPaid, routePaymentStatus) {
+  const normalizedTotalPaid = toMoneyNumber(totalPaid);
+  let remaining = normalizedTotalPaid;
+
+  return bookings.map((booking) => {
+    const price = toMoneyNumber(booking.price);
+    let paidAmount = 0;
+
+    if (routePaymentStatus === 'paid') {
+      paidAmount = price;
+    } else if (routePaymentStatus === 'partial') {
+      paidAmount = Math.min(price, remaining);
+      remaining = Math.max(0, remaining - paidAmount);
+    }
+
+    return {
+      ...booking,
+      payment_status: routePaymentStatus,
+      paid_amount: paidAmount
+    };
+  });
+}
+
+function formatCurrencyMapCompact(map) {
+  const entries = Object.entries(map || {});
+  if (!entries.length) return '<span class="smb-empty">—</span>';
+  return entries.map(([cur, val]) => `<div class="smb-income-line">${escapeHtml(formatCurrency(val, cur))}</div>`).join('');
 }
 
 function buildMonthlyStatsRows(bookings, year, today, t) {
@@ -2942,6 +2990,8 @@ function buildMonthlyStatsRows(bookings, year, today, t) {
     const holPlanned = holiday.filter((b) => b.date >= today);
     const touristsCompleted = excCompleted.reduce((sum, b) => sum + (Number(b.group_size) || 0), 0);
     const touristsPlanned = excPlanned.reduce((sum, b) => sum + (Number(b.group_size) || 0), 0);
+    const incomeMap = {};
+    excursions.forEach((b) => addAmountToMap(incomeMap, b.currency || 'UZS', b.price));
     const hasData = items.length > 0;
     return `
       <div class="smb-row${hasData ? '' : ' is-empty'}">
@@ -2950,6 +3000,7 @@ function buildMonthlyStatsRows(bookings, year, today, t) {
         <div class="smb-cell"><strong>${busyCompleted.length}</strong><span>/ ${busyPlanned.length}</span></div>
         <div class="smb-cell"><strong>${holCompleted.length}</strong><span>/ ${holPlanned.length}</span></div>
         <div class="smb-cell"><strong>${touristsCompleted}</strong><span>/ ${touristsPlanned}</span></div>
+        <div class="smb-cell smb-income-cell">${formatCurrencyMapCompact(incomeMap)}</div>
       </div>
     `;
   }).join('');
@@ -3028,7 +3079,7 @@ function collectRouteFormData(rows) {
   const routePaymentStatus = getVal('routePaymentStatus') || 'unpaid';
   const routePaidAmount = Number(getVal('routePaidAmount') || 0);
 
-  const bookings = rows.map((row) => {
+  const rawBookings = rows.map((row) => {
     const rowPrice = Number(row.querySelector('.route-day-price')?.value || price || 0);
     return {
       id: generateId(),
@@ -3044,9 +3095,13 @@ function collectRouteFormData(rows) {
       group_size: groupSize,
       notes,
       payment_status: routePaymentStatus,
-      paid_amount: normalizePaidAmount(rowPrice, routePaymentStatus, routePaidAmount)
+      paid_amount: 0
     };
   });
+
+  const totalRoutePrice = rawBookings.reduce((sum, booking) => sum + toMoneyNumber(booking.price), 0);
+  const normalizedRoutePaidAmount = normalizePaidAmount(totalRoutePrice, routePaymentStatus, routePaidAmount);
+  const bookings = distributeRoutePaidAmounts(rawBookings, normalizedRoutePaidAmount, routePaymentStatus);
 
   return {
     bookings,
@@ -3269,6 +3324,7 @@ function renderStatsModal() {
           '<div class="smb-col">' + escapeHtml(t.statsSectionBusy) + '</div>' +
           '<div class="smb-col">' + escapeHtml(t.statsSectionHoliday) + '</div>' +
           '<div class="smb-col">' + escapeHtml(t.statsSectionTourists) + '</div>' +
+          '<div class="smb-col">' + escapeHtml(t.statsSectionIncome) + '</div>' +
         '</div>' +
         buildMonthlyStatsRows(all, year, today, t) +
       '</div>' +
