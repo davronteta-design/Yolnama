@@ -94,7 +94,66 @@
     .stat-mini-box .stat-num { font-size: 1.5rem; font-weight: 700; margin-bottom: 2px; }
     .stat-mini-box .stat-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
 
-    .income-amount { font-size: 1.6rem; font-weight: 700; color: #24b96a; margin-top: 4px; }
+    .income-amount { font-size: 1.25rem; font-weight: 700; color: #24b96a; margin-top: 2px; }
+    .income-group { margin-bottom: 8px; }
+    .income-group-label { font-size: 0.76rem; font-weight: 700; margin-bottom: 2px; opacity: 0.9; }
+    .income-paid .income-group-label, .income-paid.income-amount     { color: #16a34a; }
+    .income-partial .income-group-label,.income-partial.income-amount { color: #d97706; }
+    .income-unpaid .income-group-label, .income-unpaid.income-amount  { color: #dc2626; }
+
+    .payment-badge { display:inline-block; padding:3px 10px; border-radius:999px; font-size:0.82rem; font-weight:700; }
+    .payment-badge-paid    { background:#dcfce7; color:#16a34a; }
+    .payment-badge-partial { background:#fef3c7; color:#d97706; }
+    .payment-badge-unpaid  { background:#fee2e2; color:#dc2626; }
+    .payment-select { font-weight:700; transition: border-color .2s, background .2s, color .2s; }
+    .payment-split-wrap { margin-top:10px; padding:12px; border:1px dashed #e2e8f0; border-radius:12px; background:#f8fafc; }
+    .payment-split-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .payment-split-readonly { background:#eef2ff; color:#334155; font-weight:700; }
+    @media (max-width:640px) { .payment-split-grid { grid-template-columns:1fr; } }
+
+    #statTitle { justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+
+    #statsModal .modal-content { max-width:980px; }
+    .stats-modal-year-nav { display:flex; align-items:center; gap:10px; margin-bottom:18px; justify-content:center; }
+    .stats-modal-year-nav button { width:34px; height:34px; border-radius:999px; border:1px solid var(--border); background:var(--surface2); cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; transition:all .18s; }
+    .stats-modal-year-nav button:hover { border-color:var(--primary); color:var(--primary); background:#eff6ff; }
+    #statsModalYearLabel { font-size:1.05rem; font-weight:700; min-width:110px; text-align:center; }
+    #statsModalBody { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:4px; }
+    .stats-detail-card { background:var(--surface2); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+    .stats-income-card { grid-column:1 / -1; }
+    .stats-monthly-card { grid-column:1 / -1; }
+    .sdc-header { display:flex; align-items:center; gap:8px; padding:10px 14px; font-size:0.9rem; font-weight:700; }
+    .sdc-header strong { margin-left:auto; font-size:1.15rem; }
+    .sdc-blue   { background:#dbeafe; color:#1d4ed8; }
+    .sdc-red    { background:#fee2e2; color:#b91c1c; }
+    .sdc-green  { background:#dcfce7; color:#15803d; }
+    .sdc-purple { background:#ede9fe; color:#7c3aed; }
+    .sdc-gold   { background:#fef3c7; color:#b45309; }
+    .sdc-slate  { background:#e2e8f0; color:#334155; }
+    .sdc-row { display:flex; align-items:center; justify-content:space-between; padding:8px 14px; font-size:0.88rem; gap:8px; border-top:1px solid var(--border); }
+    .sdc-row span { color:var(--text-muted); display:flex; align-items:center; gap:6px; }
+    .sdc-row strong { font-size:1rem; font-weight:700; }
+    .sdc-planned strong { color:#2563eb; }
+    .sdc-income-body { padding:14px; display:flex; flex-direction:column; gap:8px; }
+    .sdc-income-group { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .sdc-income-label { font-size:0.82rem; font-weight:700; min-width:130px; }
+    .sdc-income-amount { font-size:1.05rem; font-weight:700; }
+    .sdc-income-label.income-paid,  .sdc-income-amount.income-paid    { color:#16a34a; }
+    .sdc-income-label.income-partial,.sdc-income-amount.income-partial { color:#d97706; }
+    .sdc-income-label.income-unpaid,.sdc-income-amount.income-unpaid  { color:#dc2626; }
+    .smb-note { padding:12px 14px 0; color:var(--text-muted); font-size:0.82rem; }
+    .smb-table { padding:12px 14px 14px; }
+    .smb-head, .smb-row { display:grid; grid-template-columns:minmax(130px,1.2fr) repeat(4, minmax(90px,1fr)); gap:8px; align-items:center; }
+    .smb-head { padding:0 0 10px; color:var(--text-muted); font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; }
+    .smb-row { padding:10px 0; border-top:1px solid var(--border); }
+    .smb-month { font-weight:700; }
+    .smb-col { font-weight:700; }
+    .smb-cell { display:flex; align-items:baseline; justify-content:flex-start; gap:4px; font-variant-numeric:tabular-nums; }
+    .smb-cell strong { font-size:0.98rem; }
+    .smb-cell span { color:#2563eb; font-size:0.86rem; }
+    .smb-row.is-empty { opacity:.56; }
+    @media (max-width:760px) { .smb-head, .smb-row { grid-template-columns:minmax(110px,1.2fr) repeat(2, minmax(80px,1fr)); } .smb-head .smb-col:nth-child(n+4), .smb-row > :nth-child(n+4) { display:none; } }
+    @media (max-width:480px) { #statsModalBody { grid-template-columns:1fr; } .stats-income-card, .stats-monthly-card { grid-column:1; } .smb-head, .smb-row { grid-template-columns:1fr 1fr; } .smb-head .smb-col:nth-child(n+3), .smb-row > :nth-child(n+3) { display:none; } }
 
     .legend-list { display: flex; flex-direction: column; gap: 8px; }
     .legend-item { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; padding: 8px 12px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); }
@@ -701,8 +760,13 @@
     
     <aside class="sidebar">
       
-      <div class="sidebar-card">
-        <h3 id="statTitle"><i class="fas fa-chart-pie"></i> Статистика месяца</h3>
+      <div class="sidebar-card" id="statsSideCard" style="cursor:pointer;">
+        <h3 id="statTitle">
+          <span><i class="fas fa-chart-pie"></i> Статистика месяца</span>
+          <button id="openStatsModalBtn" class="btn btn-secondary" style="font-size:0.78rem;padding:4px 10px;min-height:28px;border-radius:8px;" type="button">
+            <i class="fas fa-chart-bar"></i> <span id="openStatsBtnLabel">Детали</span>
+          </button>
+        </h3>
         <div class="stats-subgrid">
           <div class="stat-mini-box" style="border-top: 3px solid #2563eb;">
             <div id="excursions-count" class="stat-num" style="color: #2563eb;">0</div>
@@ -884,6 +948,26 @@
             <label id="lblGroup">Количество туристов</label>
             <input type="number" id="bookingGroup" class="form-control" placeholder="15" min="0">
           </div>
+          <div class="form-group">
+            <label id="lblPayment">Статус оплаты</label>
+            <select id="bookingPaymentStatus" class="form-control payment-select">
+              <option value="unpaid">Не оплачено</option>
+              <option value="partial">Частичная оплата</option>
+              <option value="paid">Оплачено</option>
+            </select>
+          </div>
+          <div id="bookingPartialWrap" class="payment-split-wrap" hidden>
+            <div class="payment-split-grid">
+              <div class="form-group">
+                <label id="lblPaidAmount">Уже оплачено</label>
+                <input type="number" id="bookingPaidAmount" class="form-control" placeholder="0" min="0" step="0.01">
+              </div>
+              <div class="form-group">
+                <label id="lblUnpaidAmount">Осталось оплатить</label>
+                <input type="text" id="bookingUnpaidPreview" class="form-control payment-split-readonly" value="0" readonly>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div id="bookingAvailabilityHint" class="form-hint-panel is-muted" hidden></div>
@@ -958,6 +1042,26 @@
         </div>
 
         <div class="form-group">
+          <label id="lblRoutePayment">Статус оплаты</label>
+          <select id="routePaymentStatus" class="form-control payment-select">
+            <option value="unpaid">Не оплачено</option>
+            <option value="partial">Частичная оплата</option>
+            <option value="paid">Оплачено</option>
+          </select>
+        </div>
+        <div id="routePartialWrap" class="payment-split-wrap" hidden>
+          <div class="payment-split-grid">
+            <div class="form-group">
+              <label id="lblRoutePaidAmount">Уже оплачено</label>
+              <input type="number" id="routePaidAmount" class="form-control" placeholder="0" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label id="lblRouteUnpaidAmount">Осталось оплатить</label>
+              <input type="text" id="routeUnpaidPreview" class="form-control payment-split-readonly" value="0" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
           <label id="lblRouteNotes">Общие заметки</label>
           <textarea id="routeNotes" class="form-control" rows="2" placeholder="Группа из 15 человек, без Шахрисабза..."></textarea>
         </div>
@@ -982,6 +1086,25 @@
         <button id="closeDetailModal2" class="btn btn-secondary">Закрыть</button>
         <button id="detailDuplicateBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Дублировать запись</button>
         <button id="detailEditBtn" class="btn btn-secondary" style="background: var(--primary); color:white; border-color:var(--primary);"><i class="fas fa-edit"></i> Редактировать</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Detail Modal -->
+  <div id="statsModal" class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="statsModalTitle">Детальная статистика</h3>
+        <button id="closeStatsModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="stats-modal-year-nav">
+        <button id="statsPrevYearBtn" type="button"><i class="fas fa-chevron-left"></i></button>
+        <span id="statsModalYearLabel"></span>
+        <button id="statsNextYearBtn" type="button"><i class="fas fa-chevron-right"></i></button>
+      </div>
+      <div id="statsModalBody"></div>
+      <div style="display:flex;justify-content:flex-end;margin-top:20px;">
+        <button id="statsModalClose2" class="btn btn-secondary">Закрыть</button>
       </div>
     </div>
   </div>
@@ -1073,6 +1196,10 @@ const TRANSLATIONS = {
     invalidTimeRange: 'Время окончания не может быть раньше времени начала',
     pastDateBlocked: 'Нельзя создавать записи в прошедшие дни',
     pastEditBlocked: 'Записи в прошедших днях нельзя изменять',
+    pastPaymentOnlyEdit: 'Для прошедших туров можно менять только статус оплаты',
+    paymentStatusSaved: 'Статус оплаты обновлён',
+    paymentEditTitle: 'Изменить статус оплаты',
+    detailEditPayment: 'Изменить оплату',
     dayOccupied: 'На эту дату уже есть запись',
     timeOccupied: 'Это время уже занято другой записью',
     finishedLabel: 'Завершено',
@@ -1107,7 +1234,28 @@ const TRANSLATIONS = {
       price: 'Стоимость',
       notes: 'Заметки',
       noValue: '—'
-    }
+    },
+    paymentLabel: 'Статус оплаты',
+    paidAmountLabel: 'Уже оплачено',
+    unpaidAmountLabel: 'Осталось оплатить',
+    paymentStatus: { unpaid: 'Не оплачено', partial: 'Частичная оплата', paid: 'Оплачено' },
+    statsModalTitle: 'Детальная статистика',
+    statsYear: 'Год',
+    statsCompleted: 'Завершено',
+    statsPlanned: 'Запланировано',
+    statsSectionExcursions: 'Экскурсии',
+    statsSectionBusy: 'Занятые дни',
+    statsSectionHoliday: 'Выходные дни',
+    statsSectionTourists: 'Туристы',
+    statsSectionIncome: 'Доход за год',
+    incomePaid: 'Оплачено',
+    incomePartial: 'Частичная оплата',
+    incomeUnpaid: 'Не оплачено',
+    incomePending: 'Ожидает оплаты',
+    openStatsBtn: 'Детали',
+    statsMonthlyBreakdown: 'Помесячная разбивка',
+    statsMonthLabel: 'Месяц',
+    statsCompactCompletedPlanned: 'Завершено / запланировано'
   },
   en: {
     title: 'Yolnama',
@@ -1179,6 +1327,10 @@ const TRANSLATIONS = {
     invalidTimeRange: 'End time cannot be earlier than start time',
     pastDateBlocked: 'You cannot create records in past days',
     pastEditBlocked: 'Past records cannot be edited',
+    pastPaymentOnlyEdit: 'For past tours, only the payment status can be changed',
+    paymentStatusSaved: 'Payment status updated',
+    paymentEditTitle: 'Update payment status',
+    detailEditPayment: 'Edit payment',
     dayOccupied: 'There is already a record on this date',
     timeOccupied: 'This time is already occupied by another record',
     finishedLabel: 'Finished',
@@ -1213,7 +1365,28 @@ const TRANSLATIONS = {
       price: 'Price',
       notes: 'Notes',
       noValue: '—'
-    }
+    },
+    paymentLabel: 'Payment status',
+    paidAmountLabel: 'Already paid',
+    unpaidAmountLabel: 'Remaining unpaid',
+    paymentStatus: { unpaid: 'Unpaid', partial: 'Partial payment', paid: 'Paid' },
+    statsModalTitle: 'Detailed statistics',
+    statsYear: 'Year',
+    statsCompleted: 'Completed',
+    statsPlanned: 'Planned',
+    statsSectionExcursions: 'Excursions',
+    statsSectionBusy: 'Busy days',
+    statsSectionHoliday: 'Holidays',
+    statsSectionTourists: 'Tourists',
+    statsSectionIncome: 'Yearly income',
+    incomePaid: 'Paid',
+    incomePartial: 'Partial',
+    incomeUnpaid: 'Unpaid',
+    incomePending: 'Pending',
+    openStatsBtn: 'Details',
+    statsMonthlyBreakdown: 'Monthly breakdown',
+    statsMonthLabel: 'Month',
+    statsCompactCompletedPlanned: 'Completed / planned'
   },
   uz: {
     title: 'Yolnama',
@@ -1285,6 +1458,10 @@ const TRANSLATIONS = {
     invalidTimeRange: 'Tugash vaqti boshlanish vaqtidan oldin bo‘lishi mumkin emas',
     pastDateBlocked: 'Oʻtgan kunlarga yozuv yaratib boʻlmaydi',
     pastEditBlocked: 'Oʻtgan kunlardagi yozuvlarni tahrirlab boʻlmaydi',
+    pastPaymentOnlyEdit: 'Oʻtgan turlarda faqat toʻlov holatini oʻzgartirish mumkin',
+    paymentStatusSaved: 'Toʻlov holati yangilandi',
+    paymentEditTitle: 'Toʻlov holatini oʻzgartirish',
+    detailEditPayment: 'Toʻlovni tahrirlash',
     dayOccupied: 'Bu sanada allaqachon yozuv bor',
     timeOccupied: 'Bu vaqt boshqa yozuv bilan band',
     finishedLabel: 'Tugallangan',
@@ -1319,8 +1496,36 @@ const TRANSLATIONS = {
       price: 'Narx',
       notes: 'Izohlar',
       noValue: '—'
-    }
+    },
+    paymentLabel: "To'lov holati",
+    paidAmountLabel: "To'langan summa",
+    unpaidAmountLabel: "Qolgan summa",
+    paymentStatus: { unpaid: "To'lanmagan", partial: "Qisman to'langan", paid: "To'langan" },
+    statsModalTitle: 'Batafsil statistika',
+    statsYear: 'Yil',
+    statsCompleted: 'Bajarilgan',
+    statsPlanned: 'Rejalashtirilgan',
+    statsSectionExcursions: 'Ekskursiyalar',
+    statsSectionBusy: 'Band kunlar',
+    statsSectionHoliday: 'Dam olish kunlar',
+    statsSectionTourists: 'Turistlar',
+    statsSectionIncome: 'Yillik daromad',
+    incomePaid: "To'langan",
+    incomePartial: "Qisman",
+    incomeUnpaid: "To'lanmagan",
+    incomePending: 'Kutilmoqda',
+    openStatsBtn: 'Batafsil',
+    statsMonthlyBreakdown: "Oylar bo'yicha taqsimot",
+    statsMonthLabel: 'Oy',
+    statsCompactCompletedPlanned: 'Bajarilgan / rejalashtirilgan'
   }
+};
+
+const PAYMENT_STATUS_ORDER = ['unpaid', 'partial', 'paid'];
+const PAYMENT_STATUS_CONFIG = {
+  unpaid:  { color: '#dc2626', bg: '#fee2e2', icon: 'fa-circle-xmark' },
+  partial: { color: '#d97706', bg: '#fef3c7', icon: 'fa-circle-half-stroke' },
+  paid:    { color: '#16a34a', bg: '#dcfce7', icon: 'fa-circle-check' }
 };
 
 const STATUS_CONFIG = {
@@ -1346,7 +1551,8 @@ const state = {
   filters: { search: '', status: 'all' },
   bookings: [],
   formDefaults: { ...DEFAULT_FORM_DEFAULTS },
-  ui: { filtersCollapsedMobile: true }
+  ui: { filtersCollapsedMobile: true },
+  statsYear: new Date().getFullYear()
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1380,6 +1586,15 @@ function initDOMEvents() {
   safeClick('closeDetailModal', closeDetailModal);
   safeClick('closeDetailModal2', closeDetailModal);
   safeClick('detailDuplicateBtn', onDuplicateBookingClick);
+  safeClick('openStatsModalBtn', () => openStatsModal(state.statsYear));
+  safeClick('statsSideCard', (e) => {
+    if (e.target.closest('button')) return;
+    openStatsModal(state.statsYear);
+  });
+  safeClick('closeStatsModal', closeStatsModal);
+  safeClick('statsModalClose2', closeStatsModal);
+  safeClick('statsPrevYearBtn', () => { state.statsYear -= 1; renderStatsModal(); });
+  safeClick('statsNextYearBtn', () => { state.statsYear += 1; renderStatsModal(); });
 
   const searchInput = document.getElementById('bookingSearch');
   if (searchInput) {
@@ -1419,6 +1634,22 @@ function initDOMEvents() {
   document.querySelectorAll('input[name="status"]').forEach((radio) => {
     radio.addEventListener('change', (e) => toggleConditionalFields(e.target.value));
   });
+
+  const paymentSel = document.getElementById('bookingPaymentStatus');
+  if (paymentSel) paymentSel.addEventListener('change', updatePaymentStatusSelect);
+  const bookingPriceInput = document.getElementById('bookingPrice');
+  if (bookingPriceInput) bookingPriceInput.addEventListener('input', updatePaymentStatusSelect);
+  const bookingPaidInput = document.getElementById('bookingPaidAmount');
+  if (bookingPaidInput) bookingPaidInput.addEventListener('input', updatePaymentStatusSelect);
+  const routePaymentSel = document.getElementById('routePaymentStatus');
+  if (routePaymentSel) routePaymentSel.addEventListener('change', updatePaymentStatusSelect);
+  const routePriceInput = document.getElementById('routePrice');
+  if (routePriceInput) routePriceInput.addEventListener('input', () => {
+    syncRouteDefaultPriceToRows();
+    updatePaymentStatusSelect();
+  });
+  const routePaidInput = document.getElementById('routePaidAmount');
+  if (routePaidInput) routePaidInput.addEventListener('input', updatePaymentStatusSelect);
 
   document.querySelectorAll('.modal-backdrop').forEach((backdrop) => {
     backdrop.addEventListener('click', (e) => {
@@ -1498,20 +1729,26 @@ function persistBookings() {
 
 function normalizeBookingsArray(bookings) {
   return (Array.isArray(bookings) ? bookings : [])
-    .map((item) => ({
-      id: String(item?.id || generateId()),
-      date: String(item?.date || ''),
-      status: STATUS_ORDER.includes(item?.status) ? item.status : 'excursion',
-      city: String(item?.city || '').trim(),
-      client_name: String(item?.client_name || '').trim(),
-      tour_name: String(item?.tour_name || '').trim(),
-      start_time: String(item?.start_time || '').trim(),
-      end_time: String(item?.end_time || '').trim(),
-      price: Number(item?.price || 0),
-      currency: String(item?.currency || 'UZS').trim() || 'UZS',
-      group_size: Number(item?.group_size || 0),
-      notes: String(item?.notes || '').trim()
-    }))
+    .map((item) => {
+      const price = Number(item?.price || 0);
+      const paymentStatus = PAYMENT_STATUS_ORDER.includes(item?.payment_status) ? item.payment_status : 'unpaid';
+      return {
+        id: String(item?.id || generateId()),
+        date: String(item?.date || ''),
+        status: STATUS_ORDER.includes(item?.status) ? item.status : 'excursion',
+        city: String(item?.city || '').trim(),
+        client_name: String(item?.client_name || '').trim(),
+        tour_name: String(item?.tour_name || '').trim(),
+        start_time: String(item?.start_time || '').trim(),
+        end_time: String(item?.end_time || '').trim(),
+        price,
+        currency: String(item?.currency || 'UZS').trim() || 'UZS',
+        group_size: Number(item?.group_size || 0),
+        notes: String(item?.notes || '').trim(),
+        payment_status: paymentStatus,
+        paid_amount: normalizePaidAmount(price, paymentStatus, item?.paid_amount)
+      };
+    })
     .sort((a, b) => `${a.date}-${a.id}`.localeCompare(`${b.date}-${b.id}`));
 }
 
@@ -1602,6 +1839,7 @@ function updateInterfaceLanguage() {
   updateMobileToolbarState();
   updateBookingAvailabilityHint();
   updateRouteAvailabilityHint();
+  updatePaymentStatusLabels();
 }
 
 function renderStatusFilterOptions() {
@@ -1830,6 +2068,46 @@ function getBookingFormCandidate() {
   };
 }
 
+function isPastPaymentOnlyMode() {
+  return document.getElementById('bookingModal')?.dataset?.pastPaymentOnly === '1';
+}
+
+function setBookingFormAccessMode({ pastPaymentOnly = false, showDelete = false } = {}) {
+  const modal = document.getElementById('bookingModal');
+  if (modal) modal.dataset.pastPaymentOnly = pastPaymentOnly ? '1' : '0';
+
+  const fieldIds = [
+    'bookingDate',
+    'bookingCity',
+    'bookingClient',
+    'bookingTour',
+    'bookingStart',
+    'bookingEnd',
+    'bookingPrice',
+    'bookingCurrency',
+    'bookingGroup',
+    'bookingNotes'
+  ];
+
+  fieldIds.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.disabled = pastPaymentOnly;
+  });
+
+  document.querySelectorAll('input[name="status"]').forEach((input) => {
+    input.disabled = pastPaymentOnly;
+  });
+
+  const paymentSelect = document.getElementById('bookingPaymentStatus');
+  if (paymentSelect) paymentSelect.disabled = false;
+
+  const deleteBtn = document.getElementById('deleteBookingBtn');
+  if (deleteBtn) {
+    deleteBtn.disabled = pastPaymentOnly;
+    deleteBtn.style.display = showDelete ? 'inline-flex' : 'none';
+  }
+}
+
 function updateBookingAvailabilityHint() {
   const saveBtn = document.getElementById('saveBookingBtn');
   const bookingModal = document.getElementById('bookingModal');
@@ -1847,6 +2125,12 @@ function updateBookingAvailabilityHint() {
   if (!bookingModal.classList.contains('active')) {
     saveBtn.disabled = false;
     setHintPanelState('bookingAvailabilityHint', { type: 'muted', message: '' });
+    return;
+  }
+
+  if (isPastPaymentOnlyMode()) {
+    saveBtn.disabled = false;
+    setHintPanelState('bookingAvailabilityHint', { type: 'info', message: t.pastPaymentOnlyEdit });
     return;
   }
 
@@ -2038,6 +2322,73 @@ function getVisibleBookings() {
   return items.sort((a, b) => `${a.date}-${a.start_time}-${a.id}`.localeCompare(`${b.date}-${b.start_time}-${b.id}`));
 }
 
+function toMoneyNumber(value) {
+  const num = Number(value || 0);
+  return Number.isFinite(num) && num > 0 ? num : 0;
+}
+
+function normalizePaidAmount(price, paymentStatus, paidAmount) {
+  const total = toMoneyNumber(price);
+  if (paymentStatus === 'paid') return total;
+  if (paymentStatus === 'unpaid') return 0;
+  return Math.min(total, toMoneyNumber(paidAmount));
+}
+
+function getPaymentSplit(booking) {
+  const total = toMoneyNumber(booking?.price);
+  const status = booking?.payment_status || 'unpaid';
+  const paid = normalizePaidAmount(total, status, booking?.paid_amount);
+  return { paid, unpaid: Math.max(0, total - paid) };
+}
+
+function addAmountToMap(map, currency, amount) {
+  const value = toMoneyNumber(amount);
+  if (!value) return;
+  map[currency] = (map[currency] || 0) + value;
+}
+
+function accumulateIncomeByPayment(booking, paidMap, unpaidMap) {
+  if (!booking || !booking.price) return;
+  const currency = booking.currency || 'UZS';
+  const split = getPaymentSplit(booking);
+  addAmountToMap(paidMap, currency, split.paid);
+  addAmountToMap(unpaidMap, currency, split.unpaid);
+}
+
+function syncPaymentSplitFields(prefix) {
+  const paymentSelect = document.getElementById(prefix + 'PaymentStatus');
+  const priceInput = document.getElementById(prefix + 'Price');
+  const paidInput = document.getElementById(prefix + 'PaidAmount');
+  const unpaidInput = document.getElementById(prefix + 'UnpaidPreview');
+  const wrap = document.getElementById(prefix + 'PartialWrap');
+  if (!paymentSelect || !priceInput || !paidInput || !unpaidInput || !wrap) return;
+
+  const status = paymentSelect.value || 'unpaid';
+  const total = toMoneyNumber(priceInput.value);
+  const normalizedPaid = normalizePaidAmount(total, status, paidInput.value);
+  const unpaid = Math.max(0, total - normalizedPaid);
+
+  if (status === 'partial') {
+    wrap.hidden = false;
+    paidInput.value = String(normalizedPaid);
+  } else {
+    wrap.hidden = true;
+    paidInput.value = status === 'paid' ? String(total) : '0';
+  }
+
+  unpaidInput.value = String(unpaid);
+}
+
+function applyPaymentSelectStyle(selectEl) {
+  if (!selectEl) return;
+  const val = selectEl.value || 'unpaid';
+  const conf = PAYMENT_STATUS_CONFIG[val] || PAYMENT_STATUS_CONFIG.unpaid;
+  selectEl.style.borderColor = conf.color;
+  selectEl.style.background = conf.bg;
+  selectEl.style.color = conf.color;
+  selectEl.style.fontWeight = '700';
+}
+
 function calculateAndRenderStats() {
   const visible = getVisibleBookings();
   const excursions = visible.filter((booking) => booking.status === 'excursion');
@@ -2050,24 +2401,31 @@ function calculateAndRenderStats() {
   setTxt('holiday-count', holiday);
   setTxt('tourists-count', tourists);
 
-  const incomeMap = {};
-  excursions.forEach((booking) => {
-    if (!booking.price) return;
-    const currency = booking.currency || 'UZS';
-    incomeMap[currency] = (incomeMap[currency] || 0) + Number(booking.price || 0);
-  });
+  const t = getT();
+  const paidMap = {}, unpaidMap = {};
+  excursions.forEach((booking) => accumulateIncomeByPayment(booking, paidMap, unpaidMap));
 
   const incomeNode = document.getElementById('total-income');
   if (!incomeNode) return;
-  const entries = Object.entries(incomeMap);
-  if (!entries.length) {
+
+  const renderIncomeGroup = (map, labelKey, colorClass) => {
+    const entries = Object.entries(map);
+    if (!entries.length) return '';
+    return '<div class="income-group">' +
+      '<div class="income-group-label ' + colorClass + '">' + escapeHtml(t[labelKey]) + '</div>' +
+      entries.map(([cur, val]) => '<div class="income-amount ' + colorClass + '">' + formatCurrency(val, cur) + '</div>').join('') +
+      '</div>';
+  };
+
+  const allEmpty = !Object.keys(paidMap).length && !Object.keys(unpaidMap).length;
+  if (allEmpty) {
     incomeNode.innerHTML = '<div class="income-amount">0 UZS</div>';
     return;
   }
 
-  incomeNode.innerHTML = entries
-    .map(([currency, value]) => `<div class="income-amount">${formatCurrency(value, currency)}</div>`)
-    .join('');
+  incomeNode.innerHTML =
+    renderIncomeGroup(paidMap,   'incomePaid',   'income-paid') +
+    renderIncomeGroup(unpaidMap, 'incomeUnpaid', 'income-unpaid');
 }
 
 function renderResultsSummary() {
@@ -2281,7 +2639,10 @@ function openBookingModal(booking = null, defaultDate = null, mode = 'create') {
   const t = getT();
   const isEditing = Boolean(booking && booking.id && mode === 'edit');
 
-  if (isEditing && isPastDate(booking?.date || '')) {
+  const isPastBooking = isEditing && isPastDate(booking?.date || '');
+  const isPastPaymentOnly = isPastBooking && booking?.status === 'excursion';
+
+  if (isPastBooking && !isPastPaymentOnly) {
     showToast(t.pastEditBlocked, 'error');
     return;
   }
@@ -2295,7 +2656,9 @@ function openBookingModal(booking = null, defaultDate = null, mode = 'create') {
     return;
   }
 
-  const title = isEditing ? t.modalEdit : mode === 'duplicate' ? t.modalDuplicate : t.modalCreate;
+  const title = isPastPaymentOnly
+    ? (t.paymentEditTitle || t.modalEdit)
+    : (isEditing ? t.modalEdit : mode === 'duplicate' ? t.modalDuplicate : t.modalCreate);
 
   setTxt('modalTitle', title);
   setVal('bookingId', isEditing ? booking.id : '');
@@ -2315,12 +2678,21 @@ function openBookingModal(booking = null, defaultDate = null, mode = 'create') {
   if (radio) radio.checked = true;
   toggleConditionalFields(status);
 
-  const deleteBtn = document.getElementById('deleteBookingBtn');
-  if (deleteBtn) deleteBtn.style.display = isEditing ? 'inline-flex' : 'none';
+  const paymentStatus = booking?.payment_status || 'unpaid';
+  const paymentSelectEl = document.getElementById('bookingPaymentStatus');
+  if (paymentSelectEl) paymentSelectEl.value = paymentStatus;
+  setVal('bookingPaidAmount', String(normalizePaidAmount(Number(booking?.price || 0), paymentStatus, booking?.paid_amount)));
+  updatePaymentStatusSelect();
+
+  setBookingFormAccessMode({ pastPaymentOnly: isPastPaymentOnly, showDelete: isEditing && !isPastPaymentOnly });
 
   modal.classList.add('active');
   updateBodyModalState();
   updateBookingAvailabilityHint();
+
+  if (isPastPaymentOnly) {
+    showToast(t.pastPaymentOnlyEdit, 'info');
+  }
 }
 
 function closeBookingModal() {
@@ -2328,6 +2700,7 @@ function closeBookingModal() {
   if (!modal) return;
   modal.classList.remove('active');
   updateBodyModalState();
+  setBookingFormAccessMode({ pastPaymentOnly: false, showDelete: false });
   setHintPanelState('bookingAvailabilityHint', { type: 'muted', message: '' });
 }
 
@@ -2348,7 +2721,26 @@ function onBookingFormSubmit(event) {
   const originalBooking = id ? state.bookings.find((booking) => booking.id === id) : null;
 
   if (originalBooking && isPastDate(originalBooking.date)) {
-    showToast(t.pastEditBlocked, 'error');
+    if (originalBooking.status !== 'excursion') {
+      showToast(t.pastEditBlocked, 'error');
+      return;
+    }
+
+    const paymentStatus = getVal('bookingPaymentStatus') || originalBooking.payment_status || 'unpaid';
+    const existingIndex = state.bookings.findIndex((booking) => booking.id === originalBooking.id);
+    if (existingIndex >= 0) {
+      state.bookings[existingIndex] = {
+        ...originalBooking,
+        payment_status: paymentStatus,
+        paid_amount: normalizePaidAmount(Number(originalBooking.price || 0), paymentStatus, getVal('bookingPaidAmount'))
+      };
+      persistBookings();
+      persistSettings();
+      closeBookingModal();
+      closeDetailModal();
+      render();
+      showToast(t.paymentStatusSaved || t.bookingSaved, 'success');
+    }
     return;
   }
 
@@ -2357,6 +2749,8 @@ function onBookingFormSubmit(event) {
     return;
   }
 
+  const bookingPrice = status === 'excursion' ? Number(getVal('bookingPrice') || 0) : 0;
+  const bookingPaymentStatus = status === 'excursion' ? (getVal('bookingPaymentStatus') || 'unpaid') : 'unpaid';
   const data = {
     id: id || generateId(),
     date: getVal('bookingDate'),
@@ -2366,10 +2760,12 @@ function onBookingFormSubmit(event) {
     tour_name: status === 'excursion' ? getVal('bookingTour').trim() : '',
     start_time: status === 'excursion' ? startTime : '',
     end_time: status === 'excursion' ? endTime : '',
-    price: status === 'excursion' ? Number(getVal('bookingPrice') || 0) : 0,
+    price: bookingPrice,
     currency: status === 'excursion' ? (getVal('bookingCurrency') || 'UZS') : 'UZS',
     group_size: status === 'excursion' ? Number(getVal('bookingGroup') || 0) : 0,
-    notes: getVal('bookingNotes').trim()
+    notes: getVal('bookingNotes').trim(),
+    payment_status: bookingPaymentStatus,
+    paid_amount: normalizePaidAmount(bookingPrice, bookingPaymentStatus, getVal('bookingPaidAmount'))
   };
 
   const conflictMessage = getBookingConflictMessage(data, id);
@@ -2423,9 +2819,13 @@ function openRouteModal() {
   setVal('routePrice', '');
   setVal('routeCurrency', state.formDefaults.currency || 'UZS');
   setVal('routeNotes', '');
+  setVal('routePaymentStatus', 'unpaid');
+  setVal('routePaidAmount', '0');
+  setVal('routeUnpaidPreview', '0');
   setHtml('routeDaysContainer', '');
   modal.classList.add('active');
   updateBodyModalState();
+  updatePaymentStatusSelect();
   updateRouteAvailabilityHint();
 }
 
@@ -2504,7 +2904,7 @@ function generateRouteDaysRows() {
           <div class="route-day-sub-grid">
             <input type="time" class="form-control route-day-start" value="${escapeHtml(existing.start || defaultStart)}">
             <input type="time" class="form-control route-day-end" value="${escapeHtml(existing.end || defaultEnd)}">
-            <input type="number" class="form-control route-day-price" placeholder="${escapeHtml(t.routeDayPricePlaceholder)}" min="0" value="${escapeHtml(existing.price || defaultPrice || '')}">
+            <input type="number" class="form-control route-day-price" placeholder="${escapeHtml(t.routeDayPricePlaceholder)}" min="0" value="${escapeHtml(defaultPrice !== '' ? defaultPrice : (existing.price || ''))}">
           </div>
         </div>
         <button type="button" class="route-day-remove" aria-label="Удалить день"><i class="fas fa-trash"></i></button>
@@ -2514,8 +2914,45 @@ function generateRouteDaysRows() {
   }
   container.innerHTML = parts.join('');
   bindRouteDayRowActions();
+  syncRouteDefaultPriceToRows();
   updateRouteAvailabilityHint();
   showToast(t.routeGenerated, 'success');
+}
+
+function syncRouteDefaultPriceToRows() {
+  const defaultPrice = getVal('routePrice');
+  if (defaultPrice === '') return;
+  document.querySelectorAll('.route-day-price').forEach((node) => {
+    node.value = defaultPrice;
+  });
+}
+
+function buildMonthlyStatsRows(bookings, year, today, t) {
+  return t.months.map((monthName, monthIndex) => {
+    const prefix = `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
+    const items = bookings.filter((b) => (b.date || '').startsWith(prefix));
+    const excursions = items.filter((b) => b.status === 'excursion');
+    const busy = items.filter((b) => b.status === 'busy');
+    const holiday = items.filter((b) => b.status === 'holiday');
+    const excCompleted = excursions.filter((b) => b.date < today);
+    const excPlanned = excursions.filter((b) => b.date >= today);
+    const busyCompleted = busy.filter((b) => b.date < today);
+    const busyPlanned = busy.filter((b) => b.date >= today);
+    const holCompleted = holiday.filter((b) => b.date < today);
+    const holPlanned = holiday.filter((b) => b.date >= today);
+    const touristsCompleted = excCompleted.reduce((sum, b) => sum + (Number(b.group_size) || 0), 0);
+    const touristsPlanned = excPlanned.reduce((sum, b) => sum + (Number(b.group_size) || 0), 0);
+    const hasData = items.length > 0;
+    return `
+      <div class="smb-row${hasData ? '' : ' is-empty'}">
+        <div class="smb-month">${escapeHtml(monthName)}</div>
+        <div class="smb-cell"><strong>${excCompleted.length}</strong><span>/ ${excPlanned.length}</span></div>
+        <div class="smb-cell"><strong>${busyCompleted.length}</strong><span>/ ${busyPlanned.length}</span></div>
+        <div class="smb-cell"><strong>${holCompleted.length}</strong><span>/ ${holPlanned.length}</span></div>
+        <div class="smb-cell"><strong>${touristsCompleted}</strong><span>/ ${touristsPlanned}</span></div>
+      </div>
+    `;
+  }).join('');
 }
 
 function renderRouteDayPlaceholders() {
@@ -2588,21 +3025,28 @@ function collectRouteFormData(rows) {
   const price = Number(getVal('routePrice') || 0);
   const currency = getVal('routeCurrency') || 'UZS';
   const notes = getVal('routeNotes').trim();
+  const routePaymentStatus = getVal('routePaymentStatus') || 'unpaid';
+  const routePaidAmount = Number(getVal('routePaidAmount') || 0);
 
-  const bookings = rows.map((row) => ({
-    id: generateId(),
-    date: row.dataset.date,
-    status: 'excursion',
-    city: row.querySelector('.route-day-city')?.value.trim() || '',
-    client_name: client,
-    tour_name: row.querySelector('.route-day-tour')?.value.trim() || '',
-    start_time: row.querySelector('.route-day-start')?.value || state.formDefaults.start_time || '09:00',
-    end_time: row.querySelector('.route-day-end')?.value || state.formDefaults.end_time || '18:00',
-    price: Number(row.querySelector('.route-day-price')?.value || price || 0),
-    currency,
-    group_size: groupSize,
-    notes
-  }));
+  const bookings = rows.map((row) => {
+    const rowPrice = Number(row.querySelector('.route-day-price')?.value || price || 0);
+    return {
+      id: generateId(),
+      date: row.dataset.date,
+      status: 'excursion',
+      city: row.querySelector('.route-day-city')?.value.trim() || '',
+      client_name: client,
+      tour_name: row.querySelector('.route-day-tour')?.value.trim() || '',
+      start_time: row.querySelector('.route-day-start')?.value || state.formDefaults.start_time || '09:00',
+      end_time: row.querySelector('.route-day-end')?.value || state.formDefaults.end_time || '18:00',
+      price: rowPrice,
+      currency,
+      group_size: groupSize,
+      notes,
+      payment_status: routePaymentStatus,
+      paid_amount: normalizePaidAmount(rowPrice, routePaymentStatus, routePaidAmount)
+    };
+  });
 
   return {
     bookings,
@@ -2660,6 +3104,9 @@ function openDetailModal(booking) {
         <div class="detail-row"><span>${escapeHtml(t.details.time)}</span><strong>${escapeHtml(timeText || noValue)}</strong></div>
         <div class="detail-row"><span>${escapeHtml(t.details.group)}</span><strong>${escapeHtml(String(booking.group_size || 0))}</strong></div>
         <div class="detail-row"><span>${escapeHtml(t.details.price)}</span><strong>${escapeHtml(formatCurrency(booking.price || 0, booking.currency || 'UZS'))}</strong></div>
+        <div class="detail-row"><span>${escapeHtml(t.paymentLabel)}</span><strong><span class="payment-badge payment-badge-${escapeHtml(booking.payment_status||'unpaid')}">${escapeHtml((t.paymentStatus||{})[booking.payment_status||'unpaid']||'')}</span></strong></div>
+        <div class="detail-row"><span>${escapeHtml(t.paidAmountLabel || '')}</span><strong>${escapeHtml(formatCurrency(getPaymentSplit(booking).paid, booking.currency || 'UZS'))}</strong></div>
+        <div class="detail-row"><span>${escapeHtml(t.unpaidAmountLabel || '')}</span><strong>${escapeHtml(formatCurrency(getPaymentSplit(booking).unpaid, booking.currency || 'UZS'))}</strong></div>
       ` : ''}
       <div class="detail-notes">
         <span>${escapeHtml(t.details.notes)}</span>
@@ -2670,10 +3117,13 @@ function openDetailModal(booking) {
 
   const editBtn = document.getElementById('detailEditBtn');
   if (editBtn) {
-    editBtn.disabled = isPastDate(booking.date || '');
-    editBtn.title = isPastDate(booking.date || '') ? t.pastEditBlocked : '';
+    const pastBooking = isPastDate(booking.date || '');
+    const canEditPastPayment = pastBooking && booking.status === 'excursion';
+    editBtn.disabled = pastBooking && !canEditPastPayment;
+    editBtn.title = canEditPastPayment ? (t.pastPaymentOnlyEdit || '') : (pastBooking ? t.pastEditBlocked : '');
+    editBtn.innerHTML = `<i class="fas fa-pen"></i> ${escapeHtml(canEditPastPayment ? (t.detailEditPayment || t.detailEdit) : t.detailEdit)}`;
     editBtn.onclick = () => {
-      if (isPastDate(booking.date || '')) {
+      if (pastBooking && !canEditPastPayment) {
         showToast(t.pastEditBlocked, 'error');
         return;
       }
@@ -2699,6 +3149,145 @@ function onDuplicateBookingClick() {
   const modal = document.getElementById('detailModal');
   if (!modal || !modal.classList.contains('active')) return;
 }
+
+// ─── Payment helpers ──────────────────────────────────────
+function updatePaymentStatusLabels() {
+  const t = getT();
+  const sel = document.getElementById('bookingPaymentStatus');
+  if (sel && t.paymentStatus) {
+    Array.from(sel.options).forEach((opt) => {
+      if (t.paymentStatus[opt.value]) opt.textContent = t.paymentStatus[opt.value];
+    });
+  }
+  const rSel = document.getElementById('routePaymentStatus');
+  if (rSel && t.paymentStatus) {
+    Array.from(rSel.options).forEach((opt) => {
+      if (t.paymentStatus[opt.value]) opt.textContent = t.paymentStatus[opt.value];
+    });
+  }
+  const lbl = document.getElementById('lblPayment');
+  if (lbl && t.paymentLabel) lbl.textContent = t.paymentLabel;
+  const lbl2 = document.getElementById('lblRoutePayment');
+  if (lbl2 && t.paymentLabel) lbl2.textContent = t.paymentLabel;
+  const paidLbl = document.getElementById('lblPaidAmount');
+  if (paidLbl && t.paidAmountLabel) paidLbl.textContent = t.paidAmountLabel;
+  const unpaidLbl = document.getElementById('lblUnpaidAmount');
+  if (unpaidLbl && t.unpaidAmountLabel) unpaidLbl.textContent = t.unpaidAmountLabel;
+  const routePaidLbl = document.getElementById('lblRoutePaidAmount');
+  if (routePaidLbl && t.paidAmountLabel) routePaidLbl.textContent = t.paidAmountLabel;
+  const routeUnpaidLbl = document.getElementById('lblRouteUnpaidAmount');
+  if (routeUnpaidLbl && t.unpaidAmountLabel) routeUnpaidLbl.textContent = t.unpaidAmountLabel;
+  updatePaymentStatusSelect();
+  const btn = document.getElementById('openStatsBtnLabel');
+  if (btn && t.openStatsBtn) btn.textContent = t.openStatsBtn;
+  const smt = document.getElementById('statsModalTitle');
+  if (smt && t.statsModalTitle) smt.textContent = t.statsModalTitle;
+}
+
+function updatePaymentStatusSelect() {
+  applyPaymentSelectStyle(document.getElementById('bookingPaymentStatus'));
+  applyPaymentSelectStyle(document.getElementById('routePaymentStatus'));
+  syncPaymentSplitFields('booking');
+  syncPaymentSplitFields('route');
+}
+
+// ─── Stats Modal ─────────────────────────────────────────────
+function getYearBookings(year) {
+  return state.bookings.filter((b) => b.date.startsWith(String(year)));
+}
+
+function openStatsModal(year) {
+  state.statsYear = year || state.currentYear;
+  const modal = document.getElementById('statsModal');
+  if (!modal) return;
+  modal.classList.add('active');
+  updateBodyModalState();
+  renderStatsModal();
+}
+
+function closeStatsModal() {
+  const modal = document.getElementById('statsModal');
+  if (!modal) return;
+  modal.classList.remove('active');
+  updateBodyModalState();
+}
+
+function renderStatsModal() {
+  const t = getT();
+  const year = state.statsYear;
+  const today = getTodayDateString();
+
+  setTxt('statsModalYearLabel', t.statsYear + ': ' + year);
+
+  const all = getYearBookings(year);
+  const excursions      = all.filter((b) => b.status === 'excursion');
+  const excCompleted    = excursions.filter((b) => b.date < today);
+  const excPlanned      = excursions.filter((b) => b.date >= today);
+  const busyAll         = all.filter((b) => b.status === 'busy');
+  const busyCompleted   = busyAll.filter((b) => b.date < today);
+  const busyPlanned     = busyAll.filter((b) => b.date >= today);
+  const holidayAll      = all.filter((b) => b.status === 'holiday');
+  const holCompleted    = holidayAll.filter((b) => b.date < today);
+  const holPlanned      = holidayAll.filter((b) => b.date >= today);
+  const touristsComp    = excCompleted.reduce((s, b) => s + (Number(b.group_size)||0), 0);
+  const touristsPlan    = excPlanned.reduce((s, b) => s + (Number(b.group_size)||0), 0);
+
+  const paidMap = {}, unpaidMap = {};
+  excursions.forEach((b) => accumulateIncomeByPayment(b, paidMap, unpaidMap));
+
+  const card = (icon, cls, label, comp, plan) =>
+    '<div class="stats-detail-card">' +
+      '<div class="sdc-header ' + cls + '">' +
+        '<i class="fas ' + icon + '"></i><span>' + escapeHtml(label) + '</span>' +
+        '<strong>' + (comp + plan) + '</strong>' +
+      '</div>' +
+      '<div class="sdc-row"><span><i class="fas fa-check-circle"></i> ' + escapeHtml(t.statsCompleted) + '</span><strong>' + comp + '</strong></div>' +
+      '<div class="sdc-row sdc-planned"><span><i class="fas fa-clock"></i> ' + escapeHtml(t.statsPlanned) + '</span><strong>' + plan + '</strong></div>' +
+    '</div>';
+
+  const fmtGroup = (map, labelKey, cls) => {
+    const entries = Object.entries(map);
+    if (!entries.length) return '';
+    return '<div class="sdc-income-group">' +
+      '<div class="sdc-income-label ' + cls + '">' + escapeHtml(t[labelKey]) + '</div>' +
+      entries.map(([cur, val]) => '<div class="sdc-income-amount ' + cls + '">' + formatCurrency(val, cur) + '</div>').join('') +
+    '</div>';
+  };
+
+  const incomeHtml = (Object.keys(paidMap).length + Object.keys(unpaidMap).length)
+    ? fmtGroup(paidMap,'incomePaid','income-paid') + fmtGroup(unpaidMap,'incomeUnpaid','income-unpaid')
+    : '<div class="sdc-income-amount">0 UZS</div>';
+
+  const monthlyBreakdownHtml =
+    '<div class="stats-detail-card stats-monthly-card">' +
+      '<div class="sdc-header sdc-slate"><i class="fas fa-calendar-days"></i><span>' + escapeHtml(t.statsMonthlyBreakdown || '') + '</span></div>' +
+      '<div class="smb-note">' + escapeHtml(t.statsCompactCompletedPlanned || '') + '</div>' +
+      '<div class="smb-table">' +
+        '<div class="smb-head">' +
+          '<div class="smb-month">' + escapeHtml(t.statsMonthLabel || '') + '</div>' +
+          '<div class="smb-col">' + escapeHtml(t.statsSectionExcursions) + '</div>' +
+          '<div class="smb-col">' + escapeHtml(t.statsSectionBusy) + '</div>' +
+          '<div class="smb-col">' + escapeHtml(t.statsSectionHoliday) + '</div>' +
+          '<div class="smb-col">' + escapeHtml(t.statsSectionTourists) + '</div>' +
+        '</div>' +
+        buildMonthlyStatsRows(all, year, today, t) +
+      '</div>' +
+    '</div>';
+
+  const body = document.getElementById('statsModalBody');
+  if (!body) return;
+  body.innerHTML =
+    card('fa-map-marked-alt','sdc-blue',  t.statsSectionExcursions, excCompleted.length, excPlanned.length) +
+    card('fa-ban',           'sdc-red',   t.statsSectionBusy,       busyCompleted.length,busyPlanned.length) +
+    card('fa-umbrella-beach','sdc-green', t.statsSectionHoliday,    holCompleted.length, holPlanned.length) +
+    card('fa-users',         'sdc-purple',t.statsSectionTourists,   touristsComp,        touristsPlan) +
+    '<div class="stats-detail-card stats-income-card">' +
+      '<div class="sdc-header sdc-gold"><i class="fas fa-wallet"></i><span>' + escapeHtml(t.statsSectionIncome) + '</span></div>' +
+      '<div class="sdc-income-body">' + incomeHtml + '</div>' +
+    '</div>' +
+    monthlyBreakdownHtml;
+}
+// ─────────────────────────────────────────────────────────────
 
 function closeDetailModal() {
   const modal = document.getElementById('detailModal');
