@@ -2,44 +2,22 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yolnama — Операционная система для гидов и водителей</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Yolnama — платформа для гидов и водителей</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
   
   <style>
-    :root {
-      --bg: #f4f7fe;
-      --surface: #ffffff;
-      --surface2: #f8fafc;
-      --primary: #31c978;
-      --primary-hover: #21b86a;
-      --text: #1e293b;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* Скрытие секций */
-    .hidden { display: none !important; }
-
-    /* --- СТИЛИ LANDING PAGE --- */
+    /* Стили для интеграции Главной страницы (Landing Page) */
     .landing-page {
       background: linear-gradient(135deg, #f4f7fe 0%, #e6faf0 100%);
       min-height: 100vh;
       padding-bottom: 60px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: #1e293b;
     }
     .landing-nav {
       max-width: 1200px;
@@ -50,8 +28,8 @@
       align-items: center;
     }
     .l-brand { display: flex; align-items: center; gap: 12px; }
-    .l-brand i { font-size: 2rem; color: var(--primary); }
-    .l-brand h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+    .l-brand i { font-size: 2rem; color: #31c978; }
+    .l-brand h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin: 0; }
     
     .hero {
       max-width: 1200px;
@@ -60,8 +38,8 @@
       text-align: center;
     }
     .hero h2 { font-size: 3rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.03em; margin-bottom: 20px; color: #0f172a; }
-    .hero h2 span { color: var(--primary); }
-    .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 35px; line-height: 1.6; }
+    .hero h2 span { color: #31c978; }
+    .hero p { font-size: 1.2rem; color: #64748b; max-width: 700px; margin: 0 auto 35px; line-height: 1.6; }
     .hero-actions { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
 
     .features-grid {
@@ -72,114 +50,58 @@
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 24px;
     }
-    .f-card { background: var(--surface); padding: 30px 24px; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid var(--border); transition: transform 0.2s; }
+    .f-card { background: #ffffff; padding: 30px 24px; border-radius: 20px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0; transition: transform 0.2s; text-align: left; }
     .f-card:hover { transform: translateY(-4px); }
-    .f-card i { font-size: 2rem; color: var(--primary); margin-bottom: 16px; }
+    .f-card i { font-size: 2rem; color: #31c978; margin-bottom: 16px; }
     .f-card h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
-    .f-card p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; }
+    .f-card p { font-size: 0.92rem; color: #64748b; line-height: 1.5; margin: 0; }
 
-    /* --- СТИЛИ РАБОЧЕЙ ПАНЕЛИ (APP) --- */
-    .app-container { padding: 24px; max-width: 1600px; margin: 0 auto; }
-    .navbar {
-      background: linear-gradient(135deg, #49d98f 0%, #31c978 100%);
-      padding: 16px 28px;
-      border-radius: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: var(--shadow);
-      margin-bottom: 24px;
-      color: #fff;
-    }
-    .brand { display: flex; align-items: center; gap: 14px; }
-    .brand h1 { font-size: 1.42rem; font-weight: 800; margin: 0; }
-    .brand p { font-size: 0.84rem; opacity: 0.88; }
-    .brand-logo-image { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; }
-    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .hidden-panel { display: none !important; }
 
-    .main-layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; align-items: start; }
-    .sidebar { display: flex; flex-direction: column; gap: 20px; }
-    .sidebar-card { background: var(--surface); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); border: 1px solid var(--border); }
-    .sidebar-card h3 { font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-
-    /* Кнопки */
-    .btn { padding: 12px 20px; border-radius: 12px; font-weight: 600; font-size: 0.92rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s ease; }
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover { background: var(--primary-hover); }
-    .btn-light { background: #fff; color: var(--text); border: 1px solid var(--border); }
-    .btn-light:hover { background: var(--surface2); }
-    .btn-nav-login { background: rgba(255, 255, 255, 0.2); color: #fff; border: 1px solid rgba(255,255,255,0.4); }
-    .btn-nav-login:hover { background: #fff; color: var(--primary); }
-    .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-    .btn-secondary.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-    .btn-google { background: #fff; color: #4285F4; border: 1px solid #e2e8f0; width: 100%; justify-content: center; font-weight: 700; }
-    .btn-google:hover { background: #f8fafc; }
-
-    /* Поп-апы / Модальные окна */
-    .modal-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
-    .modal-backdrop.active { opacity: 1; pointer-events: auto; }
-    .modal-content { background: var(--surface); border-radius: 20px; width: 100%; max-width: 480px; padding: 28px; box-shadow: var(--shadow-lg); border: 1px solid var(--border); transform: scale(0.95); transition: transform 0.2s ease; }
-    .modal-backdrop.active .modal-content { transform: scale(1); }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-header h3 { font-size: 1.25rem; font-weight: 800; }
-    .close-modal-btn { background: none; border: none; font-size: 1.2rem; color: var(--text-muted); cursor: pointer; }
-    
-    /* Стили форм авторизации */
-    .auth-form-group { margin-bottom: 16px; }
-    .auth-form-group label { display: block; margin-bottom: 6px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); }
-    .auth-input { width: 100%; min-height: 46px; border-radius: 12px; border: 1px solid var(--border); padding: 0 14px; font-size: 0.95rem; outline: none; }
-    .auth-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(49, 120, 201, 0.1); }
-    .auth-divider { text-align: center; margin: 16px 0; color: var(--text-muted); font-size: 0.85rem; position: relative; }
-    .auth-divider::before, .auth-divider::after { content: ''; position: absolute; top: 50%; width: 40%; height: 1px; background: var(--border); }
+    /* Всплывающий кастомный попап авторизации */
+    .auth-modal-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 99999; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+    .auth-modal-backdrop.active { opacity: 1; pointer-events: auto; }
+    .auth-modal-content { background: #ffffff; border-radius: 20px; width: 100%; max-width: 420px; padding: 30px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; transform: scale(0.95); transition: transform 0.2s ease; position: relative; }
+    .auth-modal-backdrop.active .auth-modal-content { transform: scale(1); }
+    .auth-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .auth-modal-header h3 { font-size: 1.25rem; font-weight: 800; margin: 0; }
+    .auth-close-btn { background: none; border: none; font-size: 1.2rem; color: #64748b; cursor: pointer; }
+    .auth-group { margin-bottom: 16px; text-align: left; }
+    .auth-group label { display: block; margin-bottom: 6px; font-size: 0.85rem; font-weight: 700; color: #64748b; }
+    .auth-input-field { width: 100%; height: 44px; border-radius: 12px; border: 1px solid #e2e8f0; padding: 0 14px; font-size: 0.95rem; outline: none; box-sizing: border-box; }
+    .auth-input-field:focus { border-color: #31c978; }
+    .auth-divider { text-align: center; margin: 16px 0; color: #64748b; font-size: 0.85rem; position: relative; }
+    .auth-divider::before, .auth-divider::after { content: ''; position: absolute; top: 50%; width: 35%; height: 1px; background: #e2e8f0; }
     .auth-divider::before { left: 0; } .auth-divider::after { right: 0; }
-
-    /* Остальные твои оригинальные стили календаря сохранены через стилизацию лэйаута */
-    .calendar-container { background: var(--surface); border-radius: 20px; padding: 28px; box-shadow: var(--shadow); border: 1px solid var(--border); }
-    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-    .calendar-header h2 { font-size: 1.45rem; font-weight: 700; }
-    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
-    .weekday-label { text-align: center; font-weight: 700; color: var(--text-muted); font-size: 0.85rem; padding: 8px 0; }
-    .calendar-day { background: var(--surface2); border: 1px solid var(--border); min-height: 90px; border-radius: 12px; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
-    .calendar-day:hover { background: #f1faf5; border-color: #bdeecf; }
-    .day-num { font-weight: 700; font-size: 0.95rem; }
-    .day-income { font-size: 0.8rem; font-weight: 700; color: #16a34a; text-align: right; }
     
-    .stats-subgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .stat-mini-box { background: var(--surface2); border-radius: 12px; padding: 14px; text-align: center; border: 1px solid var(--border); }
-    .stat-mini-box .stat-num { font-size: 1.5rem; font-weight: 700; }
-    .stat-mini-box .stat-label { font-size: 0.78rem; color: var(--text-muted); }
-    .income-amount { font-size: 1.25rem; font-weight: 700; color: #24b96a; }
+    /* Тост уведомления */
+    .toast-alert { position: fixed; top: 24px; right: 24px; background: #10b981; color: #fff; padding: 16px 24px; border-radius: 12px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); font-weight: 600; z-index: 100000; transform: translateY(-20px); opacity: 0; transition: all 0.3s ease; pointer-events: none; }
+    .toast-alert.show { transform: translateY(0); opacity: 1; }
 
-    /* Тост-уведомления */
-    .toast { position: fixed; top: 24px; right: 24px; background: #0f172a; color: #fff; padding: 16px 24px; border-radius: 12px; box-shadow: var(--shadow-lg); font-weight: 600; z-index: 10000; display: flex; align-items: center; gap: 10px; transform: translateY(-20px); opacity: 0; transition: all 0.3s ease; }
-    .toast.show { transform: translateY(0); opacity: 1; }
-    .toast-success { background: #10b981; }
-
-    @media (max-width: 900px) {
-      .main-layout { grid-template-columns: 1fr; }
-      .hero h2 { font-size: 2rem; }
-    }
+    /* Шапка профиля в самом приложении */
+    .user-profile-bar { display: flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.15); padding: 6px 12px; border-radius: 10px; font-size: 0.85rem; }
+    .btn-logout-pms { background: #ef4444; color: #fff; border: none; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-weight: 600; }
   </style>
 </head>
 <body>
 
-  <section id="landingPage" class="landing-page">
+  <section id="landingPageSection" class="landing-page">
     <nav class="landing-nav">
       <div class="l-brand">
         <i class="fas fa-map-marked-alt"></i>
         <h1>Yolnama</h1>
       </div>
-      <div class="nav-actions">
-        <button id="openAuthBtn" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Войти</button>
+      <div>
+        <button id="landingLoginBtn" class="btn btn-primary" style="background:#31c978; color:white;"><i class="fas fa-sign-in-alt"></i> Войти</button>
       </div>
     </nav>
 
     <div class="hero">
       <h2>Операционная система для <br><span>гидов и водителей</span> в Узбекистане</h2>
-      <p>Первая полноценная PMS-система для управления туристическими заказами. Храните брони, ведите многодневные сквозные маршруты по городам и автоматически показывайте свою занятость платформам и туристам.</p>
+      <p>Первая полноценная PMS-система для управления туристическими заказами. Храните брони, ведите многодневные сквозные маршруты по городам и автоматически контролируйте свою занятость.</p>
       <div class="hero-actions">
-        <button id="startDemoBtn" class="btn btn-primary btn-lg"><i class="fas fa-play"></i> Попробовать демо-версию</button>
-        <button id="landingRegBtn" class="btn btn-light btn-lg"><i class="fas fa-user-plus"></i> Зарегистрироваться</button>
+        <button id="landingDemoBtn" class="btn btn-primary" style="background:#31c978; color:white; padding:14px 28px; font-size:1rem;"><i class="fas fa-play"></i> Попробовать демо-версию</button>
+        <button id="landingRegisterBtn" class="btn btn-secondary" style="padding:14px 28px; font-size:1rem;"><i class="fas fa-user-plus"></i> Зарегистрироваться</button>
       </div>
     </div>
 
@@ -201,130 +123,487 @@
       </div>
       <div class="f-card">
         <i class="fas fa-sync"></i>
-        <h4>Синхронизация</h4>
-        <p>Облачное хранение данных через Supabase. Доступ к расписанию с компьютера, планшета и смартфона.</p>
+        <h4>Облачное хранение данных</h4>
+        <p>Безопасное хранение информации. Доступ к вашему расписанию и заказам с компьютера, планшета и смартфона.</p>
       </div>
     </div>
   </section>
 
+  <div id="customAuthModal" class="auth-modal-backdrop">
+    <div class="auth-modal-content">
+      <div class="auth-modal-header">
+        <h3 id="authModalHeaderTitle">Вход в Yolnama</h3>
+        <button id="closeAuthModalBtn" class="auth-close-btn"><i class="fas fa-times"></i></button>
+      </div>
+      
+      <button id="fakeGoogleBtn" class="btn btn-light" style="width:100%; display:flex; justify-content:center; align-items:center; gap:10px; border:1px solid #e2e8f0; background:#fff; height:44px; border-radius:12px; font-weight:600; cursor:pointer;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style="width:18px; height:18px;">
+        Войти через Google
+      </button>
 
-  <main id="appDashboard" class="app-container hidden">
+      <div class="auth-divider">или через почту</div>
+
+      <form id="fakeAuthForm">
+        <div class="auth-group">
+          <label>Электронная почта</label>
+          <input type="email" class="auth-input-field" placeholder="name@example.com" required>
+        </div>
+        <div class="auth-group">
+          <label>Пароль</label>
+          <input type="password" class="auth-input-field" placeholder="••••••••" required>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:20px;">
+          <button type="submit" id="fakeSubmitLogin" class="btn btn-primary" style="flex:1; background:#31c978; color:white; justify-content:center;">Войти</button>
+          <button type="button" id="fakeSubmitReg" class="btn btn-light" style="flex:1; justify-content:center; border:1px solid #e2e8f0;">Регистрация</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="pmsToast" class="toast-alert">Демо-вход успешно имитирован!</div>
+
+
+  <div id="mainPmsAppContainer" class="hidden-panel">
+    
     <header class="navbar">
       <div class="brand">
-        <img src="https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?q=80&w=100&auto=format&fit=crop" class="brand-logo-image" alt="Logo">
-        <div class="header-title">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2331c978'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z'/%3E%3C/svg%3E" class="brand-logo-image" alt="Yolnama">
+        <div>
           <h1 id="navTitle">Yolnama</h1>
           <p id="navSubtitle">Операционная система для гидов и водителей</p>
         </div>
       </div>
+      
       <div class="nav-actions">
+        <div id="pmsUserBadge" class="user-profile-bar" style="color:white; margin-right:10px;">
+          <span>Гость</span>
+        </div>
+
         <div class="lang-select-wrapper">
           <i class="fas fa-globe"></i>
           <select id="langSelect">
             <option value="ru">RU</option>
-            <option value="uz">UZ</option>
             <option value="en">EN</option>
+            <option value="uz">UZ</option>
           </select>
         </div>
-        <div id="userProfileChip" class="hidden" style="display: flex; align-items: center; gap: 10px;">
-          <span id="userEmailLabel" style="font-weight: 600; font-size: 0.88rem;"></span>
-          <button id="logoutBtn" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Выйти</button>
-        </div>
-        <button id="appLoginBtn" class="btn btn-nav-login"><i class="fas fa-user"></i> Войти</button>
+        <button id="routeBtn" class="btn btn-secondary">
+          <i class="fas fa-route"></i> <span id="navRouteBtn">Маршрут</span>
+        </button>
+        <button id="addBtn" class="btn btn-primary">
+          <i class="fas fa-plus"></i> <span id="navAddBtn">Добавить</span>
+        </button>
       </div>
     </header>
 
     <div class="main-layout">
+      
       <aside class="sidebar">
         <div class="sidebar-card">
-          <h3 id="statTitle">Статистика месяца</h3>
-          <div class="stats-subgrid">
-            <div class="stat-mini-box">
-              <div id="statExcursions" class="stat-num" style="color: var(--primary);">0</div>
-              <div id="lblExcursions" class="stat-label">Экскурсии</div>
+          <h2 id="authTitle">Аккаунт</h2>
+          <p id="authSubtitle" class="auth-subtitle">Войдите, чтобы синхронизировать записи и открывать календарь с любого устройства.</p>
+          
+          <div id="authGuestState">
+            <div class="form-group">
+              <label id="lblEmail">Email</label>
+              <input type="email" id="authEmailInput" placeholder="example@mail.com">
             </div>
-            <div class="stat-mini-box">
-              <div id="statBusy" class="stat-num" style="color: #ef4444;">0</div>
-              <div id="lblBusy" class="stat-label">Занят</div>
+            <div class="form-group">
+              <label id="lblPassword">Пароль</label>
+              <input type="password" id="authPasswordInput" placeholder="••••••••">
+            </div>
+            <div class="auth-buttons">
+              <button id="loginBtn" class="btn btn-primary">Войти</button>
+              <button id="registerBtn" class="btn btn-secondary">Регистрация</button>
+            </div>
+            <div class="auth-divider-text">
+              <span id="lblFastAuth">Быстрый вход</span>
+            </div>
+            <p class="auth-hint" id="lblGoogleHint">Можно войти через Google. После входа записи будут надежно храниться в облаке.</p>
+            <button id="googleBtn" class="btn btn-light google-btn">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">
+              <span id="lblGoogleBtn">Войти через Google</span>
+            </button>
+          </div>
+
+          <div id="authUserState" class="hidden">
+            <p><span id="lblLoggedInAs">Вы вошли как</span> <strong id="userEmailDisplay">—</strong></p>
+            <button id="logoutBtn" class="btn btn-danger" style="margin-top: 12px; width: 100%;">
+              <i class="fas fa-sign-out-alt"></i> <span id="lblLogoutBtn">Выйти</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <div class="card-header-flex">
+            <h3 id="statTitle">Статистика месяца</h3>
+            <button id="viewStatsDetailsBtn" class="btn-text-link" id="lblDetails">Детали</button>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-num" id="statExcursions" style="color: var(--primary);">0</div>
+              <div class="stat-label" id="lblExcursions">Экскурсии</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num" id="statBusy" style="color: var(--danger);">0</div>
+              <div class="stat-label" id="lblBusy">Занят</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num" id="statHoliday" style="color: var(--success);">0</div>
+              <div class="stat-label" id="lblHoliday">Выходной</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num" id="statTourists" style="color: var(--purple);">0</div>
+              <div class="stat-label" id="lblTourists">Туристы</div>
             </div>
           </div>
         </div>
 
         <div class="sidebar-card">
           <h3 id="incomeTitle">Доход за месяц</h3>
-          <div id="incomeContainer">
-            <div class="income-amount" id="totalIncomeValue">0 UZS</div>
+          <div id="incomeList" class="income-list">
+            <div class="income-row">0 UZS</div>
           </div>
         </div>
 
         <div class="sidebar-card">
           <h3 id="legendTitle">Обозначения</h3>
-          <div class="legend-list">
-            <div class="legend-item"><i class="fas fa-circle" style="color: #2563eb;"></i> Экскурсия</div>
-            <div class="legend-item"><i class="fas fa-circle" style="color: #dc2626;"></i> Занят</div>
-            <div class="legend-item"><i class="fas fa-circle" style="color: #16a34a;"></i> Выходной</div>
+          <div class="legend-grid">
+            <span class="legend-pill status-excursion" id="legExcursion">Экскурсия</span>
+            <span class="legend-pill status-busy" id="legBusy">Занят</span>
+            <span class="legend-pill status-holiday" id="legHoliday">Выходной</span>
+            <span class="legend-pill status-personal" id="legPersonal">Личное</span>
           </div>
         </div>
       </aside>
 
-      <section class="calendar-container">
-        <div class="calendar-header">
-          <h2 id="calendarMonthYear">Март 2025</h2>
-          <div class="calendar-header-actions">
-            <button id="prevMonthBtn" class="btn btn-secondary"><i class="fas fa-chevron-left"></i></button>
-            <button id="todayBtn" class="btn btn-secondary">Сегодня</button>
-            <button id="nextMonthBtn" class="btn btn-secondary"><i class="fas fa-chevron-right"></i></button>
-            <div class="calendar-divider"></div>
-            <button id="addBookingBtn" class="btn btn-primary"><i class="fas fa-plus"></i> Добавить</button>
-            <button id="addRouteBtn" class="btn btn-primary" style="background: #7c3aed;"><i class="fas fa-route"></i> Маршрут</button>
+      <section class="content-area">
+        
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <button id="prevMonth" class="btn btn-secondary btn-icon">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <h2 id="currentMonthYear" class="month-title">Загрузка...</h2>
+            <button id="nextMonth" class="btn btn-secondary btn-icon">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+            <button id="todayBtnClick" class="btn btn-secondary">
+              <span id="toolbarToday">Сегодня</span>
+            </button>
+          </div>
+          
+          <div class="toolbar-right">
+            <div class="view-switcher">
+              <button id="setViewGrid" class="btn btn-secondary active">
+                <i class="fas fa-th"></i> <span id="toolbarGrid">Сетка</span>
+              </button>
+              <button id="setViewList" class="btn btn-secondary">
+                <i class="fas fa-list"></i> <span id="toolbarList">Список</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <div id="calendarGrid" class="calendar-grid">
+        <div class="filter-bar">
+          <div class="filter-bar-header" id="toggleFilterBar">
+            <div class="filter-bar-title">
+              <i class="fas fa-sliders-h"></i>
+              <strong id="toolbarTitle">Поиск и фильтры</strong>
+              <span id="toolbarHint" class="filter-hint">Быстрый поиск по текущему месяцу</span>
+            </div>
+            <button class="btn-text-link" id="btnToggleFilters">
+              <span id="toolbarCollapse">Свернуть</span> <i class="fas fa-chevron-up" id="filterChevron"></i>
+            </button>
           </div>
+          
+          <div class="filter-bar-content" id="filterBarContent">
+            <div class="filter-inputs-grid">
+              <div class="search-wrapper">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Поиск по городу, клиенту, экскурсии или группе">
+              </div>
+              <select id="filterStatus">
+                <option value="" id="statusAll">Все статусы</option>
+                <option value="excursion">Экскурсия</option>
+                <option value="busy">Занят</option>
+                <option value="holiday">Выходной</option>
+                <option value="personal">Личное</option>
+              </select>
+              <button id="resetFilters" class="btn btn-secondary">
+                <i class="fas fa-undo"></i> <span id="resetBtn">Сбросить</span>
+              </button>
+            </div>
+            <div class="filter-results-info">
+              <span id="resultsLabel">Записей:</span> <strong id="filterCount">0</strong>
+            </div>
+          </div>
+        </div>
+
+        <div id="gridView" class="grid-view">
+          </div>
+
+        <div id="listView" class="list-view hidden">
+          </div>
+
       </section>
     </div>
-  </main>
+  </div>
+
+  <button id="fabAdd" class="fab">
+    <i class="fas fa-plus"></i>
+  </button>
 
 
-  <div id="authModal" class="modal-backdrop">
+  <div id="bookingModal" class="modal-backdrop">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 id="authModalTitle">Вход в систему Yolnama</h3>
-        <button id="closeAuthModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
+        <h3 id="modalTitle">Новая запись</h3>
+        <button id="closeBookingModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
       </div>
-      
-      <button id="googleAuthBtn" class="btn btn-google">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style="width:18px; height:18px; margin-right:8px;">
-        Войти через Google
-      </button>
-
-      <div class="auth-divider">или с помощью Email</div>
-
-      <form id="emailAuthForm">
-        <div class="auth-form-group">
-          <label>Электронная почта</label>
-          <input type="email" id="authEmail" class="auth-input" placeholder="example@mail.com" required>
+      <form id="bookingForm">
+        <input type="hidden" id="bookingId">
+        
+        <div class="form-group">
+          <label id="lblStatusType">Статус / Тип дня</label>
+          <div class="status-selector-grid">
+            <label class="status-radio-label">
+              <input type="radio" name="status" value="excursion" checked>
+              <span class="status-radio-pill status-excursion" id="formExcursion">Экскурсия</span>
+            </label>
+            <label class="status-radio-label">
+              <input type="radio" name="status" value="busy">
+              <span class="status-radio-pill status-busy" id="formBusy">Занят</span>
+            </label>
+            <label class="status-radio-label">
+              <input type="radio" name="status" value="holiday">
+              <span class="status-radio-pill status-holiday" id="formHoliday">Выходной</span>
+            </label>
+            <label class="status-radio-label">
+              <input type="radio" name="status" value="personal">
+              <span class="status-radio-pill status-personal" id="formPersonal">Личное</span>
+            </label>
+          </div>
         </div>
-        <div class="auth-form-group">
-          <label>Пароль</label>
-          <input type="password" id="authPassword" class="auth-input" placeholder="••••••••" required>
+
+        <div class="form-group">
+          <label id="lblDate">Дата</label>
+          <input type="date" id="bookingDate" required>
         </div>
-        <div class="auth-actions" style="margin-top: 20px;">
-          <button type="submit" id="loginSubmitBtn" class="btn btn-primary" style="flex: 1; justify-content: center;">Войти</button>
-          <button type="button" id="signUpSubmitBtn" class="btn btn-light" style="flex: 1; justify-content: center;">Регистрация</button>
+
+        <div id="excursionFields">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label id="lblCity">Город</label>
+              <input type="text" id="bookingCity" placeholder="Самарканд, Ташкент...">
+            </div>
+            <div class="form-group">
+              <label id="lblClient">Заказчик (Компания / Имя)</label>
+              <input type="text" id="bookingClient" placeholder="Восток Тур, Джон Доу">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label id="lblTourName">Экскурсия / группа</label>
+            <input type="text" id="bookingTourName" placeholder="Обзорная по городу, VIP группа">
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label id="lblStartTime">Начало</label>
+              <input type="time" id="bookingStartTime" value="09:00">
+            </div>
+            <div class="form-group">
+              <label id="lblEndTime">Окончание</label>
+              <input type="time" id="bookingEndTime" value="18:00">
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label id="lblPrice">Стоимость</label>
+              <input type="number" id="bookingPrice" placeholder="0" min="0">
+            </div>
+            <div class="form-group">
+              <label id="lblCurrency">Валюта</label>
+              <select id="bookingCurrency">
+                <option value="UZS">UZS (сум)</option>
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="RUB">RUB (₽)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label id="lblGroupSize">Количество туристов</label>
+              <input type="number" id="bookingGroupSize" placeholder="0" min="0">
+            </div>
+            <div class="form-group">
+              <label id="lblPaymentStatus">Статус оплаты</label>
+              <select id="bookingPaymentStatus">
+                <option value="unpaid" id="optUnpaid">Не оплачено</option>
+                <option value="partial" id="optPartial">Частичная оплата</option>
+                <option value="paid" id="optPaid">Оплачено</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2 hidden" id="partialPaymentRow">
+            <div class="form-group">
+              <label id="lblPaidAmount">Уже оплачено</label>
+              <input type="number" id="bookingPaidAmount" placeholder="0" min="0">
+            </div>
+            <div class="form-group">
+              <label id="lblRemainingAmount">Осталось оплатить</label>
+              <input type="number" id="bookingRemainingAmount" placeholder="0" readonly style="background: var(--surface2);">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:6px;">
+          <label id="lblNotes">Заметки / Пожелания</label>
+          <textarea id="bookingNotes" rows="2" placeholder="Дополнительная важная информация..."></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" id="deleteBookingBtn" class="btn btn-danger hidden">
+            <i class="fas fa-trash-alt"></i> <span id="btnDelete">Удалить</span>
+          </button>
+          <div style="flex:1;"></div>
+          <button type="button" id="cancelBookingBtn" class="btn btn-secondary">
+            <span id="btnCancel">Отмена</span>
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> <span id="btnSave">Сохранить</span>
+          </button>
         </div>
       </form>
     </div>
   </div>
 
+  <div id="routeModal" class="modal-backdrop">
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 id="routeModalTitle">Бронь маршрута</h3>
+        <button id="closeRouteModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
+      </div>
+      <form id="routeForm">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label id="lblRouteStart">Дата начала</label>
+            <input type="date" id="routeStartDate" required>
+          </div>
+          <div class="form-group">
+            <label id="lblRouteEnd">Дата окончания</label>
+            <input type="date" id="routeEndDate" required>
+          </div>
+        </div>
 
-  <div id="toastNotification" class="toast">
-    <i class="fas fa-info-circle"></i>
-    <span id="toastMessage">Уведомление</span>
+        <button type="button" id="generateRouteDaysBtn" class="btn btn-secondary" style="width:100%; margin-bottom:12px; justify-content:center;">
+          <span id="btnGenDays">Сгенерировать дни</span>
+        </button>
+
+        <div id="routeDaysContainer" class="route-days-container"></div>
+
+        <div class="form-row-2" style="margin-top: 12px;">
+          <div class="form-group">
+            <label id="lblRouteClient">Заказчик</label>
+            <input type="text" id="routeClient" placeholder="Восток Тур, Джон Доу">
+          </div>
+          <div class="form-group">
+            <label id="lblRouteGroupSize">Количество туристов</label>
+            <input type="number" id="routeGroupSize" placeholder="0" min="0">
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label id="lblRouteDefPrice">Стоимость по умолчанию</label>
+            <input type="number" id="routeDefaultPrice" placeholder="0" min="0">
+          </div>
+          <div class="form-group">
+            <label id="lblRouteDefCurr">Валюта по умолчанию</label>
+            <select id="routeDefaultCurrency">
+              <option value="UZS">UZS (сум)</option>
+              <option value="USD">USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="RUB">RUB (₽)</option>
+              <option value="KZT">KZT (₸)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label id="lblRoutePayStatus">Статус оплаты</label>
+            <select id="routePaymentStatus">
+              <option value="unpaid" id="optRUnpaid">Не оплачено</option>
+              <option value="partial" id="optRPartial">Частичная оплата</option>
+              <option value="paid" id="optRPaid">Оплачено</option>
+            </select>
+          </div>
+          <div class="form-group hidden" id="routePartialPaymentFields">
+            <label id="lblRoutePaidAmt">Уже оплачено</label>
+            <input type="number" id="routePaidAmount" placeholder="0" min="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label id="lblRouteNotes">Общие заметки</label>
+          <textarea id="routeNotes" rows="2" placeholder="Общая нитка маршрута, контакты..."></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <div style="flex:1;"></div>
+          <button type="button" id="cancelRouteBtn" class="btn btn-secondary">
+            <span id="btnRouteCancel">Отмена</span>
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> <span id="btnRouteSave">Сохранить</span>
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <div id="detailModal" class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="detailModalTitle">Информация о дне</h3>
+        <button id="closeDetailModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
+      </div>
+      <div id="detailModalBody" class="detail-body">
+        </div>
+      <div class="modal-actions" style="border-top:1px solid var(--border); padding-top:12px; margin-top:12px;">
+        <button id="detailCloseBtn" class="btn btn-secondary"><span id="lblClose">Закрыть</span></button>
+        <button id="detailDuplicateBtn" class="btn btn-secondary" style="background-color: var(--primary-lt); color: var(--primary); border-color: transparent;">
+          <i class="fas fa-copy"></i> <span id="lblDuplicate">Дублировать запись</span>
+        </button>
+        <button id="detailEditBtn" class="btn btn-primary"><i class="fas fa-edit"></i> <span id="lblEdit">Редактировать</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="statsModal" class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="statsModalTitle">Детальная статистика</h3>
+        <button id="closeStatsModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="stats-modal-year-nav">
+        <button id="statsPrevYearBtn" type="button"><i class="fas fa-chevron-left"></i></button>
+        <span id="statsModalYearLabel"></span>
+        <button id="statsNextYearBtn" type="button"><i class="fas fa-chevron-right"></i></button>
+      </div>
+      <div id="statsModalBody"></div>
+      <div style="display:flex;justify-content:flex-end;margin-top:20px;">
+        <button id="statsModalClose2" class="btn btn-secondary"><span id="lblStatsClose">Закрыть</span></button>
+      </div>
+    </div>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>
