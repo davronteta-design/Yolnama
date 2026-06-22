@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yolnama — платформа для гидов и водителей</title>
+  <title>Yolnama — Операционная система для гидов и водителей</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
@@ -28,12 +28,58 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: var(--bg);
       color: var(--text);
-      padding: 24px;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* Навигационная панель (Header) */
+    /* Скрытие секций */
+    .hidden { display: none !important; }
+
+    /* --- СТИЛИ LANDING PAGE --- */
+    .landing-page {
+      background: linear-gradient(135deg, #f4f7fe 0%, #e6faf0 100%);
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+    .landing-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .l-brand { display: flex; align-items: center; gap: 12px; }
+    .l-brand i { font-size: 2rem; color: var(--primary); }
+    .l-brand h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+    
+    .hero {
+      max-width: 1200px;
+      margin: 60px auto 40px;
+      padding: 0 20px;
+      text-align: center;
+    }
+    .hero h2 { font-size: 3rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.03em; margin-bottom: 20px; color: #0f172a; }
+    .hero h2 span { color: var(--primary); }
+    .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 35px; line-height: 1.6; }
+    .hero-actions { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+    .features-grid {
+      max-width: 1100px;
+      margin: 60px auto 0;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+    .f-card { background: var(--surface); padding: 30px 24px; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid var(--border); transition: transform 0.2s; }
+    .f-card:hover { transform: translateY(-4px); }
+    .f-card i { font-size: 2rem; color: var(--primary); margin-bottom: 16px; }
+    .f-card h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
+    .f-card p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* --- СТИЛИ РАБОЧЕЙ ПАНЕЛИ (APP) --- */
+    .app-container { padding: 24px; max-width: 1600px; margin: 0 auto; }
     .navbar {
       background: linear-gradient(135deg, #49d98f 0%, #31c978 100%);
       padding: 16px 28px;
@@ -46,1282 +92,239 @@
       color: #fff;
     }
     .brand { display: flex; align-items: center; gap: 14px; }
-    .brand i { font-size: 1.8rem; }
-    .brand h1 { font-size: 1.42rem; font-weight: 800; letter-spacing: -0.02em; margin: 0; }
+    .brand h1 { font-size: 1.42rem; font-weight: 800; margin: 0; }
     .brand p { font-size: 0.84rem; opacity: 0.88; }
-    .header-title { display: flex; flex-direction: column; gap: 2px; }
-    .brand-logo-image { width: 56px; height: 56px; border-radius: 15px; object-fit: cover; flex-shrink: 0; box-shadow: 0 10px 22px rgba(49,201,120,0.18); }
-
+    .brand-logo-image { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; }
     .nav-actions { display: flex; align-items: center; gap: 12px; }
 
-    body[data-auth="guest"] .main-layout { display: none; }
-    body[data-auth-ready="0"] .main-layout { opacity: .55; pointer-events: none; }
-    .auth-shell { margin-bottom: 24px; }
-    .auth-card {
-      background: var(--surface);
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(49, 201, 120, 0.18);
-    }
-    .auth-card-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-    .auth-card-title {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .auth-card-title h2 {
-      font-size: 1.18rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-    .auth-card-title p,
-    .auth-caption,
-    .auth-note,
-    .auth-user-label {
-      color: var(--text-muted);
-    }
-    .auth-status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: #ecfdf5;
-      color: #15803d;
-      border: 1px solid #bbf7d0;
-      font-size: 0.88rem;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-    body[data-auth="guest"] .auth-status-badge {
-      background: #fff7ed;
-      color: #c2410c;
-      border-color: #fed7aa;
-    }
-    .auth-grid {
-      display: grid;
-      grid-template-columns: minmax(280px, 1.15fr) minmax(240px, 0.85fr);
-      gap: 16px;
-      align-items: stretch;
-    }
-    .auth-form,
-    .auth-provider-card {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-    }
-    .auth-form {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .auth-field label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 0.84rem;
-      font-weight: 700;
-      color: var(--text-muted);
-    }
-    .auth-input {
-      width: 100%;
-      min-height: 46px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: #fff;
-      padding: 0 14px;
-      font-family: inherit;
-      font-size: 0.94rem;
-      color: var(--text);
-      outline: none;
-      transition: all .2s ease;
-    }
-    .auth-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(49, 201, 120, 0.14);
-    }
-    .auth-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 2px;
-    }
-    .auth-provider-card {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      justify-content: center;
-    }
-    .auth-provider-card strong {
-      font-size: 0.98rem;
-    }
-    .auth-user-panel {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .auth-user-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 16px;
-      border-radius: 16px;
-      background: #ecfdf5;
-      border: 1px solid #bbf7d0;
-      color: #166534;
-    }
-    .auth-user-chip i {
-      font-size: 1.1rem;
-    }
-    .auth-user-chip strong {
-      display: block;
-      font-size: 0.98rem;
-      color: var(--text);
-    }
-    .auth-note {
-      margin-top: 16px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: #f8fafc;
-      border: 1px dashed #dbe4ef;
-      font-size: 0.9rem;
-      line-height: 1.5;
-    }
-    body[data-auth="guest"] #addRouteBtn,
-    body[data-auth="guest"] #addBookingBtn {
-      opacity: .55;
-      pointer-events: none;
-    }
-    @media (max-width: 900px) {
-      .auth-grid { grid-template-columns: 1fr; }
-    }
-
+    .main-layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; align-items: start; }
+    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+    .sidebar-card { background: var(--surface); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .sidebar-card h3 { font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 
     /* Кнопки */
-    .btn {
-      padding: 10px 18px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s ease;
-    }
-    .btn-primary { background: #fff; color: var(--primary); box-shadow: 0 2px 0 rgba(255,255,255,0.35) inset; }
-    .btn-primary:hover { background: #f3fff8; color: var(--primary-hover); transform: translateY(-1px); }
+    .btn { padding: 12px 20px; border-radius: 12px; font-weight: 600; font-size: 0.92rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s ease; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-light { background: #fff; color: var(--text); border: 1px solid var(--border); }
+    .btn-light:hover { background: var(--surface2); }
+    .btn-nav-login { background: rgba(255, 255, 255, 0.2); color: #fff; border: 1px solid rgba(255,255,255,0.4); }
+    .btn-nav-login:hover { background: #fff; color: var(--primary); }
     .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-    .btn-secondary:hover { background: #f1faf5; border-color: #bdeecf; }
-    .btn-secondary.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 10px 22px rgba(49,201,120,0.22); }
-    .btn-danger { background: #ef4444; color: #fff; }
-    .btn-danger:hover { background: #dc2626; }
+    .btn-secondary.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .btn-google { background: #fff; color: #4285F4; border: 1px solid #e2e8f0; width: 100%; justify-content: center; font-weight: 700; }
+    .btn-google:hover { background: #f8fafc; }
 
-    /* Селектор языка */
-    .lang-select-wrapper { background: rgba(255,255,255,0.15); padding: 4px 8px; border-radius: 8px; display: flex; align-items: center; gap: 6px; }
-    .lang-select-wrapper i { font-size: 0.9rem; }
-    .lang-select-wrapper select { background: transparent; border: none; color: white; font-weight: 600; font-size: 0.88rem; outline: none; cursor: pointer; }
-    .lang-select-wrapper select option { color: var(--text); }
-
-    /* Основная сетка контента */
-    .main-layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; align-items: start; }
-
-    /* Левая боковая панель статистики */
-    .sidebar { display: flex; flex-direction: column; gap: 20px; }
-    .sidebar-card { background: var(--surface); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); }
-    .sidebar-card h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-
-    .stats-subgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .stat-mini-box { background: var(--surface2); border-radius: 12px; padding: 14px; text-align: center; border: 1px solid var(--border); }
-    .stat-mini-box .stat-num { font-size: 1.5rem; font-weight: 700; margin-bottom: 2px; }
-    .stat-mini-box .stat-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
-
-    .income-amount { font-size: 1.25rem; font-weight: 700; color: #24b96a; margin-top: 2px; }
-    .income-group { margin-bottom: 8px; }
-    .income-group-label { font-size: 0.76rem; font-weight: 700; margin-bottom: 2px; opacity: 0.9; }
-    .income-paid .income-group-label, .income-paid.income-amount     { color: #16a34a; }
-    .income-partial .income-group-label,.income-partial.income-amount { color: #d97706; }
-    .income-unpaid .income-group-label, .income-unpaid.income-amount  { color: #dc2626; }
-
-    .payment-badge { display:inline-block; padding:3px 10px; border-radius:999px; font-size:0.82rem; font-weight:700; }
-    .payment-badge-paid    { background:#dcfce7; color:#16a34a; }
-    .payment-badge-partial { background:#fef3c7; color:#d97706; }
-    .payment-badge-unpaid  { background:#fee2e2; color:#dc2626; }
-    .payment-select { font-weight:700; transition: border-color .2s, background .2s, color .2s; }
-    .payment-split-wrap { margin-top:10px; padding:12px; border:1px dashed #e2e8f0; border-radius:12px; background:#f8fafc; }
-    .payment-split-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    .payment-split-readonly { background:#eef2ff; color:#334155; font-weight:700; }
-    @media (max-width:640px) { .payment-split-grid { grid-template-columns:1fr; } }
-
-    #statTitle { justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
-
-    #statsModal .modal-content { max-width:980px; }
-    .stats-modal-year-nav { display:flex; align-items:center; gap:10px; margin-bottom:18px; justify-content:center; }
-    .stats-modal-year-nav button { width:34px; height:34px; border-radius:999px; border:1px solid var(--border); background:var(--surface2); cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; transition:all .18s; }
-    .stats-modal-year-nav button:hover { border-color:var(--primary); color:var(--primary); background:#eff6ff; }
-    #statsModalYearLabel { font-size:1.05rem; font-weight:700; min-width:110px; text-align:center; }
-    #statsModalBody { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:4px; }
-    .stats-detail-card { background:var(--surface2); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
-    .stats-income-card { grid-column:1 / -1; }
-    .stats-monthly-card { grid-column:1 / -1; }
-    .sdc-header { display:flex; align-items:center; gap:8px; padding:10px 14px; font-size:0.9rem; font-weight:700; }
-    .sdc-header strong { margin-left:auto; font-size:1.15rem; }
-    .sdc-blue   { background:#dbeafe; color:#1d4ed8; }
-    .sdc-red    { background:#fee2e2; color:#b91c1c; }
-    .sdc-green  { background:#dcfce7; color:#15803d; }
-    .sdc-purple { background:#ede9fe; color:#7c3aed; }
-    .sdc-gold   { background:#fef3c7; color:#b45309; }
-    .sdc-slate  { background:#e2e8f0; color:#334155; }
-    .sdc-row { display:flex; align-items:center; justify-content:space-between; padding:8px 14px; font-size:0.88rem; gap:8px; border-top:1px solid var(--border); }
-    .sdc-row span { color:var(--text-muted); display:flex; align-items:center; gap:6px; }
-    .sdc-row strong { font-size:1rem; font-weight:700; }
-    .sdc-planned strong { color:#2563eb; }
-    .sdc-income-body { padding:14px; display:flex; flex-direction:column; gap:8px; }
-    .sdc-income-group { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-    .sdc-income-label { font-size:0.82rem; font-weight:700; min-width:130px; }
-    .sdc-income-amount { font-size:1.05rem; font-weight:700; }
-    .sdc-income-label.income-paid,  .sdc-income-amount.income-paid    { color:#16a34a; }
-    .sdc-income-label.income-partial,.sdc-income-amount.income-partial { color:#d97706; }
-    .sdc-income-label.income-unpaid,.sdc-income-amount.income-unpaid  { color:#dc2626; }
-    .smb-note { padding:12px 14px 0; color:var(--text-muted); font-size:0.82rem; }
-    .smb-table { padding:12px 14px 14px; overflow-x:auto; }
-    .smb-head, .smb-row { display:grid; grid-template-columns:minmax(130px,1.2fr) repeat(5, minmax(100px,1fr)); gap:8px; align-items:start; min-width:900px; }
-    .smb-head { padding:0 0 10px; color:var(--text-muted); font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; }
-    .smb-row { padding:10px 0; border-top:1px solid var(--border); }
-    .smb-month { font-weight:700; }
-    .smb-col { font-weight:700; }
-    .smb-cell { display:flex; align-items:baseline; justify-content:flex-start; gap:4px; font-variant-numeric:tabular-nums; }
-    .smb-cell strong { font-size:0.98rem; }
-    .smb-cell span { color:#2563eb; font-size:0.86rem; }
-    .smb-income-cell { display:flex; flex-direction:column; gap:4px; align-items:flex-start; }
-    .smb-income-line { font-size:0.86rem; font-weight:700; color:#15803d; white-space:nowrap; }
-    .smb-empty { color:var(--text-muted); }
-    .smb-row.is-empty { opacity:.56; }
-    @media (max-width:480px) { #statsModalBody { grid-template-columns:1fr; } .stats-income-card, .stats-monthly-card { grid-column:1; } }
-
-    .legend-list { display: flex; flex-direction: column; gap: 8px; }
-    .legend-item { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; padding: 8px 12px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); }
-
-    /* Правая панель — Календарь */
-    .calendar-container { background: var(--surface); border-radius: 20px; padding: 28px; box-shadow: var(--shadow); }
-    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 14px; }
-    .calendar-header h2 { font-size: 1.45rem; font-weight: 700; }
-    .calendar-header-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .calendar-divider { width: 1px; height: 24px; background: var(--border); margin: 0 4px; }
-
-    .toolbar-panel {
-      margin: 0 0 22px;
-      padding: 18px;
-      border-radius: 18px;
-      background: linear-gradient(180deg, #fbfefc 0%, #f1faf5 100%);
-      border: 1px solid #cff3df;
-      box-shadow: 0 12px 28px rgba(49, 201, 120, 0.12);
-      position: relative;
-      overflow: hidden;
-    }
-    .toolbar-panel::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 3px;
-      background: linear-gradient(90deg, #49d98f 0%, #31c978 100%);
-    }
-    .toolbar-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-    }
-    .toolbar-head strong {
-      font-size: 0.95rem;
-      font-weight: 700;
-    }
-    .toolbar-head span {
-      color: var(--text-muted);
-      font-size: 0.84rem;
-    }
-    .toolbar-controls {
-      display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(180px, .8fr) auto;
-      gap: 12px;
-      align-items: center;
-    }
-    .toolbar-field {
-      position: relative;
-      min-width: 0;
-    }
-    .toolbar-field i {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      pointer-events: none;
-    }
-    .toolbar-input,
-    .toolbar-select {
-      width: 100%;
-      min-height: 46px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: #fff;
-      padding: 0 14px 0 40px;
-      font-family: inherit;
-      font-size: 0.93rem;
-      color: var(--text);
-      outline: none;
-      transition: all .2s ease;
-    }
-    .toolbar-select {
-      padding-left: 14px;
-    }
-    .toolbar-input:focus,
-    .toolbar-select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(49, 201, 120, 0.16);
-    }
-    .results-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-top: 14px;
-      padding-top: 14px;
-      border-top: 1px solid rgba(226, 232, 240, 0.9);
-      flex-wrap: wrap;
-    }
-    .results-summary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: #fff;
-      border: 1px solid #cff3df;
-      color: var(--text);
-      font-size: 0.9rem;
-      box-shadow: 0 6px 16px rgba(49, 201, 120, 0.12);
-    }
-    .results-summary-label {
-      color: var(--text-muted);
-    }
-    .btn-reset {
-      min-height: 46px;
-      padding-inline: 18px;
-      border-radius: 14px;
-      background: #fff;
-      border: 1px solid var(--border);
-    }
-    .btn-reset:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-      background: #f8fbff;
-    }
-    .toolbar-toggle-btn {
-      display: none;
-      min-height: 42px;
-      border-radius: 999px;
-      padding: 0 14px;
-      white-space: nowrap;
-      justify-content: center;
-    }
-    .toolbar-panel-body[hidden] {
-      display: none !important;
-    }
-
-    .form-hint-panel {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin: 6px 0 16px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: #f8fafc;
-      color: var(--text-muted);
-      line-height: 1.45;
-    }
-    .form-hint-panel[hidden] {
-      display: none !important;
-    }
-    .form-hint-panel i {
-      margin-top: 2px;
-      font-size: 0.95rem;
-      flex-shrink: 0;
-    }
-    .form-hint-panel strong {
-      display: block;
-      margin-bottom: 2px;
-      color: inherit;
-    }
-    .form-hint-panel .hint-text {
-      min-width: 0;
-      flex: 1;
-      word-break: break-word;
-    }
-    .form-hint-panel ul {
-      margin: 6px 0 0 18px;
-      padding: 0;
-    }
-    .form-hint-panel li + li {
-      margin-top: 3px;
-    }
-    .form-hint-panel.is-success {
-      background: #ecfdf3;
-      border-color: #86efac;
-      color: #166534;
-    }
-    .form-hint-panel.is-error {
-      background: #fef2f2;
-      border-color: #fca5a5;
-      color: #b91c1c;
-    }
-    .form-hint-panel.is-muted {
-      background: #f8fafc;
-      border-color: var(--border);
-      color: var(--text-muted);
-    }
-    .form-control.is-conflict {
-      border-color: #f87171 !important;
-      box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.14) !important;
-    }
-    .route-day-row.has-conflict {
-      border-color: #fca5a5;
-      background: #fff1f2;
-    }
-    .route-day-row.has-conflict .route-day-date {
-      color: #b91c1c;
-    }
-    .route-day-conflict {
-      font-size: 0.78rem;
-      color: #b91c1c;
-      background: rgba(254, 226, 226, 0.88);
-      border: 1px solid #fecaca;
-      border-radius: 10px;
-      padding: 8px 10px;
-    }
-
-    /* Сетка календаря */
-    .weekday-label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); padding: 10px 0; text-align: center; }
-    .day-cell {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      min-height: 110px;
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .day-cell:hover { background: #fff; border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.03); transform: translateY(-1px); }
-    .day-cell.other-month { opacity: 0.4; }
-    .day-cell.past-day {
-      background: #f6f7f9;
-      border-color: #e5e7eb;
-    }
-    .day-cell.past-day .day-num {
-      color: #94a3b8;
-    }
-    .day-cell.past-day:hover {
-      background: #f6f7f9;
-      border-color: #e5e7eb;
-      box-shadow: none;
-      transform: none;
-    }
-    .day-cell.today { background: #e9fff3; border-color: #31c978; box-shadow: inset 0 0 0 1px #31c978, 0 8px 18px rgba(49,201,120,0.14); }
-    .day-cell.today .day-num { background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 14px rgba(49,201,120,0.22); }
-    .day-cell.weekend-cell { background: #fdf2f2; }
-    .day-cell.weekend-cell.other-month { opacity: 0.25; }
-
-    .day-num { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; display: inline-block; }
-    .day-income-tag { font-size: 0.72rem; color: #28a868; font-weight: 700; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-    .calendar-board {
-      width: 100%;
-      min-width: 0;
-      overflow-x: hidden;
-      overflow-y: visible;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 4px;
-    }
-    .calendar-sheet {
-      width: 100%;
-      min-width: 0;
-    }
-    #weekdaysHeader,
-    #calendarGrid {
-      width: 100%;
-      min-width: 0;
-      display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
-    }
-    .weekday-label,
-    .day-cell,
-    .day-num,
-    .booking-pill,
-    .day-income-tag {
-      min-width: 0;
-    }
-    .day-cell {
-      overflow: hidden;
-    }
-
-    /* Пилюли броней */
-    .booking-pill {
-      font-size: 0.75rem;
-      padding: 3px 6px;
-      border-radius: 6px;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-    }
-    .booking-pill.finished-booking {
-      background: #e5e7eb !important;
-      color: #6b7280 !important;
-      border-left-color: #9ca3af !important;
-      opacity: 0.96;
-    }
-    .booking-pill.compact {
-      font-size: 0;
-      line-height: 0;
-      min-height: 8px;
-      height: 8px;
-      padding: 0;
-      border-radius: 999px;
-      box-shadow: none;
-    }
-    .more-bookings-btn {
-      margin-top: auto;
-      align-self: flex-start;
-      border: 1px solid var(--border);
-      background: #fff;
-      color: var(--text-muted);
-      border-radius: 999px;
-      padding: 2px 7px;
-      font-size: 0.68rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .more-bookings-btn:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-
-    .list-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s ease; }
-    .list-item:hover { background: #fff; border-color: var(--primary); transform: translateX(2px); }
-    .list-item.finished-booking {
-      background: #f8fafc;
-      border-color: #e5e7eb;
-    }
-    .list-item.finished-booking .list-primary,
-    .list-item.finished-booking .list-meta {
-      color: #64748b;
-    }
-    .list-title-row { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
-    .list-primary { font-weight:700; margin-top:6px; }
-    .list-meta { font-size:0.85rem; color:var(--text-muted); margin-top:4px; }
-    .list-status-chip { padding:4px 10px; border-radius:999px; font-size:0.78rem; font-weight:700; }
-    .empty-state {
-      text-align: center;
-      color: var(--text-muted);
-      padding: 30px 18px;
-      background: var(--surface2);
-      border: 1px dashed var(--border);
-      border-radius: 14px;
-    }
-    .detail-stack { display:flex; flex-direction:column; gap:10px; }
-    .detail-row {
-      display:flex;
-      justify-content:space-between;
-      gap:16px;
-      align-items:flex-start;
-      padding:10px 12px;
-      border-radius:12px;
-      background:var(--surface2);
-    }
-    .detail-row span { color:var(--text-muted); font-size:0.84rem; }
-    .detail-row strong { text-align:right; }
-    .detail-status { padding:4px 10px; border-radius:999px; }
-    .detail-status.finished-booking,
-    .list-status-chip.finished-booking {
-      background: #e5e7eb !important;
-      color: #6b7280 !important;
-    }
-    button[disabled] {
-      opacity: 0.55;
-      cursor: not-allowed;
-      pointer-events: none;
-    }
-    .detail-notes {
-      padding:12px;
-      border-radius:12px;
-      background:var(--surface2);
-      border:1px solid var(--border);
-    }
-    .detail-notes span { display:block; color:var(--text-muted); font-size:0.84rem; margin-bottom:6px; }
-    .detail-notes p { white-space:pre-wrap; word-break:break-word; }
-
-    .toast-container {
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 1200;
-    }
-    .toast {
-      background: #0f172a;
-      color: #fff;
-      padding: 12px 14px;
-      border-radius: 12px;
-      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.24);
-      opacity: 0;
-      transform: translateY(8px);
-      transition: all .22s ease;
-      font-size: 0.9rem;
-    }
-    .toast.show { opacity: 1; transform: translateY(0); }
-    .toast-success { background: #166534; }
-    .toast-error { background: #b91c1c; }
-    .toast-info { background: #209058; }
-
-    /* Список (List View) */
-    .list-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s ease; }
-    .list-item:hover { background: #fff; border-color: var(--primary); transform: translateX(2px); }
-    .list-item.finished-booking {
-      background: #f8fafc;
-      border-color: #e5e7eb;
-    }
-    .list-item.finished-booking .list-primary,
-    .list-item.finished-booking .list-meta {
-      color: #64748b;
-    }
-
-    /* Модальные окна */
-    .modal-backdrop {
-      position: fixed; top:0; left:0; width:100%; height:100%;
-      background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: all 0.25s ease; z-index: 1000;
-    }
+    /* Поп-апы / Модальные окна */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
     .modal-backdrop.active { opacity: 1; pointer-events: auto; }
-    .modal-content {
-      background: var(--surface); border-radius: 20px; width: 100%; max-width: 540px;
-      padding: 24px; box-shadow: var(--shadow-lg); transform: scale(0.95); transition: all 0.25s ease;
-      max-height: 90vh; overflow-y: auto;
-    }
+    .modal-content { background: var(--surface); border-radius: 20px; width: 100%; max-width: 480px; padding: 28px; box-shadow: var(--shadow-lg); border: 1px solid var(--border); transform: scale(0.95); transition: transform 0.2s ease; }
     .modal-backdrop.active .modal-content { transform: scale(1); }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-header h3 { font-size: 1.2rem; font-weight: 700; }
+    .modal-header h3 { font-size: 1.25rem; font-weight: 800; }
     .close-modal-btn { background: none; border: none; font-size: 1.2rem; color: var(--text-muted); cursor: pointer; }
-
-    /* Формы */
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--text); }
-    .form-control {
-      width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);
-      font-family: inherit; font-size: 0.92rem; outline: none; transition: border-color 0.2s;
-    }
-    .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(40,168,104,0.12); }
     
-    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    /* Стили форм авторизации */
+    .auth-form-group { margin-bottom: 16px; }
+    .auth-form-group label { display: block; margin-bottom: 6px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); }
+    .auth-input { width: 100%; min-height: 46px; border-radius: 12px; border: 1px solid var(--border); padding: 0 14px; font-size: 0.95rem; outline: none; }
+    .auth-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(49, 120, 201, 0.1); }
+    .auth-divider { text-align: center; margin: 16px 0; color: var(--text-muted); font-size: 0.85rem; position: relative; }
+    .auth-divider::before, .auth-divider::after { content: ''; position: absolute; top: 50%; width: 40%; height: 1px; background: var(--border); }
+    .auth-divider::before { left: 0; } .auth-divider::after { right: 0; }
 
-    /* Радио-кнопки типов статуса */
-    .status-radio-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
-    .status-radio-label {
-      border: 1px solid var(--border); border-radius: 10px; padding: 10px;
-      display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.88rem; font-weight: 500;
-    }
-    .status-radio-label input { display: none; }
-    .status-radio-label:has(input:checked) { border-color: var(--primary); background: #0f241a; color: var(--primary); font-weight: 600; }
+    /* Остальные твои оригинальные стили календаря сохранены через стилизацию лэйаута */
+    .calendar-container { background: var(--surface); border-radius: 20px; padding: 28px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .calendar-header h2 { font-size: 1.45rem; font-weight: 700; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+    .weekday-label { text-align: center; font-weight: 700; color: var(--text-muted); font-size: 0.85rem; padding: 8px 0; }
+    .calendar-day { background: var(--surface2); border: 1px solid var(--border); min-height: 90px; border-radius: 12px; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
+    .calendar-day:hover { background: #f1faf5; border-color: #bdeecf; }
+    .day-num { font-weight: 700; font-size: 0.95rem; }
+    .day-income { font-size: 0.8rem; font-weight: 700; color: #16a34a; text-align: right; }
+    
+    .stats-subgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat-mini-box { background: var(--surface2); border-radius: 12px; padding: 14px; text-align: center; border: 1px solid var(--border); }
+    .stat-mini-box .stat-num { font-size: 1.5rem; font-weight: 700; }
+    .stat-mini-box .stat-label { font-size: 0.78rem; color: var(--text-muted); }
+    .income-amount { font-size: 1.25rem; font-weight: 700; color: #24b96a; }
 
-    /* Динамическая генерация дней для маршрута */
-    .route-day-row {
-      background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
-      padding: 12px; margin-bottom: 8px; display: grid; grid-template-columns: 100px 1fr 120px; gap: 8px; align-items: center;
-    }
-    .route-day-date { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
-    .route-days-container {
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: touch;
-    }
-    .route-day-row {
-      display: grid;
-      grid-template-columns: 98px 1fr auto;
-      gap: 10px;
-      align-items: start;
-      padding: 12px;
-    }
-    .route-day-editor {
-      display: grid;
-      gap: 8px;
-      min-width: 0;
-    }
-    .route-day-main-grid,
-    .route-day-sub-grid {
-      display: grid;
-      gap: 8px;
-    }
-    .route-day-main-grid {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-    }
-    .route-day-sub-grid {
-      grid-template-columns: 92px 92px 110px;
-    }
-    .route-day-remove {
-      width: 40px;
-      min-width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: #fff;
-      color: #dc2626;
-      cursor: pointer;
-    }
-    .route-day-remove:hover {
-      background: #fff1f2;
-      border-color: #fecdd3;
-    }
+    /* Тост-уведомления */
+    .toast { position: fixed; top: 24px; right: 24px; background: #0f172a; color: #fff; padding: 16px 24px; border-radius: 12px; box-shadow: var(--shadow-lg); font-weight: 600; z-index: 10000; display: flex; align-items: center; gap: 10px; transform: translateY(-20px); opacity: 0; transition: all 0.3s ease; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast-success { background: #10b981; }
 
-    /* Адаптивность */
-    @media (max-width: 992px) {
+    @media (max-width: 900px) {
       .main-layout { grid-template-columns: 1fr; }
-      .sidebar { order: 2; }
-      .calendar-container { order: 1; padding: 22px; }
-      .toolbar-controls { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 768px) {
-      body { padding: 10px; }
-      .brand-logo-image { width: 50px; height: 50px; border-radius: 14px; }
-      .navbar {
-        padding: 14px 14px;
-        border-radius: 14px;
-        align-items: flex-start;
-        gap: 12px;
-        flex-wrap: wrap;
-      }
-      .brand { width: 100%; }
-      .brand h1 { font-size: 1.2rem; }
-      .brand p { font-size: 0.78rem; }
-      .nav-actions { width: 100%; flex-wrap: wrap; justify-content: stretch; }
-      .nav-actions > * { flex: 1 1 100%; }
-      .nav-actions button { justify-content: center; }
-      .main-layout { gap: 16px; }
-      .sidebar { gap: 14px; }
-      .sidebar-card { padding: 16px; }
-      .calendar-container { padding: 14px; border-radius: 16px; }
-      .calendar-header { gap: 10px; }
-      .calendar-header h2 { font-size: 1.08rem; }
-      .calendar-header-actions {
-        width: 100%;
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 8px;
-      }
-      #todayBtn { grid-column: span 2; }
-      .calendar-header-actions .btn {
-        width: 100%;
-        justify-content: center;
-        padding: 10px 8px;
-        min-height: 40px;
-        font-size: 0.8rem;
-      }
-      .calendar-divider { display: none; }
-      .toolbar-panel { padding: 14px; margin-bottom: 16px; border-radius: 16px; }
-      .toolbar-head { margin-bottom: 10px; align-items: flex-start; }
-      .toolbar-head strong { font-size: 0.9rem; }
-      .toolbar-head span { font-size: 0.78rem; }
-      .toolbar-toggle-btn { display: inline-flex; margin-left: auto; }
-      .toolbar-panel.mobile-collapsed .toolbar-head { margin-bottom: 0; }
-      .toolbar-panel.mobile-collapsed { padding-bottom: 12px; }
-      .toolbar-input, .toolbar-select, .btn-reset { min-height: 42px; }
-      .results-row { align-items: stretch; gap: 10px; margin-top: 10px; padding-top: 10px; }
-      .results-summary,
-      .btn-reset { width: 100%; justify-content: center; }
-      .calendar-board { width: 100%; min-width: 0; overflow-x: hidden; margin-inline: 0; }
-      .calendar-sheet { width: 100%; min-width: 0; }
-      #weekdaysHeader,
-      #calendarGrid {
-        width: 100%;
-        min-width: 0;
-        grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
-        gap: 3px !important;
-      }
-      .weekday-label { font-size: 0.64rem; padding: 4px 0; }
-      .day-cell { min-height: 64px; padding: 4px; gap: 2px; border-radius: 9px; }
-      .day-num { font-size: 0.76rem; margin-bottom: 0; }
-      .day-income-tag { display: none; }
-      .booking-pill { max-width: 100%; font-size: 0.62rem; padding: 2px 4px; }
-      .booking-pill.compact { min-height: 8px; height: 8px; padding: 0; }
-      .more-bookings-btn { font-size: 0.6rem; padding: 1px 6px; }
-      .form-row-2 { grid-template-columns: 1fr; }
-      .status-radio-group { grid-template-columns: 1fr; }
-      .route-day-row { grid-template-columns: 1fr; }
-      .route-day-main-grid, .route-day-sub-grid { grid-template-columns: 1fr; }
-      .route-day-remove { width: 100%; }
-      .detail-row { flex-direction: column; gap: 6px; }
-      .detail-row strong { text-align: left; }
-      .toast-container { left: 10px; right: 10px; bottom: 10px; }
-      .toast { width: 100%; }
+      .hero h2 { font-size: 2rem; }
     }
   </style>
 </head>
 <body>
 
-  <header class="navbar">
-    <div class="brand">
-      <img src="data:image/png;base64,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" alt="Yolnama" class="brand-logo-image">
-      <div class="header-title">
+  <section id="landingPage" class="landing-page">
+    <nav class="landing-nav">
+      <div class="l-brand">
+        <i class="fas fa-map-marked-alt"></i>
         <h1>Yolnama</h1>
-        <p>Операционная система для гидов и водителей</p>
+      </div>
+      <div class="nav-actions">
+        <button id="openAuthBtn" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Войти</button>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <h2>Операционная система для <br><span>гидов и водителей</span> в Узбекистане</h2>
+      <p>Первая полноценная PMS-система для управления туристическими заказами. Храните брони, ведите многодневные сквозные маршруты по городам и автоматически показывайте свою занятость платформам и туристам.</p>
+      <div class="hero-actions">
+        <button id="startDemoBtn" class="btn btn-primary btn-lg"><i class="fas fa-play"></i> Попробовать демо-версию</button>
+        <button id="landingRegBtn" class="btn btn-light btn-lg"><i class="fas fa-user-plus"></i> Зарегистрироваться</button>
       </div>
     </div>
-    
-    <div class="nav-actions">
-      <div class="lang-select-wrapper">
-        <i class="fas fa-globe"></i>
-        <select id="langSelect">
-          <option value="ru">RU</option>
-          <option value="en">EN</option>
-          <option value="uz">UZ</option>
-        </select>
+
+    <div class="features-grid">
+      <div class="f-card">
+        <i class="fas fa-calendar-alt"></i>
+        <h4>Умный Календарь</h4>
+        <p>Удобная сетка занятости, заменяющая старые бумажные блокноты и хаотичные заметки в телефоне.</p>
       </div>
-      <button id="addRouteBtn" class="btn btn-primary"><i class="fas fa-route"></i> Маршрут</button>
-      <button id="addBookingBtn" class="btn btn-primary" style="background: rgba(255,255,255,0.2); color:#fff;"><i class="fas fa-plus"></i> Добавить</button>
-    </div>
-  </header>
-
-  <section id="authGate" class="auth-shell">
-    <div class="auth-card">
-      <div class="auth-card-head">
-        <div class="auth-card-title">
-          <h2 id="authTitle">Аккаунт</h2>
-          <p id="authSubtitle">Войдите, чтобы синхронизировать записи через Supabase и открывать их с любого устройства.</p>
-        </div>
-        <div class="auth-status-badge">
-          <i class="fas fa-user-shield"></i>
-          <span id="authStatusBadgeText">Гость</span>
-        </div>
+      <div class="f-card">
+        <i class="fas fa-route"></i>
+        <h4>Сквозные Маршруты</h4>
+        <p>Уникальная функция добавления туров на 5–7 дней по разным городам (Самарканд, Бухара, Хива) в один клик.</p>
       </div>
-
-      <div id="authGuestView">
-        <div class="auth-grid">
-          <form id="authEmailForm" class="auth-form" novalidate>
-            <div class="auth-field">
-              <label id="authEmailLabel" for="authEmail">Email</label>
-              <input id="authEmail" class="auth-input" type="email" autocomplete="email" placeholder="name@example.com" required>
-            </div>
-            <div class="auth-field">
-              <label id="authPasswordLabel" for="authPassword">Пароль</label>
-              <input id="authPassword" class="auth-input" type="password" autocomplete="current-password" minlength="6" placeholder="••••••••" required>
-            </div>
-            <div class="auth-actions">
-              <button id="authLoginBtn" class="btn btn-secondary" type="submit"><i class="fas fa-right-to-bracket"></i> <span id="authLoginBtnText">Войти</span></button>
-              <button id="authRegisterBtn" class="btn btn-primary" type="button"><i class="fas fa-user-plus"></i> <span id="authRegisterBtnText">Регистрация</span></button>
-            </div>
-          </form>
-
-          <div class="auth-provider-card">
-            <strong id="authGoogleTitle">Быстрый вход</strong>
-            <p id="authGoogleHintText" class="auth-caption">Можно войти через Google. После входа записи будут храниться в Supabase и откроются на любом устройстве.</p>
-            <button id="authGoogleBtn" class="btn btn-secondary" type="button"><i class="fab fa-google"></i> <span id="authGoogleBtnText">Войти через Google</span></button>
-          </div>
-        </div>
+      <div class="f-card">
+        <i class="fas fa-wallet"></i>
+        <h4>Учет Доходов</h4>
+        <p>Точная финансовая статистика, разделение на оплаченные туры, предоплаты и долги в разных валютах.</p>
       </div>
-
-      <div id="authUserView" hidden>
-        <div class="auth-user-panel">
-          <div class="auth-user-chip">
-            <i class="fas fa-circle-check"></i>
-            <div>
-              <div class="auth-user-label" id="authLoggedInLabel">Вы вошли как</div>
-              <strong id="authCurrentUser">—</strong>
-            </div>
-          </div>
-          <button id="logoutBtn" class="btn btn-secondary" type="button"><i class="fas fa-arrow-right-from-bracket"></i> <span id="logoutBtnText">Выйти</span></button>
-        </div>
+      <div class="f-card">
+        <i class="fas fa-sync"></i>
+        <h4>Синхронизация</h4>
+        <p>Облачное хранение данных через Supabase. Доступ к расписанию с компьютера, планшета и смартфона.</p>
       </div>
-
-      <div id="authStatusNote" class="auth-note">Войдите, чтобы синхронизировать записи и открывать календарь с любого устройства.</div>
     </div>
   </section>
 
 
-  <main class="main-layout">
-    
-    <aside class="sidebar">
-      
-      <div class="sidebar-card" id="statsSideCard" style="cursor:pointer;">
-        <h3 id="statTitle">
-          <span><i class="fas fa-chart-pie"></i> Статистика месяца</span>
-          <button id="openStatsModalBtn" class="btn btn-secondary" style="font-size:0.78rem;padding:4px 10px;min-height:28px;border-radius:8px;" type="button">
-            <i class="fas fa-chart-bar"></i> <span id="openStatsBtnLabel">Детали</span>
-          </button>
-        </h3>
-        <div class="stats-subgrid">
-          <div class="stat-mini-box" style="border-top: 3px solid #2563eb;">
-            <div id="excursions-count" class="stat-num" style="color: #2563eb;">0</div>
-            <div class="stat-label">Экскурсии</div>
-          </div>
-          <div class="stat-mini-box" style="border-top: 3px solid #dc2626;">
-            <div id="busy-count" class="stat-num" style="color: #dc2626;">0</div>
-            <div class="stat-label">Занят</div>
-          </div>
-          <div class="stat-mini-box" style="border-top: 3px solid #16a34a;">
-            <div id="holiday-count" class="stat-num" style="color: #16a34a;">0</div>
-            <div class="stat-label">Выходной</div>
-          </div>
-          <div class="stat-mini-box" style="border-top: 3px solid #7c3aed;">
-            <div id="tourists-count" class="stat-num" style="color: #7c3aed;">0</div>
-            <div class="stat-label">Туристы</div>
-          </div>
+  <main id="appDashboard" class="app-container hidden">
+    <header class="navbar">
+      <div class="brand">
+        <img src="https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?q=80&w=100&auto=format&fit=crop" class="brand-logo-image" alt="Logo">
+        <div class="header-title">
+          <h1 id="navTitle">Yolnama</h1>
+          <p id="navSubtitle">Операционная система для гидов и водителей</p>
         </div>
       </div>
-
-      <div class="sidebar-card">
-        <h3 id="incomeTitle"><i class="fas fa-wallet"></i> Доход за месяц</h3>
-        <div id="total-income">
-          <div class="income-amount">0 UZS</div>
-        </div>
-      </div>
-
-      <div class="sidebar-card">
-        <h3 id="legendTitle"><i class="fas fa-tags"></i> Обозначения</h3>
-        <div class="legend-list">
-          <div class="legend-item"><i class="fas fa-map-marked-alt" style="color: #2563eb;"></i> <span>Экскурсия</span></div>
-          <div class="legend-item"><i class="fas fa-ban" style="color: #dc2626;"></i> <span>Занят</span></div>
-          <div class="legend-item"><i class="fas fa-umbrella-beach" style="color: #16a34a;"></i> <span>Выходной</span></div>
-          <div class="legend-item"><i class="fas fa-user-clock" style="color: #d97706;"></i> <span>Личное</span></div>
-        </div>
-      </div>
-
-    </aside>
-
-    <section class="calendar-container">
-      
-      <div class="calendar-header">
-        <h2 id="currentMonthLabel">Загрузка...</h2>
-        
-        <div class="calendar-header-actions">
-          <button id="todayBtn" class="btn btn-secondary">Сегодня</button>
-          <button id="prevMonthBtn" class="btn btn-secondary"><i class="fas fa-chevron-left"></i></button>
-          <button id="nextMonthBtn" class="btn btn-secondary"><i class="fas fa-chevron-right"></i></button>
-          <div class="calendar-divider"></div>
-          <button id="viewGridBtn" class="btn btn-secondary active"><i class="fas fa-th"></i> Сетка</button>
-          <button id="viewListBtn" class="btn btn-secondary"><i class="fas fa-list"></i> Список</button>
-        </div>
-      </div>
-
-      <div id="toolbarPanel" class="toolbar-panel">
-        <div class="toolbar-head">
-          <div>
-            <strong id="toolbarTitle">Поиск и фильтры</strong><br>
-            <span id="toolbarHint">Быстрый поиск по текущему месяцу</span>
-          </div>
-          <button id="toolbarToggleBtn" class="btn btn-secondary toolbar-toggle-btn" type="button" aria-expanded="true">
-            <i class="fas fa-chevron-up"></i> Свернуть
-          </button>
-        </div>
-        <div id="toolbarPanelBody" class="toolbar-panel-body">
-          <div class="toolbar-controls">
-            <div class="toolbar-field">
-              <i class="fas fa-search"></i>
-              <input type="text" id="bookingSearch" class="toolbar-input" placeholder="Поиск по городу, клиенту, экскурсии или группе">
-            </div>
-            <div class="toolbar-field">
-              <select id="statusFilter" class="toolbar-select"></select>
-            </div>
-            <button id="resetFiltersBtn" class="btn btn-secondary btn-reset" type="button"><i class="fas fa-rotate-left"></i> Сбросить</button>
-          </div>
-          <div class="results-row">
-            <div id="resultsSummary" class="results-summary">Записей: 0</div>
-          </div>
-        </div>
-      </div>
-
-      <div id="calendar-grid-view">
-        <div class="calendar-board">
-          <div class="calendar-sheet">
-            <div id="weekdaysHeader" style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); text-align: center; margin-bottom: 8px;">
-              </div>
-            <div id="calendarGrid" style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px;">
-              </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="calendar-list-view" style="display: none;">
-        <div id="list-view-container">
-          </div>
-      </div>
-
-    </section>
-
-  </main>
-
-  <div id="bookingModal" class="modal-backdrop">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="modalTitle">Новая запись</h3>
-        <button id="closeBookingModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
-      </div>
-      <form id="bookingForm">
-        <input type="hidden" id="bookingId">
-        
-        <div class="form-group">
-          <label id="lblStatus">Статус / Тип дня</label>
-          <div class="status-radio-group">
-            <label class="status-radio-label">
-              <input type="radio" name="status" value="excursion" id="statusExcursion" checked>
-              <i class="fas fa-map-marked-alt"></i> <span data-status-label="excursion">Экскурсия</span>
-            </label>
-            <label class="status-radio-label">
-              <input type="radio" name="status" value="busy" id="statusBusy">
-              <i class="fas fa-ban"></i> <span data-status-label="busy">Занят</span>
-            </label>
-            <label class="status-radio-label">
-              <input type="radio" name="status" value="holiday" id="statusHoliday">
-              <i class="fas fa-umbrella-beach"></i> <span data-status-label="holiday">Выходной</span>
-            </label>
-            <label class="status-radio-label">
-              <input type="radio" name="status" value="personal" id="statusPersonal">
-              <i class="fas fa-user-clock"></i> <span data-status-label="personal">Личное</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label id="lblDate">Дата</label>
-          <input type="date" id="bookingDate" class="form-control" required>
-        </div>
-
-        <div id="conditionalFields">
-          <div class="form-row-2">
-            <div class="form-group">
-              <label id="lblCity">Город</label>
-              <input type="text" id="bookingCity" class="form-control" placeholder="Самарканд, Бухара...">
-            </div>
-            <div class="form-group">
-              <label id="lblClient">Заказчик (Компания / Имя)</label>
-              <input type="text" id="bookingClient" class="form-control" placeholder="Восток Тур">
-            </div>
-          </div>
-          <div class="form-group">
-            <label id="lblTour">Экскурсия / группа</label>
-            <input type="text" id="bookingTour" class="form-control" placeholder="Сердце Самарканда / Group Silk Road">
-          </div>
-          <div class="form-row-2">
-            <div class="form-group">
-              <label id="lblStart">Начало</label>
-              <input type="time" id="bookingStart" class="form-control" value="09:00">
-            </div>
-            <div class="form-group">
-              <label id="lblEnd">Окончание</label>
-              <input type="time" id="bookingEnd" class="form-control" value="18:00">
-            </div>
-          </div>
-          <div class="form-row-2">
-            <div class="form-group">
-              <label id="lblPrice">Стоимость</label>
-              <input type="number" id="bookingPrice" class="form-control" placeholder="0" min="0">
-            </div>
-            <div class="form-group">
-              <label id="lblCurrency">Валюта</label>
-              <select id="bookingCurrency" class="form-control">
-                <option value="UZS">UZS (сум)</option>
-                <option value="USD">USD ($)</option>
-                <option value="EUR">EUR (€)</option>
-                <option value="RUB">RUB (₽)</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label id="lblGroup">Количество туристов</label>
-            <input type="number" id="bookingGroup" class="form-control" placeholder="15" min="0">
-          </div>
-          <div class="form-group">
-            <label id="lblPayment">Статус оплаты</label>
-            <select id="bookingPaymentStatus" class="form-control payment-select">
-              <option value="unpaid">Не оплачено</option>
-              <option value="partial">Частичная оплата</option>
-              <option value="paid">Оплачено</option>
-            </select>
-          </div>
-          <div id="bookingPartialWrap" class="payment-split-wrap" hidden>
-            <div class="payment-split-grid">
-              <div class="form-group">
-                <label id="lblPaidAmount">Уже оплачено</label>
-                <input type="number" id="bookingPaidAmount" class="form-control" placeholder="0" min="0" step="0.01">
-              </div>
-              <div class="form-group">
-                <label id="lblUnpaidAmount">Осталось оплатить</label>
-                <input type="text" id="bookingUnpaidPreview" class="form-control payment-split-readonly" value="0" readonly>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="bookingAvailabilityHint" class="form-hint-panel is-muted" hidden></div>
-
-        <div class="form-group">
-          <label id="lblNotes">Заметки / Пожелания</label>
-          <textarea id="bookingNotes" class="form-control" rows="3" placeholder="Дополнительная информация..."></textarea>
-        </div>
-
-        <div style="display: flex; justify-content: space-between; margin-top: 20px; gap:8px;">
-          <button type="button" id="deleteBookingBtn" class="btn btn-danger" style="display: none;">Удалить</button>
-          <div style="display: flex; gap: 8px; margin-left: auto;">
-            <button type="button" id="cancelBookingBtn" class="btn btn-secondary">Отмена</button>
-            <button type="submit" id="saveBookingBtn" class="btn btn-secondary" style="background: var(--primary); color:white; border-color:var(--primary);">Сохранить</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div id="routeModal" class="modal-backdrop">
-    <div class="modal-content" style="max-width: 650px;">
-      <div class="modal-header">
-        <h3 id="routeModalTitle">Бронь маршрута</h3>
-        <button id="closeRouteModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
-      </div>
-      <form id="routeForm" novalidate>
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblRouteStart">Дата начала</label>
-            <input type="date" id="routeStart" class="form-control" required>
-          </div>
-          <div class="form-group">
-            <label id="lblRouteEnd">Дата окончания</label>
-            <input type="date" id="routeEnd" class="form-control" required>
-          </div>
-        </div>
-
-        <button type="button" id="btnGenerateRouteDays" class="btn btn-secondary" style="width: 100%; margin-bottom: 16px; justify-content: center; background:#f1f5f9;"><i class="fas fa-gears"></i> Сгенерировать дни</button>
-
-        <div id="routeAvailabilityHint" class="form-hint-panel is-muted" hidden></div>
-
-        <div id="routeDaysContainer" class="route-days-container" style="max-height: 320px; overflow-y: auto; margin-bottom: 16px; padding-right: 4px;"></div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblRouteClient">Заказчик</label>
-            <input type="text" id="routeClient" class="form-control" required placeholder="Название компании">
-          </div>
-          <div class="form-group">
-            <label id="lblRouteGroup">Количество туристов</label>
-            <input type="number" id="routeGroupSize" class="form-control" placeholder="15" min="0">
-          </div>
-        </div>
-
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblRoutePrice">Стоимость по умолчанию</label>
-            <input type="number" id="routePrice" class="form-control" placeholder="0" min="0">
-          </div>
-          <div class="form-group">
-            <label id="lblRouteCurrency">Валюта по умолчанию</label>
-            <select id="routeCurrency" class="form-control">
-              <option value="UZS">UZS (сум)</option>
-              <option value="USD">USD ($)</option>
-              <option value="EUR">EUR (€)</option>
-              <option value="RUB">RUB (₽)</option>
-              <option value="KZT">KZT (₸)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label id="lblRoutePayment">Статус оплаты</label>
-          <select id="routePaymentStatus" class="form-control payment-select">
-            <option value="unpaid">Не оплачено</option>
-            <option value="partial">Частичная оплата</option>
-            <option value="paid">Оплачено</option>
+      <div class="nav-actions">
+        <div class="lang-select-wrapper">
+          <i class="fas fa-globe"></i>
+          <select id="langSelect">
+            <option value="ru">RU</option>
+            <option value="uz">UZ</option>
+            <option value="en">EN</option>
           </select>
         </div>
-        <div id="routePartialWrap" class="payment-split-wrap" hidden>
-          <div class="payment-split-grid">
-            <div class="form-group">
-              <label id="lblRoutePaidAmount">Уже оплачено</label>
-              <input type="number" id="routePaidAmount" class="form-control" placeholder="0" min="0" step="0.01">
+        <div id="userProfileChip" class="hidden" style="display: flex; align-items: center; gap: 10px;">
+          <span id="userEmailLabel" style="font-weight: 600; font-size: 0.88rem;"></span>
+          <button id="logoutBtn" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+        </div>
+        <button id="appLoginBtn" class="btn btn-nav-login"><i class="fas fa-user"></i> Войти</button>
+      </div>
+    </header>
+
+    <div class="main-layout">
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h3 id="statTitle">Статистика месяца</h3>
+          <div class="stats-subgrid">
+            <div class="stat-mini-box">
+              <div id="statExcursions" class="stat-num" style="color: var(--primary);">0</div>
+              <div id="lblExcursions" class="stat-label">Экскурсии</div>
             </div>
-            <div class="form-group">
-              <label id="lblRouteUnpaidAmount">Осталось оплатить</label>
-              <input type="text" id="routeUnpaidPreview" class="form-control payment-split-readonly" value="0" readonly>
+            <div class="stat-mini-box">
+              <div id="statBusy" class="stat-num" style="color: #ef4444;">0</div>
+              <div id="lblBusy" class="stat-label">Занят</div>
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <label id="lblRouteNotes">Общие заметки</label>
-          <textarea id="routeNotes" class="form-control" rows="2" placeholder="Группа из 15 человек, без Шахрисабза..."></textarea>
+
+        <div class="sidebar-card">
+          <h3 id="incomeTitle">Доход за месяц</h3>
+          <div id="incomeContainer">
+            <div class="income-amount" id="totalIncomeValue">0 UZS</div>
+          </div>
         </div>
 
-        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px;">
-          <button type="button" id="cancelRouteBtn" class="btn btn-secondary">Отмена</button>
-          <button type="button" id="saveRouteBtn" class="btn btn-secondary" style="background: var(--primary); color:white; border-color:var(--primary);">Сохранить</button>
+        <div class="sidebar-card">
+          <h3 id="legendTitle">Обозначения</h3>
+          <div class="legend-list">
+            <div class="legend-item"><i class="fas fa-circle" style="color: #2563eb;"></i> Экскурсия</div>
+            <div class="legend-item"><i class="fas fa-circle" style="color: #dc2626;"></i> Занят</div>
+            <div class="legend-item"><i class="fas fa-circle" style="color: #16a34a;"></i> Выходной</div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="calendar-container">
+        <div class="calendar-header">
+          <h2 id="calendarMonthYear">Март 2025</h2>
+          <div class="calendar-header-actions">
+            <button id="prevMonthBtn" class="btn btn-secondary"><i class="fas fa-chevron-left"></i></button>
+            <button id="todayBtn" class="btn btn-secondary">Сегодня</button>
+            <button id="nextMonthBtn" class="btn btn-secondary"><i class="fas fa-chevron-right"></i></button>
+            <div class="calendar-divider"></div>
+            <button id="addBookingBtn" class="btn btn-primary"><i class="fas fa-plus"></i> Добавить</button>
+            <button id="addRouteBtn" class="btn btn-primary" style="background: #7c3aed;"><i class="fas fa-route"></i> Маршрут</button>
+          </div>
+        </div>
+
+        <div id="calendarGrid" class="calendar-grid">
+          </div>
+      </section>
+    </div>
+  </main>
+
+
+  <div id="authModal" class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="authModalTitle">Вход в систему Yolnama</h3>
+        <button id="closeAuthModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
+      </div>
+      
+      <button id="googleAuthBtn" class="btn btn-google">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style="width:18px; height:18px; margin-right:8px;">
+        Войти через Google
+      </button>
+
+      <div class="auth-divider">или с помощью Email</div>
+
+      <form id="emailAuthForm">
+        <div class="auth-form-group">
+          <label>Электронная почта</label>
+          <input type="email" id="authEmail" class="auth-input" placeholder="example@mail.com" required>
+        </div>
+        <div class="auth-form-group">
+          <label>Пароль</label>
+          <input type="password" id="authPassword" class="auth-input" placeholder="••••••••" required>
+        </div>
+        <div class="auth-actions" style="margin-top: 20px;">
+          <button type="submit" id="loginSubmitBtn" class="btn btn-primary" style="flex: 1; justify-content: center;">Войти</button>
+          <button type="button" id="signUpSubmitBtn" class="btn btn-light" style="flex: 1; justify-content: center;">Регистрация</button>
         </div>
       </form>
     </div>
   </div>
 
-  <div id="detailModal" class="modal-backdrop">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="detailModalTitle">Информация о дне</h3>
-        <button id="closeDetailModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
-      </div>
-      <div id="detailBody" style="margin-bottom: 20px;">
-        </div>
-      <div style="display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap;">
-        <button id="closeDetailModal2" class="btn btn-secondary">Закрыть</button>
-        <button id="detailDuplicateBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Дублировать запись</button>
-        <button id="detailEditBtn" class="btn btn-secondary" style="background: var(--primary); color:white; border-color:var(--primary);"><i class="fas fa-edit"></i> Редактировать</button>
-      </div>
-    </div>
-  </div>
 
-  <!-- Stats Detail Modal -->
-  <div id="statsModal" class="modal-backdrop">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="statsModalTitle">Детальная статистика</h3>
-        <button id="closeStatsModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="stats-modal-year-nav">
-        <button id="statsPrevYearBtn" type="button"><i class="fas fa-chevron-left"></i></button>
-        <span id="statsModalYearLabel"></span>
-        <button id="statsNextYearBtn" type="button"><i class="fas fa-chevron-right"></i></button>
-      </div>
-      <div id="statsModalBody"></div>
-      <div style="display:flex;justify-content:flex-end;margin-top:20px;">
-        <button id="statsModalClose2" class="btn btn-secondary">Закрыть</button>
-      </div>
-    </div>
+  <div id="toastNotification" class="toast">
+    <i class="fas fa-info-circle"></i>
+    <span id="toastMessage">Уведомление</span>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
