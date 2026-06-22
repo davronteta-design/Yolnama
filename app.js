@@ -289,7 +289,7 @@ let currentView = 'grid';
 let generatedRouteDays = [];
 let statsYear = new Date().getFullYear();
 
-// DOM Elements Календаря
+// DOM элементы календаря
 const currentMonthYearEl = document.getElementById('currentMonthYear');
 const gridViewEl = document.getElementById('gridView');
 const listViewEl = document.getElementById('listView');
@@ -339,7 +339,7 @@ const partialPaymentRow = document.getElementById('partialPaymentRow');
 const routePartialPaymentFields = document.getElementById('routePartialPaymentFields');
 const langSelect = document.getElementById('langSelect');
 
-// Элементы Интеграции Лендинга
+// Элементы лендинга
 const landingPage = document.getElementById('landingPageSection');
 const mainApp = document.getElementById('mainPmsAppContainer');
 const authModal = document.getElementById('customAuthModal');
@@ -354,18 +354,22 @@ function showToast(msg) {
 }
 
 function enterAppAsGuest() {
-  landingPage.classList.add('hidden-panel');
-  mainApp.classList.remove('hidden-panel');
+  landingPage.classList.add('pms-app-hidden');
+  mainApp.classList.remove('pms-app-hidden');
   document.getElementById('authGuestState').classList.remove('hidden');
   document.getElementById('authUserState').classList.add('hidden');
-  document.getElementById('pmsUserBadge').innerHTML = `<span>Гость</span>`;
+  document.getElementById('pmsUserBadge').innerHTML = `<span>Режим: <b>Демо (Гость)</b></span>`;
+  
   render();
-  window.dispatchEvent(new Event('resize')); 
+  // Форсируем пересчёт размеров сетки CSS Grid после переключения дисплея
+  setTimeout(() => {
+    window.dispatchEvent(new Event('resize'));
+  }, 50);
 }
 
 function enterAppAsUser(email) {
-  landingPage.classList.add('hidden-panel');
-  mainApp.classList.remove('hidden-panel');
+  landingPage.classList.add('pms-app-hidden');
+  mainApp.classList.remove('pms-app-hidden');
   authModal.classList.remove('active');
   
   document.getElementById('authGuestState').classList.add('hidden');
@@ -373,28 +377,29 @@ function enterAppAsUser(email) {
   document.getElementById('userEmailDisplay').textContent = email;
   
   document.getElementById('pmsUserBadge').innerHTML = `
-    <span>Вошли как: <b>${email}</b></span>
-    <button class="btn-logout-pms" id="topLogoutBtn">Выйти</button>
+    <span>Аккаунт: <b>${email}</b></span>
+    <button class="btn-top-logout" id="topLogoutBtn">Выйти</button>
   `;
   
   document.getElementById('topLogoutBtn')?.addEventListener('click', logoutAction);
+  
   render();
-  window.dispatchEvent(new Event('resize'));
+  setTimeout(() => {
+    window.dispatchEvent(new Event('resize'));
+  }, 50);
 }
 
 function logoutAction() {
-  mainApp.classList.add('hidden-panel');
-  landingPage.classList.remove('hidden-panel');
-  showToast("Вы вышли из аккаунта");
+  mainApp.classList.add('pms-app-hidden');
+  landingPage.classList.remove('pms-app-hidden');
+  showToast("Вы вышли из системы");
 }
 
-// Инициализация
 function init() {
   loadData();
   setupEventListeners();
   setupLandingListeners();
   applyLanguage(langSelect.value);
-  // Первоначально приложение скрыто, рендерится при входе в демо/аккаунт
 }
 
 function loadData() {
@@ -413,7 +418,7 @@ function saveData() {
 function setupLandingListeners() {
   document.getElementById('landingDemoBtn')?.addEventListener('click', () => {
     enterAppAsGuest();
-    showToast("Демо-режим успешно запущен!");
+    showToast("Демо-режим запущен успешно!");
   });
 
   document.getElementById('landingLoginBtn')?.addEventListener('click', () => {
@@ -431,37 +436,37 @@ function setupLandingListeners() {
   });
 
   document.getElementById('fakeGoogleBtn')?.addEventListener('click', () => {
-    enterAppAsUser("demo@google.com");
-    showToast("Вход через Google успешно имитирован!");
+    enterAppAsUser("demo_google@yolnama.uz");
+    showToast("Вход через Google успешен!");
   });
 
   document.getElementById('fakeSubmitReg')?.addEventListener('click', () => {
-    enterAppAsUser("new_user@yolnama.com");
-    showToast("Регистрация успешно имитирована!");
+    enterAppAsUser("new_user@yolnama.uz");
+    showToast("Вы успешно зарегистрировались!");
   });
 
   document.getElementById('fakeAuthForm')?.addEventListener('submit', (e) => {
     e.preventDefault();
-    const email = document.getElementById('fakeEmailInput').value || "demo@yolnama.com";
+    const email = document.getElementById('fakeEmailInput').value || "user@yolnama.uz";
     enterAppAsUser(email);
-    showToast("Вход успешно имитирован!");
+    showToast("Успешный вход в аккаунт!");
   });
 
-  // Кнопки из сайдбара приложения
+  // Сайдбарные кнопки внутри самого календаря
   safeClick('loginBtn', () => {
-    const email = document.getElementById('authEmailInput').value || "demo@yolnama.com";
+    const email = document.getElementById('authEmailInput').value || "user@yolnama.uz";
     enterAppAsUser(email);
-    showToast("Вход успешно имитирован!");
+    showToast("Успешный вход!");
   });
   
   safeClick('registerBtn', () => {
-    enterAppAsUser("demo@yolnama.com");
-    showToast("Регистрация успешно имитирована!");
+    enterAppAsUser("new_user@yolnama.uz");
+    showToast("Регистрация успешна!");
   });
 
   safeClick('googleBtn', () => {
-    enterAppAsUser("demo@google.com");
-    showToast("Вход через Google успешно имитирован!");
+    enterAppAsUser("google_user@yolnama.uz");
+    showToast("Вход через Google успешен!");
   });
 
   safeClick('logoutBtn', logoutAction);
@@ -971,15 +976,13 @@ function getFilteredBookings() {
 }
 
 function render() {
-  // Защита: рендерим календарь только если само PMS-приложение открыто на экране
-  if (mainApp.classList.contains('hidden-panel')) return;
+  if (mainApp.classList.contains('pms-app-hidden')) return;
 
   const activeBookings = getFilteredBookings();
   if (filterCountEl) filterCountEl.textContent = activeBookings.length;
 
   const year = currentNavDate.getFullYear();
   const month = currentNavDate.getMonth();
-  const lang = langSelect.value;
 
   const names = [
     "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", 
@@ -1229,7 +1232,6 @@ function renderStatsModalContent() {
   statsModalBody.innerHTML = tableHtml;
 }
 
-// Хелперы и функции защиты твоего оригинального кода
 function formatCurrency(value, currency) {
   const locale = langSelect.value === 'en' ? 'en-US' : 'ru-RU';
   return `${(value || 0).toLocaleString(locale, { maximumFractionDigits: 0 })} ${currency || 'UZS'}`;
@@ -1282,5 +1284,4 @@ function escapeHtml(value) {
     .replace(/'/g, '&#039;');
 }
 
-// Запуск
 init();
