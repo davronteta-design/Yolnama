@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="style.css">
   
   <style>
-    /* Стили для интеграции Главной страницы (Landing Page) */
-    .landing-page {
+    /* Изолированные стили Главной страницы (Landing Page), которые не пересекаются с календарем */
+    .landing-wrapper {
       background: linear-gradient(135deg, #f4f7fe 0%, #e6faf0 100%);
       min-height: 100vh;
       padding-bottom: 60px;
@@ -30,20 +30,20 @@
     }
     .l-brand { display: flex; align-items: center; gap: 12px; }
     .l-brand i { font-size: 2rem; color: #31c978; }
-    .l-brand h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin: 0; }
+    .l-brand h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin: 0; color: #0f172a; }
     
-    .hero {
+    .hero-section {
       max-width: 1200px;
       margin: 60px auto 40px;
       padding: 0 20px;
       text-align: center;
     }
-    .hero h2 { font-size: 3rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.03em; margin-bottom: 20px; color: #0f172a; }
-    .hero h2 span { color: #31c978; }
-    .hero p { font-size: 1.2rem; color: #64748b; max-width: 700px; margin: 0 auto 35px; line-height: 1.6; }
-    .hero-actions { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .hero-section h2 { font-size: 3rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.03em; margin-bottom: 20px; color: #0f172a; }
+    .hero-section h2 span { color: #31c978; }
+    .hero-section p { font-size: 1.2rem; color: #64748b; max-width: 700px; margin: 0 auto 35px; line-height: 1.6; }
+    .hero-buttons { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
 
-    .features-grid {
+    .features-container {
       max-width: 1100px;
       margin: 60px auto 0;
       padding: 0 20px;
@@ -51,120 +51,116 @@
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 24px;
     }
-    .f-card { background: #ffffff; padding: 30px 24px; border-radius: 20px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0; transition: transform 0.2s; text-align: left; }
-    .f-card:hover { transform: translateY(-4px); }
-    .f-card i { font-size: 2rem; color: #31c978; margin-bottom: 16px; }
-    .f-card h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
-    .f-card p { font-size: 0.92rem; color: #64748b; line-height: 1.5; margin: 0; }
+    .f-item { background: #ffffff; padding: 30px 24px; border-radius: 20px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0; text-align: left; }
+    .f-item i { font-size: 2rem; color: #31c978; margin-bottom: 16px; }
+    .f-item h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: #0f172a; }
+    .f-item p { font-size: 0.92rem; color: #64748b; line-height: 1.5; margin: 0; }
 
-    .hidden-panel { display: none !important; }
+    /* Временные классы управления видимостью */
+    .pms-app-hidden { display: none !important; }
 
-    /* Всплывающий кастомный попап авторизации */
-    .auth-modal-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 99999; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
-    .auth-modal-backdrop.active { opacity: 1; pointer-events: auto; }
-    .auth-modal-content { background: #ffffff; border-radius: 20px; width: 100%; max-width: 420px; padding: 30px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; transform: scale(0.95); transition: transform 0.2s ease; position: relative; }
-    .auth-modal-backdrop.active .auth-modal-content { transform: scale(1); }
-    .auth-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .auth-modal-header h3 { font-size: 1.25rem; font-weight: 800; margin: 0; }
-    .auth-close-btn { background: none; border: none; font-size: 1.2rem; color: #64748b; cursor: pointer; }
-    .auth-group { margin-bottom: 16px; text-align: left; }
-    .auth-group label { display: block; margin-bottom: 6px; font-size: 0.85rem; font-weight: 700; color: #64748b; }
-    .auth-input-field { width: 100%; height: 44px; border-radius: 12px; border: 1px solid #e2e8f0; padding: 0 14px; font-size: 0.95rem; outline: none; box-sizing: border-box; }
-    .auth-input-field:focus { border-color: #31c978; }
-    .auth-divider { text-align: center; margin: 16px 0; color: #64748b; font-size: 0.85rem; position: relative; }
-    .auth-divider::before, .auth-divider::after { content: ''; position: absolute; top: 50%; width: 35%; height: 1px; background: #e2e8f0; }
-    .auth-divider::before { left: 0; } .auth-divider::after { right: 0; }
+    /* Попап авторизации на лендинге */
+    .l-auth-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 99999; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+    .l-auth-backdrop.active { opacity: 1; pointer-events: auto; }
+    .l-auth-box { background: #ffffff; border-radius: 20px; width: 100%; max-width: 420px; padding: 30px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; position: relative; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .l-auth-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .l-auth-header h3 { font-size: 1.25rem; font-weight: 800; margin: 0; color: #0f172a; }
+    .l-auth-close { background: none; border: none; font-size: 1.2rem; color: #64748b; cursor: pointer; }
+    .l-auth-group { margin-bottom: 16px; text-align: left; }
+    .l-auth-group label { display: block; margin-bottom: 6px; font-size: 0.85rem; font-weight: 700; color: #64748b; }
+    .l-auth-input { width: 100%; height: 44px; border-radius: 12px; border: 1px solid #e2e8f0; padding: 0 14px; font-size: 0.95rem; outline: none; box-sizing: border-box; }
+    .l-auth-input:focus { border-color: #31c978; }
+    .l-auth-divider { text-align: center; margin: 16px 0; color: #64748b; font-size: 0.85rem; position: relative; }
+    .l-auth-divider::before, .l-auth-divider::after { content: ''; position: absolute; top: 50%; width: 32%; height: 1px; background: #e2e8f0; }
+    .l-auth-divider::before { left: 0; } .l-auth-divider::after { right: 0; }
     
-    /* Тост уведомления */
-    .toast-alert { position: fixed; top: 24px; right: 24px; background: #10b981; color: #fff; padding: 16px 24px; border-radius: 12px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); font-weight: 600; z-index: 100000; transform: translateY(-20px); opacity: 0; transition: all 0.3s ease; pointer-events: none; }
-    .toast-alert.show { transform: translateY(0); opacity: 1; }
-
-    /* Шапка профиля в самом приложении */
-    .user-profile-bar { display: flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.15); padding: 6px 12px; border-radius: 10px; font-size: 0.85rem; }
-    .btn-logout-pms { background: #ef4444; color: #fff; border: none; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-left: 8px; }
+    /* Тост уведомлений */
+    .pms-toast { position: fixed; top: 24px; right: 24px; background: #10b981; color: #fff; padding: 16px 24px; border-radius: 12px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); font-weight: 600; z-index: 100000; transform: translateY(-20px); opacity: 0; transition: all 0.3s ease; pointer-events: none; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .pms-toast.show { transform: translateY(0); opacity: 1; }
+    .btn-top-logout { background: #ef4444; color: #fff; border: none; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-left: 12px; font-size: 0.8rem; }
   </style>
 </head>
 <body>
 
-  <section id="landingPageSection" class="landing-page">
+  <div id="landingPageSection" class="landing-wrapper">
     <nav class="landing-nav">
       <div class="l-brand">
         <i class="fas fa-map-marked-alt"></i>
         <h1>Yolnama</h1>
       </div>
       <div>
-        <button id="landingLoginBtn" class="btn btn-primary" style="background:#31c978; color:white;"><i class="fas fa-sign-in-alt"></i> Войти</button>
+        <button id="landingLoginBtn" class="btn btn-primary" style="background:#31c978; color:white; border:none; height:40px; padding:0 20px; border-radius:10px; font-weight:600; cursor:pointer;"><i class="fas fa-sign-in-alt"></i> Войти</button>
       </div>
     </nav>
 
-    <div class="hero">
+    <div class="hero-section">
       <h2>Операционная система для <br><span>гидов и водителей</span> в Узбекистане</h2>
       <p>Первая полноценная PMS-система для управления туристическими заказами. Храните брони, ведите многодневные сквозные маршруты по городам и автоматически контролируйте свою занятость.</p>
-      <div class="hero-actions">
-        <button id="landingDemoBtn" class="btn btn-primary" style="background:#31c978; color:white; padding:14px 28px; font-size:1rem;"><i class="fas fa-play"></i> Попробовать демо-версию</button>
-        <button id="landingRegisterBtn" class="btn btn-secondary" style="padding:14px 28px; font-size:1rem;"><i class="fas fa-user-plus"></i> Зарегистрироваться</button>
+      <div class="hero-buttons">
+        <button id="landingDemoBtn" class="btn btn-primary" style="background:#31c978; color:white; border:none; padding:14px 28px; font-size:1rem; border-radius:12px; font-weight:700; cursor:pointer;"><i class="fas fa-play"></i> Попробовать демо-версию</button>
+        <button id="landingRegisterBtn" class="btn btn-secondary" style="padding:14px 28px; font-size:1rem; border-radius:12px; font-weight:700; cursor:pointer; background:white; border:1px solid #e2e8f0;"><i class="fas fa-user-plus"></i> Зарегистрироваться</button>
       </div>
     </div>
 
-    <div class="features-grid">
-      <div class="f-card">
+    <div class="features-container">
+      <div class="f-item">
         <i class="fas fa-calendar-alt"></i>
         <h4>Умный Календарь</h4>
         <p>Удобная сетка занятости, заменяющая старые бумажные блокноты и хаотичные заметки в телефоне.</p>
       </div>
-      <div class="f-card">
+      <div class="f-item">
         <i class="fas fa-route"></i>
         <h4>Сквозные Маршруты</h4>
         <p>Уникальная функция добавления туров на 5–7 дней по разным городам (Самарканд, Бухара, Хива) в один клик.</p>
       </div>
-      <div class="f-card">
+      <div class="f-item">
         <i class="fas fa-wallet"></i>
         <h4>Учет Доходов</h4>
         <p>Точная финансовая статистика, разделение на оплаченные туры, предоплаты и долги в разных валютах.</p>
       </div>
-      <div class="f-card">
+      <div class="f-item">
         <i class="fas fa-sync"></i>
         <h4>Облачное хранение данных</h4>
         <p>Безопасное хранение информации. Доступ к вашему расписанию и заказам с компьютера, планшета и смартфона.</p>
       </div>
     </div>
-  </section>
+  </div>
 
-  <div id="customAuthModal" class="auth-modal-backdrop">
-    <div class="auth-modal-content">
-      <div class="auth-modal-header">
+  <div id="customAuthModal" class="l-auth-backdrop">
+    <div class="l-auth-box">
+      <div class="l-auth-header">
         <h3 id="authModalHeaderTitle">Вход в Yolnama</h3>
-        <button id="closeAuthModalBtn" class="auth-close-btn"><i class="fas fa-times"></i></button>
+        <button id="closeAuthModalBtn" class="l-auth-close"><i class="fas fa-times"></i></button>
       </div>
       
-      <button id="fakeGoogleBtn" class="btn btn-light" style="width:100%; display:flex; justify-content:center; align-items:center; gap:10px; border:1px solid #e2e8f0; background:#fff; height:44px; border-radius:12px; font-weight:600; cursor:pointer;">
+      <button id="fakeGoogleBtn" style="width:100%; display:flex; justify-content:center; align-items:center; gap:10px; border:1px solid #e2e8f0; background:#fff; height:44px; border-radius:12px; font-weight:600; cursor:pointer; font-family:inherit;">
         <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style="width:18px; height:18px;">
         Войти через Google
       </button>
 
-      <div class="auth-divider">или через почту</div>
+      <div class="l-auth-divider">или через почту</div>
 
       <form id="fakeAuthForm">
-        <div class="auth-group">
+        <div class="l-auth-group">
           <label>Электронная почта</label>
-          <input type="email" id="fakeEmailInput" class="auth-input-field" placeholder="name@example.com" required>
+          <input type="email" id="fakeEmailInput" class="l-auth-input" placeholder="name@example.com" required>
         </div>
-        <div class="auth-group">
+        <div class="l-auth-group">
           <label>Пароль</label>
-          <input type="password" class="auth-input-field" placeholder="••••••••" required>
+          <input type="password" class="l-auth-input" placeholder="••••••••" required>
         </div>
         <div style="display:flex; gap:10px; margin-top:20px;">
-          <button type="submit" id="fakeSubmitLogin" class="btn btn-primary" style="flex:1; background:#31c978; color:white; justify-content:center;">Войти</button>
-          <button type="button" id="fakeSubmitReg" class="btn btn-light" style="flex:1; justify-content:center; border:1px solid #e2e8f0;">Регистрация</button>
+          <button type="submit" class="btn btn-primary" style="flex:1; background:#31c978; color:white; height:44px; border-radius:12px; border:none; font-weight:600; cursor:pointer;">Войти</button>
+          <button type="button" id="fakeSubmitReg" class="btn btn-light" style="flex:1; height:44px; border-radius:12px; border:1px solid #e2e8f0; background:white; font-weight:600; cursor:pointer;">Регистрация</button>
         </div>
       </form>
     </div>
   </div>
 
-  <div id="pmsToast" class="toast-alert">Успешно!</div>
+  <div id="pmsToast" class="pms-toast">Успешно!</div>
 
 
-  <div id="mainPmsAppContainer" class="hidden-panel">
+  <div id="mainPmsAppContainer" class="pms-app-hidden">
     
     <header class="navbar">
       <div class="brand">
@@ -176,9 +172,7 @@
       </div>
       
       <div class="nav-actions">
-        <div id="pmsUserBadge" class="user-profile-bar" style="color:white; margin-right:10px;">
-          <span>Гость</span>
-        </div>
+        <div id="pmsUserBadge" style="color:var(--text-muted); font-size:0.85rem; display:flex; align-items:center;"></div>
 
         <div class="lang-select-wrapper">
           <i class="fas fa-globe"></i>
@@ -528,7 +522,6 @@
               <option value="USD">USD ($)</option>
               <option value="EUR">EUR (€)</option>
               <option value="RUB">RUB (₽)</option>
-              <option value="KZT">KZT (₸)</option>
             </select>
           </div>
         </div>
@@ -601,6 +594,7 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>
 </html>
