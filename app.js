@@ -1,123 +1,9 @@
 /* ===================================================
    YOLNAMA — CRM & PMS SYSTEM FOR GUIDES
-   Интеграция Лендинга, имитация логики авторизации
+   Полное восстановление логики и интеграция Лендинга
    =================================================== */
 
 'use strict';
-
-// -------------------------------------------------------------------------
-//  МОДУЛЬ ИНТЕГРАЦИИ ГЛАВНОЙ СТРАНИЦЫ И МАКЕТА АВТОРИЗАЦИИ (НОВЫЙ БЛОК)
-// -------------------------------------------------------------------------
-document.addEventListener('DOMContentLoaded', () => {
-  // Навигация с Главной Страницы в Кабинет (Демо режим)
-  const landingPage = document.getElementById('landingPageSection');
-  const mainApp = document.getElementById('mainPmsAppContainer');
-  const authModal = document.getElementById('customAuthModal');
-  const toast = document.getElementById('pmsToast');
-
-  const showToast = (msg) => {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
-  };
-
-  const enterAppAsGuest = () => {
-    landingPage.classList.add('hidden-panel');
-    mainApp.classList.remove('hidden-panel');
-    document.getElementById('authGuestState').classList.remove('hidden');
-    document.getElementById('authUserState').classList.add('hidden');
-    document.getElementById('pmsUserBadge').innerHTML = `<span>Гость</span>`;
-    window.dispatchEvent(new Event('resize')); // Корректировка сетки календаря
-  };
-
-  const enterAppAsUser = (email) => {
-    landingPage.classList.add('hidden-panel');
-    mainApp.classList.remove('hidden-panel');
-    authModal.classList.remove('active');
-    
-    // Переключаем форму в Сайдбаре в состояние авторизованного пользователя
-    document.getElementById('authGuestState').classList.add('hidden');
-    document.getElementById('authUserState').classList.remove('hidden');
-    document.getElementById('userEmailDisplay').textContent = email;
-    
-    // Обновляем плашку в шапке
-    document.getElementById('pmsUserBadge').innerHTML = `
-      <span>Вы вошли как: <b>${email}</b></span>
-      <button class="btn-logout-pms" id="topLogoutBtn">Выйти</button>
-    `;
-    
-    // Навешиваем событие на новую верхнюю кнопку выхода
-    document.getElementById('topLogoutBtn').addEventListener('click', logoutAction);
-    
-    window.dispatchEvent(new Event('resize'));
-  };
-
-  const logoutAction = () => {
-    mainApp.classList.add('hidden-panel');
-    landingPage.classList.remove('hidden-panel');
-    showToast("Вы вышли из аккаунта");
-  };
-
-  // Кнопки на лендинге
-  document.getElementById('landingDemoBtn')?.addEventListener('click', () => {
-    enterAppAsGuest();
-    showToast("Демо-режим успешно запущен!");
-  });
-
-  document.getElementById('landingLoginBtn')?.addEventListener('click', () => {
-    authModal.classList.add('active');
-  });
-
-  document.getElementById('landingRegisterBtn')?.addEventListener('click', () => {
-    document.getElementById('authModalHeaderTitle').textContent = "Регистрация в Yolnama";
-    authModal.classList.add('active');
-  });
-
-  document.getElementById('closeAuthModalBtn')?.addEventListener('click', () => {
-    authModal.classList.remove('active');
-  });
-
-  // Кнопки внутри всплывающего окна авторизации
-  document.getElementById('fakeGoogleBtn')?.addEventListener('click', () => {
-    enterAppAsUser("demo@google.com");
-    showToast("Вход через Google успешно имитирован!");
-  });
-
-  document.getElementById('fakeSubmitReg')?.addEventListener('click', () => {
-    enterAppAsUser("new_user@yolnama.com");
-    showToast("Регистрация успешно имитирована!");
-  });
-
-  document.getElementById('fakeAuthForm')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    enterAppAsUser("demo@yolnama.com");
-    showToast("Вход успешно имитирован!");
-  });
-
-  // Связка кнопок внутри оригинального сайдбара (чтобы они тоже работали)
-  document.getElementById('loginBtn')?.addEventListener('click', () => {
-    const email = document.getElementById('authEmailInput').value || "demo@yolnama.com";
-    enterAppAsUser(email);
-    showToast("Вход успешно имитирован!");
-  });
-  
-  document.getElementById('registerBtn')?.addEventListener('click', () => {
-    enterAppAsUser("demo@yolnama.com");
-    showToast("Регистрация успешно имитирована!");
-  });
-
-  document.getElementById('googleBtn')?.addEventListener('click', () => {
-    enterAppAsUser("demo@google.com");
-    showToast("Вход через Google успешно имитирован!");
-  });
-
-  document.getElementById('logoutBtn')?.addEventListener('click', logoutAction);
-});
-
-
-// -------------------------------------------------------------------------
-//  ТВОЙ ОРИГИНАЛЬНЫЙ СУПЕР-РАБОЧИЙ КОД БЕЗ ИЗМЕНЕНИЙ (СОХРАНЕНО 100% ФУНКЦИЙ)
-// -------------------------------------------------------------------------
 
 const API = 'tables/bookings';
 const STORAGE_KEYS = {
@@ -399,10 +285,11 @@ const TRANSLATIONS = {
 
 let bookings = [];
 let currentNavDate = new Date();
-let currentView = 'grid'; // 'grid' or 'list'
+let currentView = 'grid'; 
 let generatedRouteDays = [];
+let statsYear = new Date().getFullYear();
 
-// DOM Elements
+// DOM Elements Календаря
 const currentMonthYearEl = document.getElementById('currentMonthYear');
 const gridViewEl = document.getElementById('gridView');
 const listViewEl = document.getElementById('listView');
@@ -411,31 +298,26 @@ const nextMonthBtn = document.getElementById('nextMonth');
 const todayBtn = document.getElementById('todayBtnClick');
 const setViewGridBtn = document.getElementById('setViewGrid');
 const setViewListBtn = document.getElementById('setViewList');
-
 const addBtn = document.getElementById('addBtn');
 const routeBtn = document.getElementById('routeBtn');
 const fabAdd = document.getElementById('fabAdd');
-
 const bookingModal = document.getElementById('bookingModal');
 const closeBookingModal = document.getElementById('closeBookingModal');
 const cancelBookingBtn = document.getElementById('cancelBookingBtn');
 const bookingForm = document.getElementById('bookingForm');
 const deleteBookingBtn = document.getElementById('deleteBookingBtn');
-
 const routeModal = document.getElementById('routeModal');
 const closeRouteModal = document.getElementById('closeRouteModal');
 const cancelRouteBtn = document.getElementById('cancelRouteBtn');
 const routeForm = document.getElementById('routeForm');
 const generateRouteDaysBtn = document.getElementById('generateRouteDaysBtn');
 const routeDaysContainer = document.getElementById('routeDaysContainer');
-
 const detailModal = document.getElementById('detailModal');
 const closeDetailModal = document.getElementById('closeDetailModal');
 const detailCloseBtn = document.getElementById('detailCloseBtn');
 const detailEditBtn = document.getElementById('detailEditBtn');
 const detailDuplicateBtn = document.getElementById('detailDuplicateBtn');
 const detailModalBody = document.getElementById('detailModalBody');
-
 const statsModal = document.getElementById('statsModal');
 const closeStatsModal = document.getElementById('closeStatsModal');
 const statsModalClose2 = document.getElementById('statsModalClose2');
@@ -444,31 +326,75 @@ const statsModalBody = document.getElementById('statsModalBody');
 const statsModalYearLabel = document.getElementById('statsModalYearLabel');
 const statsPrevYearBtn = document.getElementById('statsPrevYearBtn');
 const statsNextYearBtn = document.getElementById('statsNextYearBtn');
-
-let statsYear = new Date().getFullYear();
-
 const searchInput = document.getElementById('searchInput');
 const filterStatus = document.getElementById('filterStatus');
 const resetFiltersBtn = document.getElementById('resetFilters');
 const filterCountEl = document.getElementById('filterCount');
-
 const toggleFilterBar = document.getElementById('toggleFilterBar');
 const filterBarContent = document.getElementById('filterBarContent');
 const btnToggleFilters = document.getElementById('btnToggleFilters');
 const filterChevron = document.getElementById('filterChevron');
-
 const excursionFields = document.getElementById('excursionFields');
 const partialPaymentRow = document.getElementById('partialPaymentRow');
 const routePartialPaymentFields = document.getElementById('routePartialPaymentFields');
-
 const langSelect = document.getElementById('langSelect');
 
-// Init
+// Элементы Интеграции Лендинга
+const landingPage = document.getElementById('landingPageSection');
+const mainApp = document.getElementById('mainPmsAppContainer');
+const authModal = document.getElementById('customAuthModal');
+const toast = document.getElementById('pmsToast');
+
+function showToast(msg) {
+  if (toast) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+}
+
+function enterAppAsGuest() {
+  landingPage.classList.add('hidden-panel');
+  mainApp.classList.remove('hidden-panel');
+  document.getElementById('authGuestState').classList.remove('hidden');
+  document.getElementById('authUserState').classList.add('hidden');
+  document.getElementById('pmsUserBadge').innerHTML = `<span>Гость</span>`;
+  render();
+  window.dispatchEvent(new Event('resize')); 
+}
+
+function enterAppAsUser(email) {
+  landingPage.classList.add('hidden-panel');
+  mainApp.classList.remove('hidden-panel');
+  authModal.classList.remove('active');
+  
+  document.getElementById('authGuestState').classList.add('hidden');
+  document.getElementById('authUserState').classList.remove('hidden');
+  document.getElementById('userEmailDisplay').textContent = email;
+  
+  document.getElementById('pmsUserBadge').innerHTML = `
+    <span>Вошли как: <b>${email}</b></span>
+    <button class="btn-logout-pms" id="topLogoutBtn">Выйти</button>
+  `;
+  
+  document.getElementById('topLogoutBtn')?.addEventListener('click', logoutAction);
+  render();
+  window.dispatchEvent(new Event('resize'));
+}
+
+function logoutAction() {
+  mainApp.classList.add('hidden-panel');
+  landingPage.classList.remove('hidden-panel');
+  showToast("Вы вышли из аккаунта");
+}
+
+// Инициализация
 function init() {
   loadData();
   setupEventListeners();
+  setupLandingListeners();
   applyLanguage(langSelect.value);
-  render();
+  // Первоначально приложение скрыто, рендерится при входе в демо/аккаунт
 }
 
 function loadData() {
@@ -484,83 +410,145 @@ function saveData() {
   localStorage.setItem(STORAGE_KEYS.bookings, JSON.stringify(bookings));
 }
 
-function setupEventListeners() {
-  prevMonthBtn.addEventListener('click', () => { currentNavDate.setMonth(currentNavDate.getMonth() - 1); render(); });
-  nextMonthBtn.addEventListener('click', () => { currentNavDate.setMonth(currentNavDate.getMonth() + 1); render(); });
-  todayBtn.addEventListener('click', () => { currentNavDate = new Date(); render(); });
+function setupLandingListeners() {
+  document.getElementById('landingDemoBtn')?.addEventListener('click', () => {
+    enterAppAsGuest();
+    showToast("Демо-режим успешно запущен!");
+  });
 
-  setViewGridBtn.addEventListener('click', () => { currentView = 'grid'; updateViewToggle(); render(); });
-  setViewListBtn.addEventListener('click', () => { currentView = 'list'; updateViewToggle(); render(); });
+  document.getElementById('landingLoginBtn')?.addEventListener('click', () => {
+    document.getElementById('authModalHeaderTitle').textContent = "Вход в Yolnama";
+    authModal.classList.add('active');
+  });
+
+  document.getElementById('landingRegisterBtn')?.addEventListener('click', () => {
+    document.getElementById('authModalHeaderTitle').textContent = "Регистрация в Yolnama";
+    authModal.classList.add('active');
+  });
+
+  document.getElementById('closeAuthModalBtn')?.addEventListener('click', () => {
+    authModal.classList.remove('active');
+  });
+
+  document.getElementById('fakeGoogleBtn')?.addEventListener('click', () => {
+    enterAppAsUser("demo@google.com");
+    showToast("Вход через Google успешно имитирован!");
+  });
+
+  document.getElementById('fakeSubmitReg')?.addEventListener('click', () => {
+    enterAppAsUser("new_user@yolnama.com");
+    showToast("Регистрация успешно имитирована!");
+  });
+
+  document.getElementById('fakeAuthForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('fakeEmailInput').value || "demo@yolnama.com";
+    enterAppAsUser(email);
+    showToast("Вход успешно имитирован!");
+  });
+
+  // Кнопки из сайдбара приложения
+  safeClick('loginBtn', () => {
+    const email = document.getElementById('authEmailInput').value || "demo@yolnama.com";
+    enterAppAsUser(email);
+    showToast("Вход успешно имитирован!");
+  });
+  
+  safeClick('registerBtn', () => {
+    enterAppAsUser("demo@yolnama.com");
+    showToast("Регистрация успешно имитирована!");
+  });
+
+  safeClick('googleBtn', () => {
+    enterAppAsUser("demo@google.com");
+    showToast("Вход через Google успешно имитирован!");
+  });
+
+  safeClick('logoutBtn', logoutAction);
+}
+
+function setupEventListeners() {
+  safeClick('prevMonth', () => { currentNavDate.setMonth(currentNavDate.getMonth() - 1); render(); });
+  safeClick('nextMonth', () => { currentNavDate.setMonth(currentNavDate.getMonth() + 1); render(); });
+  safeClick('todayBtnClick', () => { currentNavDate = new Date(); render(); });
+
+  safeClick('setViewGrid', () => { currentView = 'grid'; updateViewToggle(); render(); });
+  safeClick('setViewList', () => { currentView = 'list'; updateViewToggle(); render(); });
 
   const openNewBooking = () => openBookingModalForNew(toDateString(new Date()));
-  addBtn.addEventListener('click', openNewBooking);
-  fabAdd.addEventListener('click', openNewBooking);
-  routeBtn.addEventListener('click', openRouteModalNew);
+  safeClick('addBtn', openNewBooking);
+  safeClick('fabAdd', openNewBooking);
+  safeClick('routeBtn', openRouteModalNew);
 
-  closeBookingModal.addEventListener('click', () => closeModal(bookingModal));
-  cancelBookingBtn.addEventListener('click', () => closeModal(bookingModal));
-  bookingForm.addEventListener('submit', onBookingFormSubmit);
-  deleteBookingBtn.addEventListener('click', onDeleteBookingClick);
+  safeClick('closeBookingModal', () => closeModal(bookingModal));
+  safeClick('cancelBookingBtn', () => closeModal(bookingModal));
+  safeSubmit('bookingForm', onBookingFormSubmit);
+  safeClick('deleteBookingBtn', onDeleteBookingClick);
 
-  closeRouteModal.addEventListener('click', () => closeModal(routeModal));
-  cancelRouteBtn.addEventListener('click', () => closeModal(routeModal));
-  generateRouteDaysBtn.addEventListener('click', onGenerateRouteDaysClick);
-  routeForm.addEventListener('submit', onRouteFormSubmit);
+  safeClick('closeRouteModal', () => closeModal(routeModal));
+  safeClick('cancelRouteBtn', () => closeModal(routeModal));
+  safeClick('generateRouteDaysBtn', onGenerateRouteDaysClick);
+  safeSubmit('routeForm', onRouteFormSubmit);
 
-  closeDetailModal.addEventListener('click', () => closeModal(detailModal));
-  detailCloseBtn.addEventListener('click', () => closeModal(detailModal));
-  detailEditBtn.addEventListener('click', onDetailEditClick);
-  detailDuplicateBtn.addEventListener('click', onDetailDuplicateClick);
+  safeClick('closeDetailModal', () => closeModal(detailModal));
+  safeClick('detailCloseBtn', () => closeModal(detailModal));
+  safeClick('detailEditBtn', onDetailEditClick);
+  safeClick('detailDuplicateBtn', onDetailDuplicateClick);
 
-  closeStatsModal.addEventListener('click', () => closeModal(statsModal));
-  statsModalClose2.addEventListener('click', () => closeModal(statsModal));
-  viewStatsDetailsBtn.addEventListener('click', openStatsModalView);
-  statsPrevYearBtn.addEventListener('click', () => { statsYear--; renderStatsModalContent(); });
-  statsNextYearBtn.addEventListener('click', () => { statsYear++; renderStatsModalContent(); });
+  safeClick('closeStatsModal', () => closeModal(statsModal));
+  safeClick('statsModalClose2', () => closeModal(statsModal));
+  safeClick('viewStatsDetailsBtn', openStatsModalView);
+  safeClick('statsPrevYearBtn', () => { statsYear--; renderStatsModalContent(); });
+  safeClick('statsNextYearBtn', () => { statsYear++; renderStatsModalContent(); });
 
-  searchInput.addEventListener('input', render);
-  filterStatus.addEventListener('change', render);
-  resetFiltersBtn.addEventListener('click', () => { searchInput.value = ''; filterStatus.value = ''; render(); });
+  searchInput?.addEventListener('input', render);
+  filterStatus?.addEventListener('change', render);
+  
+  safeClick('resetFilters', () => { 
+    if (searchInput) searchInput.value = ''; 
+    if (filterStatus) filterStatus.value = ''; 
+    render(); 
+  });
 
-  toggleFilterBar.addEventListener('click', (e) => {
+  toggleFilterBar?.addEventListener('click', (e) => {
     if (e.target.closest('#btnToggleFilters')) return;
     filterBarContent.classList.toggle('hidden');
     const isCollapsed = filterBarContent.classList.contains('hidden');
     const lang = langSelect.value;
     setTxtBySelector('#btnToggleFilters span', isCollapsed ? TRANSLATIONS[lang].toolbarExpand : TRANSLATIONS[lang].toolbarCollapse);
-    filterChevron.className = isCollapsed ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+    if (filterChevron) filterChevron.className = isCollapsed ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
   });
 
-  btnToggleFilters.addEventListener('click', () => {
+  btnToggleFilters?.addEventListener('click', () => {
     filterBarContent.classList.toggle('hidden');
     const isCollapsed = filterBarContent.classList.contains('hidden');
     const lang = langSelect.value;
     setTxtBySelector('#btnToggleFilters span', isCollapsed ? TRANSLATIONS[lang].toolbarExpand : TRANSLATIONS[lang].toolbarCollapse);
-    filterChevron.className = isCollapsed ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+    if (filterChevron) filterChevron.className = isCollapsed ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
   });
 
   document.querySelectorAll('input[name="status"]').forEach(radio => {
     radio.addEventListener('change', (e) => toggleFormFieldsByStatus(e.target.value));
   });
 
-  document.getElementById('bookingPaymentStatus').addEventListener('change', (e) => {
+  document.getElementById('bookingPaymentStatus')?.addEventListener('change', (e) => {
     if (e.target.value === 'partial') {
-      document.getElementById('partialPaymentRow').classList.remove('hidden');
+      partialPaymentRow.classList.remove('hidden');
       updateRemainingAmount();
     } else {
-      document.getElementById('partialPaymentRow').classList.add('hidden');
+      partialPaymentRow.classList.add('hidden');
     }
   });
 
-  document.getElementById('bookingPrice').addEventListener('input', updateRemainingAmount);
-  document.getElementById('bookingPaidAmount').addEventListener('input', updateRemainingAmount);
+  document.getElementById('bookingPrice')?.addEventListener('input', updateRemainingAmount);
+  document.getElementById('bookingPaidAmount')?.addEventListener('input', updateRemainingAmount);
 
-  document.getElementById('routePaymentStatus').addEventListener('change', (e) => {
+  document.getElementById('routePaymentStatus')?.addEventListener('change', (e) => {
     if (e.target.value === 'partial') routePartialPaymentFields.classList.remove('hidden');
     else routePartialPaymentFields.classList.add('hidden');
   });
 
-  langSelect.addEventListener('change', (e) => {
+  langSelect?.addEventListener('change', (e) => {
     applyLanguage(e.target.value);
     render();
   });
@@ -610,8 +598,10 @@ function applyLanguage(lang) {
   setTxt('resultsLabel', t.resultsLabel);
   setTxt('statusAll', t.statusAll);
 
-  const isCollapsed = filterBarContent.classList.contains('hidden');
-  setTxtBySelector('#btnToggleFilters span', isCollapsed ? t.toolbarExpand : t.toolbarCollapse);
+  if (filterBarContent) {
+    const isCollapsed = filterBarContent.classList.contains('hidden');
+    setTxtBySelector('#btnToggleFilters span', isCollapsed ? t.toolbarExpand : t.toolbarCollapse);
+  }
 
   setTxt('lblStatusType', t.lblStatusType);
   setTxt('formExcursion', t.formExcursion);
@@ -672,45 +662,45 @@ function applyLanguage(lang) {
 
 function updateViewToggle() {
   if (currentView === 'grid') {
-    setViewGridBtn.classList.add('active');
-    setViewListBtn.classList.remove('active');
-    gridViewEl.classList.remove('hidden');
-    listViewEl.classList.add('hidden');
+    setViewGridBtn?.classList.add('active');
+    setViewListBtn?.classList.remove('active');
+    gridViewEl?.classList.remove('hidden');
+    listViewEl?.classList.add('hidden');
   } else {
-    setViewGridBtn.classList.remove('active');
-    setViewListBtn.classList.add('active');
-    gridViewEl.classList.add('hidden');
-    listViewEl.classList.remove('hidden');
+    setViewGridBtn?.classList.remove('active');
+    setViewListBtn?.classList.add('active');
+    gridViewEl?.classList.add('hidden');
+    listViewEl?.classList.remove('hidden');
   }
 }
 
 function openModal(modal) {
-  modal.classList.add('active');
+  modal?.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 
 function closeModal(modal) {
-  modal.classList.remove('active');
+  modal?.classList.remove('active');
   document.body.style.overflow = '';
 }
 
 function toggleFormFieldsByStatus(status) {
   if (status === 'excursion') {
-    excursionFields.classList.remove('hidden');
+    excursionFields?.classList.remove('hidden');
   } else {
-    excursionFields.classList.add('hidden');
+    excursionFields?.classList.add('hidden');
   }
 }
 
 function openBookingModalForNew(dateStr) {
   const lang = langSelect.value;
   setTxt('modalTitle', TRANSLATIONS[lang].modalTitleNew);
-  bookingForm.reset();
+  bookingForm?.reset();
   setVal('bookingId', '');
   setVal('bookingDate', dateStr);
-  deleteBookingBtn.classList.add('hidden');
+  deleteBookingBtn?.classList.add('hidden');
   toggleFormFieldsByStatus('excursion');
-  partialPaymentRow.classList.add('hidden');
+  partialPaymentRow?.classList.add('hidden');
   openModal(bookingModal);
 }
 
@@ -723,7 +713,7 @@ function openBookingModalForEdit(id) {
   setVal('bookingId', item.id);
   setVal('bookingDate', item.date);
 
-  const radio = bookingForm.querySelector(`input[name="status"][value="${item.status}"]`);
+  const radio = bookingForm?.querySelector(`input[name="status"][value="${item.status}"]`);
   if (radio) radio.checked = true;
   toggleFormFieldsByStatus(item.status);
 
@@ -740,13 +730,13 @@ function openBookingModalForEdit(id) {
   setVal('bookingNotes', item.notes || '');
 
   if (item.payment_status === 'partial') {
-    partialPaymentRow.classList.remove('hidden');
+    partialPaymentRow?.classList.remove('hidden');
     updateRemainingAmount();
   } else {
-    partialPaymentRow.classList.add('hidden');
+    partialPaymentRow?.classList.add('hidden');
   }
 
-  deleteBookingBtn.classList.remove('hidden');
+  deleteBookingBtn?.classList.remove('hidden');
   openModal(bookingModal);
 }
 
@@ -800,10 +790,10 @@ function onDeleteBookingClick() {
 }
 
 function openRouteModalNew() {
-  routeForm.reset();
+  routeForm?.reset();
   generatedRouteDays = [];
-  routeDaysContainer.innerHTML = '';
-  routePartialPaymentFields.classList.add('hidden');
+  if (routeDaysContainer) routeDaysContainer.innerHTML = '';
+  routePartialPaymentFields?.classList.add('hidden');
   setVal('routeStartDate', toDateString(new Date()));
   setVal('routeEndDate', toDateString(new Date()));
   openModal(routeModal);
@@ -816,7 +806,7 @@ function onGenerateRouteDaysClick() {
 
   const start = new Date(startStr);
   const end = new Date(endStr);
-  routeDaysContainer.innerHTML = '';
+  if (routeDaysContainer) routeDaysContainer.innerHTML = '';
   generatedRouteDays = [];
 
   if (end < start) return;
@@ -837,7 +827,7 @@ function onGenerateRouteDaysClick() {
       <input type="text" placeholder="${TRANSLATIONS[lang].lblCity}" data-idx="${i}" class="route-day-city" style="padding: 6px; border:1px solid var(--border); border-radius:var(--radius-xs);">
       <input type="text" placeholder="${TRANSLATIONS[lang].lblNotes}" data-idx="${i}" class="route-day-note" style="padding: 6px; border:1px solid var(--border); border-radius:var(--radius-xs);">
     `;
-    routeDaysContainer.appendChild(row);
+    routeDaysContainer?.appendChild(row);
   });
 }
 
@@ -899,7 +889,7 @@ function openDetailModalView(id) {
   const item = bookings.find(b => b.id === id);
   if (!item) return;
 
-  detailModalBody.setAttribute('data-id', id);
+  detailModalBody?.setAttribute('data-id', id);
   const lang = langSelect.value;
   const t = TRANSLATIONS[lang];
 
@@ -931,17 +921,17 @@ function openDetailModalView(id) {
     html += `<div class="detail-row" style="flex-direction:column; align-items:flex-start; gap:4px; margin-top:8px;"><strong>${t.lblNotes}:</strong><span style="background:var(--surface2); width:100%; padding:8px; border-radius:var(--radius-xs); border:1px solid var(--border); font-size:.85rem;">${escapeHtml(item.notes)}</span></div>`;
   }
 
-  detailModalBody.innerHTML = html;
+  if (detailModalBody) detailModalBody.innerHTML = html;
   openModal(detailModal);
 }
 
 function onDetailEditClick() {
-  const id = detailModalBody.getAttribute('data-id');
+  const id = detailModalBody?.getAttribute('data-id');
   if (id) openBookingModalForEdit(id);
 }
 
 function onDetailDuplicateClick() {
-  const id = detailModalBody.getAttribute('data-id');
+  const id = detailModalBody?.getAttribute('data-id');
   const item = bookings.find(b => b.id === id);
   if (!item) return;
 
@@ -959,8 +949,8 @@ function onDetailDuplicateClick() {
 }
 
 function getFilteredBookings() {
-  const q = searchInput.value.toLowerCase().trim();
-  const st = filterStatus.value;
+  const q = searchInput?.value.toLowerCase().trim() || '';
+  const st = filterStatus?.value || '';
   const targetYear = currentNavDate.getFullYear();
   const targetMonth = currentNavDate.getMonth();
 
@@ -981,19 +971,22 @@ function getFilteredBookings() {
 }
 
 function render() {
+  // Защита: рендерим календарь только если само PMS-приложение открыто на экране
+  if (mainApp.classList.contains('hidden-panel')) return;
+
   const activeBookings = getFilteredBookings();
-  filterCountEl.textContent = activeBookings.length;
+  if (filterCountEl) filterCountEl.textContent = activeBookings.length;
 
   const year = currentNavDate.getFullYear();
   const month = currentNavDate.getMonth();
   const lang = langSelect.value;
 
-  const names = TRANSLATIONS[lang] ? [
+  const names = [
     "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", 
     "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
-  ] : [];
+  ];
   
-  if (names.length) {
+  if (currentMonthYearEl) {
     currentMonthYearEl.textContent = `${names[month]} ${year}`;
   }
 
@@ -1027,21 +1020,24 @@ function renderSidebarStats(monthItems) {
   setTxt('statTourists', tourists);
 
   const incList = document.getElementById('incomeList');
-  incList.innerHTML = '';
-  const curs = Object.keys(incMap);
-  if (curs.length === 0) {
-    incList.innerHTML = `<div class="income-row">0 UZS</div>`;
-  } else {
-    curs.forEach(c => {
-      const row = document.createElement('div');
-      row.className = 'income-row';
-      row.innerHTML = `<span>${c}:</span> <strong>${incMap[c].toLocaleString()}</strong>`;
-      incList.appendChild(row);
-    });
+  if (incList) {
+    incList.innerHTML = '';
+    const curs = Object.keys(incMap);
+    if (curs.length === 0) {
+      incList.innerHTML = `<div class="income-row">0 UZS</div>`;
+    } else {
+      curs.forEach(c => {
+        const row = document.createElement('div');
+        row.className = 'income-row';
+        row.innerHTML = `<span>${c}:</span> <strong>${incMap[c].toLocaleString()}</strong>`;
+        incList.appendChild(row);
+      });
+    }
   }
 }
 
 function renderGridView(year, month, activeBookings) {
+  if (!gridViewEl) return;
   gridViewEl.innerHTML = '';
   
   const labels = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
@@ -1078,8 +1074,6 @@ function renderGridView(year, month, activeBookings) {
     cell.appendChild(dayNum);
 
     const dayItems = activeBookings.filter(b => b.date === dStr);
-    
-    // Sort items by status order
     dayItems.sort((a,b) => STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status));
 
     const pillsContainer = document.createElement('div');
@@ -1113,7 +1107,6 @@ function renderGridView(year, month, activeBookings) {
 
     cell.appendChild(pillsContainer);
 
-    // Calc direct total day income to display on bottom corner
     const dayExcPrice = dayItems.filter(b => b.status === 'excursion').reduce((acc, curr) => acc + (curr.price || 0), 0);
     if (dayExcPrice > 0) {
       const incBadge = document.createElement('div');
@@ -1131,21 +1124,21 @@ function renderGridView(year, month, activeBookings) {
 }
 
 function renderListView(activeBookings) {
+  if (!listViewEl) return;
   listViewEl.innerHTML = '';
+  const lang = langSelect.value;
+  
   if (activeBookings.length === 0) {
-    const lang = langSelect.value;
     listViewEl.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:40px 20px;">${TRANSLATIONS[lang].noEvents}</div>`;
     return;
   }
 
-  // Sort by date then by time
   activeBookings.sort((a,b) => a.date.localeCompare(b.date));
 
   activeBookings.forEach(item => {
     const row = document.createElement('div');
     row.className = 'list-item';
     
-    const lang = langSelect.value;
     const typeLabel = TRANSLATIONS[lang]['leg' + item.status.charAt(0).toUpperCase() + item.status.slice(1)];
     
     let sub = item.notes || '';
@@ -1174,7 +1167,8 @@ function openStatsModalView() {
 }
 
 function renderStatsModalContent() {
-  statsModalYearLabel.textContent = statsYear;
+  if (statsModalYearLabel) statsModalYearLabel.textContent = statsYear;
+  if (!statsModalBody) return;
   statsModalBody.innerHTML = '';
 
   const lang = langSelect.value;
@@ -1235,7 +1229,7 @@ function renderStatsModalContent() {
   statsModalBody.innerHTML = tableHtml;
 }
 
-// Global Helper Functions
+// Хелперы и функции защиты твоего оригинального кода
 function formatCurrency(value, currency) {
   const locale = langSelect.value === 'en' ? 'en-US' : 'ru-RU';
   return `${(value || 0).toLocaleString(locale, { maximumFractionDigits: 0 })} ${currency || 'UZS'}`;
@@ -1250,9 +1244,14 @@ function generateId() {
   return `id-${Math.random().toString(36).slice(2, 11)}`;
 }
 
-function setTxt(id, value) {
+function safeClick(id, callback) {
   const node = document.getElementById(id);
-  if (node) node.textContent = value;
+  if (node) node.addEventListener('click', callback);
+}
+
+function safeSubmit(id, callback) {
+  const node = document.getElementById(id);
+  if (node) node.addEventListener('submit', callback);
 }
 
 function getVal(id) {
@@ -1262,6 +1261,11 @@ function getVal(id) {
 function setVal(id, value) {
   const node = document.getElementById(id);
   if (node) node.value = value;
+}
+
+function setTxt(id, value) {
+  const node = document.getElementById(id);
+  if (node) node.textContent = value;
 }
 
 function setTxtBySelector(selector, value) {
@@ -1278,5 +1282,5 @@ function escapeHtml(value) {
     .replace(/'/g, '&#039;');
 }
 
-// Run App
+// Запуск
 init();
