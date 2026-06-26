@@ -1,3 +1,7 @@
+/* ===================================================
+   YOLNAMA — SPRINT 7 BRAND REFRESH
+   Мобильный календарь, фильтры, дублирование, улучшенный UX
+   =================================================== */
 const SUPABASE_URL = 'https://whpzbpzvdewmfgyrnpqh.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndocHpicHp2ZGV3bWZneXJucHFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExOTc3OTEsImV4cCI6MjA5Njc3Mzc5MX0.76Gs4ckl9jFD3QcR1gLDn3cN1rbmDz7b6xcYf9AJabQ';
 
