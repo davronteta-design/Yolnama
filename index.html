@@ -4,77 +4,210 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Yolnama — PMS для гидов и водителей</title>
-
+  <meta name="description" content="Yolnama — PMS система для гидов и водителей: календарь, маршруты, финансы и отчёты." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-  >
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Toast -->
-  <div id="toastContainer" class="toast-container"></div>
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
 
-  <!-- =========================
-       AUTH MODAL
-  ========================== -->
   <div id="authModal" class="modal-backdrop" aria-hidden="true">
-    <div class="auth-modal">
+    <div class="modal auth-modal">
       <button id="closeAuthModal" class="modal-close" type="button" aria-label="Закрыть">
         <i class="fas fa-times"></i>
       </button>
-
-      <div class="auth-modal-head">
+      <div class="modal-copy">
         <span class="section-badge">Авторизация</span>
         <h2>Войти / Регистрация</h2>
-        <p>
-          Вход через Email/Пароль или Google.  
-          На этом этапе это только аккуратный UI-слой, который мы потом безопасно
-          подключим к твоей текущей Supabase-логике.
-        </p>
+        <p>Красивый UI-слой для Email/Пароль и Google. На следующем этапе сюда аккуратно возвращается твоя существующая логика Supabase без поломки интерфейса.</p>
       </div>
-
-      <form class="auth-form" id="authForm">
+      <form id="authForm" class="stack-md">
         <label class="field">
           <span>Email</span>
-          <input type="email" id="authEmail" placeholder="you@example.com" />
+          <input id="authEmail" type="email" placeholder="demo@yolnama.com" />
         </label>
-
         <label class="field">
           <span>Пароль</span>
-          <input type="password" id="authPassword" placeholder="••••••••" />
+          <input id="authPassword" type="password" placeholder="••••••••" />
         </label>
-
         <div class="auth-actions">
-          <button type="submit" class="btn btn-primary">
-            <i class="fas fa-right-to-bracket"></i>
-            Войти
-          </button>
-
-          <button type="button" class="btn btn-secondary" id="registerBtn">
-            <i class="fas fa-user-plus"></i>
-            Регистрация
-          </button>
+          <button class="btn btn-primary" type="submit"><i class="fas fa-right-to-bracket"></i> Войти</button>
+          <button id="registerBtn" class="btn btn-secondary" type="button"><i class="fas fa-user-plus"></i> Регистрация</button>
         </div>
-
-        <button type="button" class="btn btn-google" id="googleAuthBtn">
-          <i class="fab fa-google"></i>
-          Войти через Google
-        </button>
+        <button id="googleAuthBtn" class="btn btn-google" type="button"><i class="fab fa-google"></i> Войти через Google</button>
       </form>
     </div>
   </div>
 
-  <!-- =========================
-       LANDING PAGE
-  ========================== -->
+  <div id="mobileSidebarBackdrop" class="drawer-backdrop" aria-hidden="true">
+    <aside class="mobile-drawer">
+      <div class="drawer-head">
+        <div>
+          <span class="section-badge">Навигация</span>
+          <h3>PMS разделы</h3>
+        </div>
+        <button id="closeMobileSidebar" class="modal-close" type="button" aria-label="Закрыть">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <nav class="sidebar-nav mobile-nav">
+        <button class="sidebar-link active" type="button" data-tab-target="calendarTabMobile">
+          <i class="fas fa-calendar-days"></i><span>Календарь</span>
+        </button>
+        <button class="sidebar-link" type="button" data-tab-target="routesTabMobile">
+          <i class="fas fa-route"></i><span>Мои маршруты</span>
+        </button>
+        <button class="sidebar-link" type="button" data-tab-target="financeTabMobile">
+          <i class="fas fa-wallet"></i><span>Финансы и отчёты</span>
+        </button>
+        <button class="sidebar-link" type="button" data-tab-target="settingsTabMobile">
+          <i class="fas fa-gear"></i><span>Настройки аккаунта</span>
+        </button>
+      </nav>
+    </aside>
+  </div>
+
+  <div id="bookingModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal modal-lg">
+      <div class="modal-head">
+        <div>
+          <span class="section-badge">Календарь</span>
+          <h3>Новая запись</h3>
+        </div>
+        <button class="modal-close js-close-modal" type="button"><i class="fas fa-times"></i></button>
+      </div>
+      <form class="stack-md">
+        <div class="form-grid cols-2">
+          <label class="field"><span>Дата</span><input type="date" /></label>
+          <label class="field"><span>Статус</span>
+            <select>
+              <option>Экскурсия</option>
+              <option>Занят</option>
+              <option>Выходной</option>
+              <option>Личное</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-grid cols-2">
+          <label class="field"><span>Город</span><input type="text" placeholder="Самарканд" /></label>
+          <label class="field"><span>Заказчик</span><input type="text" placeholder="Компания / Имя" /></label>
+        </div>
+        <label class="field"><span>Экскурсия / группа</span><input type="text" placeholder="Название тура или группы" /></label>
+        <div class="form-grid cols-3">
+          <label class="field"><span>Начало</span><input type="time" /></label>
+          <label class="field"><span>Окончание</span><input type="time" /></label>
+          <label class="field"><span>Туристы</span><input type="number" min="0" placeholder="0" /></label>
+        </div>
+        <div class="form-grid cols-2">
+          <label class="field"><span>Стоимость</span><input type="number" placeholder="0" /></label>
+          <label class="field"><span>Валюта</span>
+            <select>
+              <option>USD</option>
+              <option>EUR</option>
+              <option>UZS</option>
+              <option>RUB</option>
+            </select>
+          </label>
+        </div>
+        <label class="field"><span>Заметки</span><textarea rows="4" placeholder="Дополнительная информация"></textarea></label>
+        <div class="modal-actions">
+          <button class="btn btn-secondary js-close-modal" type="button">Отмена</button>
+          <button class="btn btn-primary" type="button">Сохранить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="routeModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal modal-xl">
+      <div class="modal-head">
+        <div>
+          <span class="section-badge">Маршруты</span>
+          <h3>Новый маршрут</h3>
+        </div>
+        <button class="modal-close js-close-modal" type="button"><i class="fas fa-times"></i></button>
+      </div>
+      <form class="stack-md">
+        <div class="form-grid cols-2">
+          <label class="field"><span>Дата начала</span><input type="date" /></label>
+          <label class="field"><span>Дата окончания</span><input type="date" /></label>
+        </div>
+        <div class="form-grid cols-2">
+          <label class="field"><span>Заказчик</span><input type="text" placeholder="Название компании" /></label>
+          <label class="field"><span>Количество туристов</span><input type="number" min="0" placeholder="0" /></label>
+        </div>
+        <div class="form-grid cols-2">
+          <label class="field"><span>Стоимость по умолчанию</span><input type="number" placeholder="100" /></label>
+          <label class="field"><span>Валюта</span>
+            <select>
+              <option>USD</option>
+              <option>EUR</option>
+              <option>UZS</option>
+            </select>
+          </label>
+        </div>
+        <label class="field"><span>Общие заметки</span><textarea rows="3" placeholder="Комментарий по маршруту"></textarea></label>
+
+        <div class="route-box">
+          <div class="route-box-head">
+            <strong>Дни маршрута</strong>
+            <button class="btn btn-secondary" type="button"><i class="fas fa-wand-magic-sparkles"></i> Сгенерировать дни</button>
+          </div>
+          <div class="route-row">
+            <span>12 июня</span>
+            <input type="text" placeholder="Город" />
+            <input type="text" placeholder="Экскурсия / группа" />
+            <input type="number" placeholder="Цена" />
+          </div>
+          <div class="route-row">
+            <span>13 июня</span>
+            <input type="text" placeholder="Город" />
+            <input type="text" placeholder="Экскурсия / группа" />
+            <input type="number" placeholder="Цена" />
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-secondary js-close-modal" type="button">Отмена</button>
+          <button class="btn btn-primary" type="button">Сохранить маршрут</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="statsModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal modal-xl">
+      <div class="modal-head">
+        <div>
+          <span class="section-badge">Отчёты</span>
+          <h3>Финансы и статистика</h3>
+        </div>
+        <button class="modal-close js-close-modal" type="button"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="stats-grid">
+        <div class="stats-card"><span>Экскурсии</span><strong>24</strong></div>
+        <div class="stats-card"><span>Занятые дни</span><strong>11</strong></div>
+        <div class="stats-card"><span>Туристы</span><strong>96</strong></div>
+        <div class="stats-card"><span>Доход</span><strong>$4 850</strong></div>
+      </div>
+      <div class="table-wrap">
+        <table class="stats-table">
+          <thead>
+            <tr><th>Месяц</th><th>Экскурсии</th><th>Занятые</th><th>Туристы</th><th>Доход</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Январь</td><td>8</td><td>3</td><td>29</td><td>$950</td></tr>
+            <tr><td>Февраль</td><td>6</td><td>2</td><td>20</td><td>$780</td></tr>
+            <tr><td>Март</td><td>10</td><td>6</td><td>47</td><td>$1 430</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <section id="landingPage" class="landing-page">
     <header class="landing-header">
       <div class="container navbar">
@@ -85,7 +218,6 @@
             <span>PMS для гидов и водителей</span>
           </div>
         </a>
-
         <div class="navbar-actions">
           <div class="lang-switcher">
             <i class="fas fa-globe"></i>
@@ -95,11 +227,7 @@
               <option value="uz">UZ</option>
             </select>
           </div>
-
-          <button id="openAuthBtn" class="btn btn-primary" type="button">
-            <i class="fas fa-user"></i>
-            Войти / Регистрация
-          </button>
+          <button id="openAuthBtn" class="btn btn-primary" type="button"><i class="fas fa-user"></i> Войти / Регистрация</button>
         </div>
       </div>
     </header>
@@ -107,62 +235,36 @@
     <main>
       <section class="hero-section">
         <div class="container hero-grid">
-          <div class="hero-content">
+          <div class="hero-copy">
             <span class="section-badge">Tourism PMS</span>
             <h1>Yolnama — Операционная система для гидов и водителей</h1>
-            <p>
-              Современная PMS/CRM-система для туризма в Узбекистане:
-              календарь занятости, многодневные маршруты, учёт доходов,
-              отчёты и удобная рабочая панель без визуального хаоса.
-            </p>
-
+            <p>Современная PMS/CRM-система для туризма в Узбекистане: календарь занятости, многодневные маршруты, учёт доходов, отчёты и аккуратная рабочая панель без визуального хаоса.</p>
             <div class="hero-actions">
-              <button id="demoEnterBtn" class="btn btn-primary btn-lg" type="button">
-                <i class="fas fa-play"></i>
-                Попробовать демо-версию
-              </button>
-
-              <button id="heroLoginBtn" class="btn btn-secondary btn-lg" type="button">
-                <i class="fas fa-right-to-bracket"></i>
-                Войти / Регистрация
-              </button>
+              <button id="demoEnterBtn" class="btn btn-primary btn-lg" type="button"><i class="fas fa-play"></i> Попробовать демо-версию</button>
+              <button id="heroLoginBtn" class="btn btn-secondary btn-lg" type="button"><i class="fas fa-right-to-bracket"></i> Войти / Регистрация</button>
             </div>
-
             <div class="hero-points">
-              <div class="hero-point">
-                <i class="fas fa-check-circle"></i>
-                <span>Авто-бронирование многодневных маршрутов</span>
-              </div>
-              <div class="hero-point">
-                <i class="fas fa-check-circle"></i>
-                <span>Календарь, доходы и отчеты в одном месте</span>
-              </div>
-              <div class="hero-point">
-                <i class="fas fa-check-circle"></i>
-                <span>Демо-режим для теста без обязательного входа</span>
-              </div>
+              <div class="hero-point"><i class="fas fa-check-circle"></i><span>Авто-бронирование многодневных маршрутов</span></div>
+              <div class="hero-point"><i class="fas fa-check-circle"></i><span>Календарь, доходы и отчёты в одном месте</span></div>
+              <div class="hero-point"><i class="fas fa-check-circle"></i><span>Демо-режим без обязательного входа</span></div>
             </div>
           </div>
-
           <div class="hero-panel">
             <div class="hero-panel-top">
               <span class="mini-pill blue">PMS</span>
               <span class="mini-pill green">Travel CRM</span>
             </div>
-
             <div class="hero-cards">
               <article class="hero-card blue">
                 <i class="fas fa-calendar-days"></i>
                 <h3>Календарь занятости</h3>
                 <p>Контроль экскурсий, занятых дней, выходных и личных слотов.</p>
               </article>
-
               <article class="hero-card green">
                 <i class="fas fa-wallet"></i>
                 <h3>Доходы</h3>
                 <p>Оплаты, долги, частичные платежи и доход по периодам.</p>
               </article>
-
               <article class="hero-card purple full">
                 <i class="fas fa-route"></i>
                 <h3>Маршруты и отчёты</h3>
@@ -175,39 +277,31 @@
 
       <section class="features-section">
         <div class="container">
-          <div class="section-head">
+          <div class="section-head center">
             <span class="section-badge">Преимущества</span>
-            <h2>Профессиональный вид как у настоящих систем бронирования</h2>
-            <p>
-              Интерфейс строится вокруг рабочих сценариев пользователя:
-              сначала чистая главная страница, затем уже вход в полноценную
-              рабочую панель.
-            </p>
+            <h2>Профессиональный интерфейс как у CRM для бронирования</h2>
+            <p>Сначала пользователь видит чистую главную страницу, а полноценная рабочая панель открывается только после входа или запуска демо.</p>
           </div>
-
           <div class="features-grid">
             <article class="feature-card">
               <div class="feature-icon blue"><i class="fas fa-calendar-check"></i></div>
               <h3>Календарь</h3>
-              <p>Удобная сетка занятости без перегруженной страницы.</p>
+              <p>Удобная сетка занятости без бесконечной простыни блоков и форм.</p>
             </article>
-
             <article class="feature-card">
               <div class="feature-icon green"><i class="fas fa-money-bill-wave"></i></div>
               <h3>Финансы</h3>
-              <p>Доходы, остатки оплат и прозрачный учёт по маршрутам.</p>
+              <p>Доходы, остатки оплат и прозрачный учёт по маршрутам и клиентам.</p>
             </article>
-
             <article class="feature-card">
               <div class="feature-icon purple"><i class="fas fa-chart-pie"></i></div>
               <h3>Отчёты</h3>
               <p>Сводные показатели и аналитика по месяцам и годам.</p>
             </article>
-
             <article class="feature-card">
               <div class="feature-icon orange"><i class="fas fa-map-location-dot"></i></div>
               <h3>Маршруты</h3>
-              <p>Многодневные поездки с общей суммой и распределением по дням.</p>
+              <p>Многодневные поездки с общей суммой и распределением цены по дням.</p>
             </article>
           </div>
         </div>
@@ -222,17 +316,11 @@
     </footer>
   </section>
 
-  <!-- =========================
-       APP WORKSPACE (HIDDEN)
-  ========================== -->
   <section id="appWorkspace" class="app-workspace hidden">
     <header class="app-topbar">
       <div class="app-topbar-left">
-        <button id="backToLandingBtn" class="btn btn-ghost" type="button">
-          <i class="fas fa-arrow-left"></i>
-          На главную
-        </button>
-
+        <button id="backToLandingBtn" class="btn btn-ghost" type="button"><i class="fas fa-arrow-left"></i> На главную</button>
+        <button id="openMobileSidebar" class="btn btn-secondary mobile-only" type="button"><i class="fas fa-bars"></i> Меню</button>
         <div class="workspace-brand">
           <div class="brand-mark small">Y</div>
           <div class="workspace-brand-text">
@@ -241,32 +329,17 @@
           </div>
         </div>
       </div>
-
       <div class="app-topbar-right">
-        <div class="user-badge" id="userBadge">
-          <i class="fas fa-user-circle"></i>
-          <span>Демо-режим</span>
-        </div>
-
-        <button id="workspaceAuthBtn" class="btn btn-secondary" type="button">
-          <i class="fas fa-right-to-bracket"></i>
-          Войти
-        </button>
-
-        <button id="logoutBtn" class="btn btn-danger hidden" type="button">
-          <i class="fas fa-arrow-right-from-bracket"></i>
-          Выйти
-        </button>
+        <div id="userBadge" class="user-badge"><i class="fas fa-flask"></i><span>Демо-режим</span></div>
+        <button id="workspaceAuthBtn" class="btn btn-secondary" type="button"><i class="fas fa-right-to-bracket"></i> Войти</button>
+        <button id="logoutBtn" class="btn btn-danger hidden" type="button"><i class="fas fa-arrow-right-from-bracket"></i> Выйти</button>
       </div>
     </header>
 
     <div class="workspace-shell">
-      <!-- Sidebar -->
       <aside class="workspace-sidebar">
         <div class="sidebar-profile">
-          <div class="profile-avatar">
-            <i class="fas fa-user"></i>
-          </div>
+          <div class="profile-avatar"><i class="fas fa-user"></i></div>
           <div class="profile-info">
             <strong id="profileName">Demo User</strong>
             <span id="profileStatus">Гость / Демо-режим</span>
@@ -274,44 +347,138 @@
         </div>
 
         <nav class="sidebar-nav">
-          <button class="sidebar-link active" type="button">
-            <i class="fas fa-calendar-days"></i>
-            <span>Календарь</span>
-          </button>
-
-          <button class="sidebar-link" type="button">
-            <i class="fas fa-route"></i>
-            <span>Мои маршруты</span>
-          </button>
-
-          <button class="sidebar-link" type="button">
-            <i class="fas fa-wallet"></i>
-            <span>Финансы и отчеты</span>
-          </button>
-
-          <button class="sidebar-link" type="button">
-            <i class="fas fa-gear"></i>
-            <span>Настройки аккаунта</span>
-          </button>
+          <button class="sidebar-link active" type="button" data-tab="calendarTab"><i class="fas fa-calendar-days"></i><span>Календарь</span></button>
+          <button class="sidebar-link" type="button" data-tab="routesTab"><i class="fas fa-route"></i><span>Мои маршруты</span></button>
+          <button class="sidebar-link" type="button" data-tab="financeTab"><i class="fas fa-wallet"></i><span>Финансы и отчёты</span></button>
+          <button class="sidebar-link" type="button" data-tab="settingsTab"><i class="fas fa-gear"></i><span>Настройки аккаунта</span></button>
         </nav>
       </aside>
 
-      <!-- Main -->
       <main class="workspace-main">
-        <div class="workspace-placeholder">
-          <div class="placeholder-card">
-            <span class="section-badge">Шаг 1</span>
-            <h2>Новый shell рабочей панели готов</h2>
-            <p>
-              Здесь на следующем шаге мы аккуратно встроим существующий
-              календарь, маршруты, финансы и отчеты — без разрушения логики Supabase.
-            </p>
+        <section id="calendarTab" class="tab-panel active">
+          <div class="main-head">
+            <div>
+              <span class="section-badge">Календарь</span>
+              <h2>Занятость и бронирование</h2>
+              <p>Формы скрыты и открываются только в модальных окнах — без визуальной каши на экране.</p>
+            </div>
+            <div class="main-head-actions">
+              <button id="openStatsBtn" class="btn btn-secondary" type="button"><i class="fas fa-chart-column"></i> Отчёты</button>
+              <button id="openRouteBtn" class="btn btn-secondary" type="button"><i class="fas fa-route"></i> Новый маршрут</button>
+              <button id="openBookingBtn" class="btn btn-primary" type="button"><i class="fas fa-plus"></i> Новая запись</button>
+            </div>
           </div>
-        </div>
+
+          <div class="content-grid">
+            <aside class="context-sidebar">
+              <div class="panel-card">
+                <h3>Краткая статистика</h3>
+                <div class="stats-mini-grid">
+                  <div class="mini-stat"><span>Экскурсии</span><strong>12</strong></div>
+                  <div class="mini-stat"><span>Занят</span><strong>6</strong></div>
+                  <div class="mini-stat"><span>Туристы</span><strong>48</strong></div>
+                  <div class="mini-stat"><span>Доход</span><strong>$1 250</strong></div>
+                </div>
+              </div>
+
+              <div class="panel-card">
+                <h3>Статусы</h3>
+                <div class="legend-list">
+                  <div class="legend-item"><span class="status-dot excursion"></span><span>Экскурсия</span></div>
+                  <div class="legend-item"><span class="status-dot busy"></span><span>Занят</span></div>
+                  <div class="legend-item"><span class="status-dot holiday"></span><span>Выходной</span></div>
+                  <div class="legend-item"><span class="status-dot personal"></span><span>Личное</span></div>
+                </div>
+              </div>
+            </aside>
+
+            <div class="calendar-card">
+              <div class="calendar-toolbar">
+                <div class="calendar-nav">
+                  <button class="icon-btn" type="button"><i class="fas fa-chevron-left"></i></button>
+                  <button class="btn btn-ghost" type="button">Сегодня</button>
+                  <button class="icon-btn" type="button"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <h3 class="calendar-title">Июнь 2026</h3>
+                <div class="view-switch">
+                  <button class="view-btn active" type="button">Сетка</button>
+                  <button class="view-btn" type="button">Список</button>
+                </div>
+              </div>
+
+              <div class="calendar-weekdays">
+                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
+              </div>
+
+              <div class="calendar-grid">
+                <button class="calendar-day muted" type="button"><span class="day-number">1</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">2</span><div class="day-events"><span class="event-pill event-excursion">Самарканд • 09:00</span></div></button>
+                <button class="calendar-day" type="button"><span class="day-number">3</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">4</span><div class="day-events"><span class="event-pill event-busy">Занят</span></div></button>
+                <button class="calendar-day" type="button"><span class="day-number">5</span><div class="day-events"><span class="event-pill event-holiday">Выходной</span></div></button>
+                <button class="calendar-day" type="button"><span class="day-number">6</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">7</span></button>
+                <button class="calendar-day today" type="button"><span class="day-number">8</span><div class="day-events"><span class="event-pill event-excursion">Бухара • 11:00</span><span class="event-pill event-personal">Личное</span></div></button>
+                <button class="calendar-day" type="button"><span class="day-number">9</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">10</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">11</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">12</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">13</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">14</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">15</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">16</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">17</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">18</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">19</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">20</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">21</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">22</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">23</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">24</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">25</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">26</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">27</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">28</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">29</span></button>
+                <button class="calendar-day" type="button"><span class="day-number">30</span></button>
+                <button class="calendar-day muted" type="button"><span class="day-number">1</span></button>
+                <button class="calendar-day muted" type="button"><span class="day-number">2</span></button>
+                <button class="calendar-day muted" type="button"><span class="day-number">3</span></button>
+                <button class="calendar-day muted" type="button"><span class="day-number">4</span></button>
+                <button class="calendar-day muted" type="button"><span class="day-number">5</span></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="routesTab" class="tab-panel hidden">
+          <div class="placeholder-card wide-card">
+            <span class="section-badge">Маршруты</span>
+            <h2>Раздел маршрутов</h2>
+            <p>Здесь на следующем этапе будет аккуратно встроен твой существующий функционал многодневных маршрутов.</p>
+          </div>
+        </section>
+
+        <section id="financeTab" class="tab-panel hidden">
+          <div class="placeholder-card wide-card">
+            <span class="section-badge">Финансы</span>
+            <h2>Финансы и отчёты</h2>
+            <p>Здесь будут встроены текущие рабочие доходы, статусы оплаты и отчётные экраны в новом чистом дизайне.</p>
+          </div>
+        </section>
+
+        <section id="settingsTab" class="tab-panel hidden">
+          <div class="placeholder-card wide-card">
+            <span class="section-badge">Настройки</span>
+            <h2>Настройки аккаунта</h2>
+            <p>Сюда будет аккуратно перенесён блок профиля, языка, учётной записи и авторизации Supabase/Google.</p>
+          </div>
+        </section>
       </main>
     </div>
   </section>
 
   <script src="app.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
