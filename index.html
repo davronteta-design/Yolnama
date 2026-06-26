@@ -1,1167 +1,317 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Yolnama — платформа для гидов и водителей</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yolnama — PMS для гидов и водителей</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <style>
-    /* ================================================================
-       1. ОРИГИНАЛЬНЫЕ СТИЛИ КАЛЕНДАРЯ И ИНТЕРФЕЙСА (БЫВШИЙ STYLE.CSS)
-       ================================================================ */
-    :root {
-      --primary:    #31c978;
-      --primary-dk: #21b86a;
-      --primary-lt: #e6faf0;
-      --success:    #16a34a;
-      --danger:     #dc2626;
-      --warning:    #d97706;
-      --purple:     #7c3aed;
-      --bg:         #f4f7fe;
-      --surface:    #ffffff;
-      --surface2:   #f8fafc;
-      --border:     #e2e8f0;
-      --text:       #1e293b;
-      --text-muted: #64748b;
-      --text-light: #94a3b8;
-      --shadow:     0 4px 20px rgba(49,201,120,.07);
-      --shadow-lg:  0 8px 40px rgba(49,201,120,.13);
-      --radius-xl:  20px;
-      --radius:     16px;
-      --radius-md:  12px;
-      --radius-sm:  10px;
-      --radius-xs:   6px;
-      --transition: .2s cubic-bezier(.4,0,.2,1);
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
 
-      /* Цвета статусов в календаре */
-      --ev-excursion: #2563eb;
-      --ev-busy:      #ef4444;
-      --ev-holiday:   #10b981;
-      --ev-personal:  #f59e0b;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; overflow-x: hidden; }
-
-    /* Layout */
-    .navbar { height: 70px; background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .brand-logo-image { width: 32px; height: 32px; }
-    .brand h1 { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; color: #0f172a; line-height: 1.1; }
-    .brand p { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
-
-    .nav-actions { display: flex; align-items: center; gap: 12px; }
-    .lang-select-wrapper { display: flex; align-items: center; gap: 6px; background: var(--surface2); padding: 6px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 0.85rem; color: var(--text-muted); }
-    .lang-select-wrapper select { border: none; background: transparent; font-family: inherit; font-weight: 600; color: var(--text); outline: none; cursor: pointer; }
-
-    /* Кнопки */
-    .btn { height: 42px; padding: 0 16px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; border: 1px solid transparent; transition: var(--transition); font-family: inherit; }
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover { background: var(--primary-dk); }
-    .btn-secondary { background: var(--surface); border-color: var(--border); color: var(--text); }
-    .btn-secondary:hover { background: var(--surface2); border-color: var(--text-light); }
-    .btn-danger { background: var(--danger); color: #fff; }
-    .btn-danger:hover { opacity: 0.9; }
-    .btn-light { background: #fff; border-color: var(--border); color: var(--text); }
-    .btn-icon { width: 42px; padding: 0; justify-content: center; }
-    .btn-text-link { background: none; border: none; color: var(--primary); font-weight: 600; font-size: 0.85rem; cursor: pointer; font-family: inherit; }
-
-    /* Контейнер приложения */
-    .main-layout { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 70px); }
-    
-    /* Сайдбар */
-    .sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; gap: 20px; }
-    .sidebar-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
-    .sidebar-card h2, .sidebar-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.01em; }
-    .auth-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4; }
-    
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; height: 38px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 0 10px; font-size: 0.88rem; font-family: inherit; outline: none; transition: var(--transition); }
-    .form-group input:focus, .form-group select:focus { border-color: var(--primary); }
-    .form-group textarea { height: auto; padding: 8px 10px; resize: none; }
-
-    .auth-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-    .auth-buttons .btn { height: 36px; padding: 0; justify-content: center; font-size: 0.85rem; }
-    .auth-divider-text { text-align: center; font-size: 0.75rem; color: var(--text-light); position: relative; margin: 12px 0; }
-    .auth-divider-text::before { content:''; position: absolute; left:0; top:50%; width:25%; height:1px; background:var(--border); }
-    .auth-divider-text::after { content:''; position: absolute; right:0; top:50%; width:25%; height:1px; background:var(--border); }
-    .auth-hint { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px; text-align: center; }
-    .google-btn { width: 100%; height: 36px; justify-content: center; font-size: 0.82rem; }
-    .google-btn img { width: 14px; height: 14px; }
-
-    /* Статистика */
-    .card-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .card-header-flex h3 { margin-bottom: 0; }
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .stat-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px; text-align: center; }
-    .stat-num { font-size: 1.25rem; font-weight: 800; margin-bottom: 2px; }
-    .stat-label { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; }
-    
-    .income-list { display: flex; flex-direction: column; gap: 6px; }
-    .income-row { display: flex; justify-content: space-between; font-size: 0.85rem; background: var(--surface); padding: 6px 10px; border-radius: var(--radius-xs); border: 1px solid var(--border); }
-    .income-row span { color: var(--text-muted); font-weight: 500; }
-    .income-row strong { color: var(--success); font-weight: 700; }
-
-    .legend-grid { display: flex; flex-wrap: wrap; gap: 6px; }
-    .legend-pill { font-size: 0.72rem; font-weight: 700; padding: 4px 8px; border-radius: 20px; }
-
-    /* Контентная зона */
-    .content-area { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
-    .toolbar { display: flex; justify-content: space-between; align-items: center; background: var(--surface); padding: 12px 16px; border-radius: var(--radius); border: 1px solid var(--border); }
-    .toolbar-left, .toolbar-right { display: flex; align-items: center; gap: 8px; }
-    .month-title { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; min-width: 150px; text-align: center; }
-    .view-switcher { background: var(--surface2); padding: 3px; border-radius: var(--radius-sm); border: 1px solid var(--border); display: flex; gap: 2px; }
-    .view-switcher .btn { height: 34px; padding: 0 12px; font-size: 0.82rem; border: none; background: transparent; }
-    .view-switcher .btn.active { background: var(--surface); box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-radius: var(--radius-xs); color: var(--primary); }
-
-    /* Фильтры */
-    .filter-bar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-    .filter-bar-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: var(--surface2); }
-    .filter-bar-title { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; }
-    .filter-bar-title i { color: var(--primary); }
-    .filter-hint { font-size: 0.75rem; color: var(--text-muted); font-weight: 400; margin-left: 6px; }
-    .filter-bar-content { padding: 16px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; }
-    .filter-inputs-grid { display: grid; grid-template-columns: 1fr 180px auto; gap: 10px; }
-    
-    .search-wrapper { position: relative; }
-    .search-wrapper input { width: 100%; height: 40px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding-left: 36px; padding-right: 12px; font-size: 0.88rem; outline: none; font-family: inherit; }
-    .search-wrapper input:focus { border-color: var(--primary); background: #fff; }
-    .search-icon { position: absolute; left: 12px; top: 13px; color: var(--text-light); font-size: 0.9rem; }
-    .filter-inputs-grid select { height: 40px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0 10px; font-size: 0.88rem; outline: none; font-family: inherit; }
-    .filter-results-info { font-size: 0.8rem; color: var(--text-muted); }
-
-    /* СЕТКА КАЛЕНДАРЯ (Важно!) */
-    .grid-view { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
-    .day-label { text-align: center; font-size: 0.78rem; font-weight: 700; color: var(--text-light); padding: 4px 0; text-transform: uppercase; }
-    .day-cell { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); min-height: 110px; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: var(--transition); position: relative; }
-    .day-cell:hover { border-color: var(--text-light); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
-    .day-cell.empty { background: transparent; border: none; cursor: default; pointer-events: none; }
-    .day-cell.today { border: 2px solid var(--primary); background: #fbfefb; }
-    .day-num { font-size: 0.9rem; font-weight: 700; color: var(--text); width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-    .day-cell.today .day-num { background: var(--primary); color: #fff; }
-
-    .pills-container { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; flex: 1; }
-    .booking-pill { font-size: 0.7rem; font-weight: 600; padding: 3px 6px; border-radius: var(--radius-xs); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; color: #fff; }
-    
-    /* Цвета статусов */
-    .status-excursion { background: var(--ev-excursion) !important; color: #fff !important; }
-    .status-busy { background: var(--ev-busy) !important; color: #fff !important; }
-    .status-holiday { background: var(--ev-holiday) !important; color: #fff !important; }
-    .status-personal { background: var(--ev-personal) !important; color: #fff !important; }
-    
-    .more-indicator { font-size: 0.68rem; font-weight: 700; color: var(--text-light); padding-left: 4px; }
-    .day-income-badge { position: absolute; right: 8px; top: 8px; font-size: 0.7rem; font-weight: 700; color: var(--success); background: var(--primary-lt); padding: 1px 5px; border-radius: 4px; }
-
-    /* Список записей */
-    .list-view { display: flex; flex-direction: column; gap: 8px; }
-    .list-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: var(--transition); }
-    .list-item:hover { border-color: var(--text-light); }
-    .list-item-date { font-size: 0.78rem; font-weight: 700; color: var(--text-light); }
-    .list-item-title { font-size: 0.92rem; font-weight: 700; color: var(--text); }
-    .list-item-subtitle { font-size: 0.8rem; color: var(--text-muted); }
-    .badge { display: inline-flex; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
-
-    /* Модальные окна */
-    .modal-backdrop { position: fixed; inset:0; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity:0; pointer-events:none; transition: var(--transition); }
-    .modal-backdrop.active { opacity:1; pointer-events:auto; }
-    .modal-content { background: var(--surface); border-radius: var(--radius); width: 100%; max-width: 500px; padding: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px; }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-    .modal-header h3 { font-size: 1.15rem; font-weight: 800; }
-    .close-modal-btn { background:none; border:none; font-size:1.1rem; color:var(--text-light); cursor:pointer; }
-    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    
-    .status-selector-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
-    .status-radio-label { cursor: pointer; position: relative; }
-    .status-radio-label input { position: absolute; opacity: 0; width: 0; height: 0; }
-    .status-radio-pill { display: block; text-align: center; padding: 8px; border-radius: var(--radius-xs); font-size: 0.82rem; font-weight: 700; opacity: 0.4; transition: var(--transition); }
-    .status-radio-label input:checked + .status-radio-pill { opacity: 1; box-shadow: 0 0 0 2px var(--text); }
-    
-    .modal-actions { display: flex; gap: 10px; margin-top: 8px; }
-    
-    /* Маршруты туров */
-    .route-days-container { max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; background: var(--surface2); padding: 8px; border-radius: var(--radius-sm); border: 1px solid var(--border); }
-    .route-day-row { display: grid; grid-template-columns: 90px 1fr 1.2fr; gap: 8px; align-items: center; background: var(--surface); padding: 6px; border-radius: var(--radius-xs); border: 1px solid var(--border); }
-    .route-day-date { font-size: 0.75rem; font-weight: 700; }
-
-    .detail-body { display: flex; flex-direction: column; gap: 10px; }
-    .detail-row { display: flex; justify-content: space-between; font-size: 0.88rem; border-bottom: 1px solid var(--surface2); padding-bottom: 6px; }
-    .detail-row strong { color: var(--text-muted); font-weight: 500; }
-    .detail-row span { font-weight: 600; }
-
-    .stats-table th, .stats-table td { padding: 8px; border-bottom: 1px solid var(--border); }
-    .stats-modal-year-nav { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 12px; font-weight: 700; }
-    .stats-modal-year-nav button { background: none; border: none; font-size: 1rem; cursor: pointer; color: var(--primary); }
-
-    .fab { position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; background: var(--primary); color: #fff; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: var(--shadow-lg); border: none; cursor: pointer; z-index: 99; }
-    .hidden { display: none !important; }
-
-    /* ================================================================
-       2. ИЗОЛИРОВАННЫЕ СТИЛИ ГЛАВНОЙ СТРАНИЦЫ (LANDING PAGE)
-       ================================================================ */
-    .landing-wrapper {
-      background: linear-gradient(135deg, #f4f7fe 0%, #e6faf0 100%);
-      min-height: 100vh;
-      padding-bottom: 60px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      color: #1e293b;
-      display: block;
-    }
-    .landing-nav { max-width: 1200px; margin: 0 auto; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
-    .l-brand { display: flex; align-items: center; gap: 12px; }
-    .l-brand i { font-size: 2rem; color: #31c978; }
-    .l-brand h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin: 0; color: #0f172a; }
-    
-    .hero-section { max-width: 1200px; margin: 60px auto 40px; padding: 0 20px; text-align: center; }
-    .hero-section h2 { font-size: 3rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.03em; margin-bottom: 20px; color: #0f172a; }
-    .hero-section h2 span { color: #31c978; }
-    .hero-section p { font-size: 1.2rem; color: #64748b; max-width: 700px; margin: 0 auto 35px; line-height: 1.6; }
-    .hero-buttons { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
-
-    .features-container { max-width: 1100px; margin: 60px auto 0; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
-    .f-item { background: #ffffff; padding: 30px 24px; border-radius: 20px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0; text-align: left; }
-    .f-item i { font-size: 2rem; color: #31c978; margin-bottom: 16px; }
-    .f-item h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: #0f172a; }
-    .f-item p { font-size: 0.92rem; color: #64748b; line-height: 1.5; margin: 0; }
-
-    .pms-app-hidden { display: none !important; }
-
-    /* Попап авторизации на лендинге */
-    .l-auth-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 99999; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
-    .l-auth-backdrop.active { opacity: 1; pointer-events: auto; }
-    .l-auth-box { background: #ffffff; border-radius: 20px; width: 100%; max-width: 420px; padding: 30px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; position: relative; font-family: 'Plus Jakarta Sans', sans-serif; }
-    .l-auth-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .l-auth-header h3 { font-size: 1.25rem; font-weight: 800; margin: 0; color: #0f172a; }
-    .l-auth-close { background: none; border: none; font-size: 1.2rem; color: #64748b; cursor: pointer; }
-    .l-auth-group { margin-bottom: 16px; text-align: left; }
-    .l-auth-group label { display: block; margin-bottom: 6px; font-size: 0.85rem; font-weight: 700; color: #64748b; }
-    .l-auth-input { width: 100%; height: 44px; border-radius: 12px; border: 1px solid #e2e8f0; padding: 0 14px; font-size: 0.95rem; outline: none; box-sizing: border-box; }
-    .l-auth-input:focus { border-color: #31c978; }
-    .l-auth-divider { text-align: center; margin: 16px 0; color: #64748b; font-size: 0.85rem; position: relative; }
-    .l-auth-divider::before, .l-auth-divider::after { content: ''; position: absolute; top: 50%; width: 32%; height: 1px; background: #e2e8f0; }
-    .l-auth-divider::before { left: 0; } .l-auth-divider::after { right: 0; }
-    
-    /* Тосты системных уведомлений */
-    .pms-toast { position: fixed; top: 24px; right: 24px; background: #10b981; color: #fff; padding: 16px 24px; border-radius: 12px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); font-weight: 600; z-index: 100000; transform: translateY(-20px); opacity: 0; transition: all 0.3s ease; pointer-events: none; font-family: 'Plus Jakarta Sans', sans-serif; }
-    .pms-toast.show { transform: translateY(0); opacity: 1; }
-    .btn-top-logout { background: #ef4444; color: #fff; border: none; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-left: 12px; font-size: 0.8rem; }
-
-    /* Адаптивность для телефонов */
-    @media (max-width: 850px) {
-      .main-layout { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-      .sidebar.active-mobile { display: flex; position: fixed; inset:0; top:70px; z-index: 90; background:#fff; }
-      .hero-section h2 { font-size: 2rem; }
-      .grid-view { gap: 4px; }
-      .day-cell { min-height: 85px; padding: 4px; }
-      .fab { display: flex; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Toast -->
+  <div id="toastContainer" class="toast-container"></div>
 
-  <div id="landingPageSection" class="landing-wrapper">
-    <nav class="landing-nav">
-      <div class="l-brand">
-        <i class="fas fa-map-marked-alt"></i>
-        <h1>Yolnama</h1>
-      </div>
-      <div>
-        <button id="landingLoginBtn" class="btn btn-primary" style="background:#31c978; color:white; border:none; height:40px; padding:0 20px; border-radius:10px; font-weight:600; cursor:pointer;"><i class="fas fa-sign-in-alt"></i> Войти</button>
-      </div>
-    </nav>
-
-    <div class="hero-section">
-      <h2>Операционная система для <br><span>гидов и водителей</span> в Узбекистане</h2>
-      <p>Первая полноценная PMS-система для управления туристическими заказами. Храните брони, ведите многодневные сквозные маршруты по городам и автоматически контролируйте свою занятость.</p>
-      <div class="hero-buttons">
-        <button id="landingDemoBtn" class="btn btn-primary" style="background:#31c978; color:white; border:none; padding:14px 28px; font-size:1rem; border-radius:12px; font-weight:700; cursor:pointer;"><i class="fas fa-play"></i> Попробовать демо-версию</button>
-        <button id="landingRegisterBtn" class="btn btn-secondary" style="padding:14px 28px; font-size:1rem; border-radius:12px; font-weight:700; cursor:pointer; background:white; border:1px solid #e2e8f0;"><i class="fas fa-user-plus"></i> Зарегистрироваться</button>
-      </div>
-    </div>
-
-    <div class="features-container">
-      <div class="f-item">
-        <i class="fas fa-calendar-alt"></i>
-        <h4>Умный Календарь</h4>
-        <p>Удобная сетка занятости, заменяющая старые бумажные блокноты и хаотичные заметки в телефоне.</p>
-      </div>
-      <div class="f-item">
-        <i class="fas fa-route"></i>
-        <h4>Сквозные Маршруты</h4>
-        <p>Уникальная функция добавления туров на 5–7 дней по разным городам (Самарканд, Бухара, Хива) в один клик.</p>
-      </div>
-      <div class="f-item">
-        <i class="fas fa-wallet"></i>
-        <h4>Учет Доходов</h4>
-        <p>Точная финансовая статистика, разделение на оплаченные туры, предоплаты и долги в разных валютах.</p>
-      </div>
-      <div class="f-item">
-        <i class="fas fa-sync"></i>
-        <h4>Облачное хранение</h4>
-        <p>Безопасное хранение информации. Доступ к вашему расписанию и заказам с компьютера, планшета и смартфона.</p>
-      </div>
-    </div>
-  </div>
-
-  <div id="customAuthModal" class="l-auth-backdrop">
-    <div class="l-auth-box">
-      <div class="l-auth-header">
-        <h3 id="authModalHeaderTitle">Вход в Yolnama</h3>
-        <button id="closeAuthModalBtn" class="l-auth-close"><i class="fas fa-times"></i></button>
-      </div>
-      
-      <button id="fakeGoogleBtn" style="width:100%; display:flex; justify-content:center; align-items:center; gap:10px; border:1px solid #e2e8f0; background:#fff; height:44px; border-radius:12px; font-weight:600; cursor:pointer; font-family:inherit;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style="width:18px; height:18px;">
-        Войти через Google
+  <!-- =========================
+       AUTH MODAL
+  ========================== -->
+  <div id="authModal" class="modal-backdrop" aria-hidden="true">
+    <div class="auth-modal">
+      <button id="closeAuthModal" class="modal-close" type="button" aria-label="Закрыть">
+        <i class="fas fa-times"></i>
       </button>
 
-      <div class="l-auth-divider">или через почту</div>
+      <div class="auth-modal-head">
+        <span class="section-badge">Авторизация</span>
+        <h2>Войти / Регистрация</h2>
+        <p>
+          Вход через Email/Пароль или Google.  
+          На этом этапе это только аккуратный UI-слой, который мы потом безопасно
+          подключим к твоей текущей Supabase-логике.
+        </p>
+      </div>
 
-      <form id="fakeAuthForm">
-        <div class="l-auth-group">
-          <label>Электронная почта</label>
-          <input type="email" id="fakeEmailInput" class="l-auth-input" placeholder="name@example.com" required>
+      <form class="auth-form" id="authForm">
+        <label class="field">
+          <span>Email</span>
+          <input type="email" id="authEmail" placeholder="you@example.com" />
+        </label>
+
+        <label class="field">
+          <span>Пароль</span>
+          <input type="password" id="authPassword" placeholder="••••••••" />
+        </label>
+
+        <div class="auth-actions">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-right-to-bracket"></i>
+            Войти
+          </button>
+
+          <button type="button" class="btn btn-secondary" id="registerBtn">
+            <i class="fas fa-user-plus"></i>
+            Регистрация
+          </button>
         </div>
-        <div class="l-auth-group">
-          <label>Пароль</label>
-          <input type="password" class="l-auth-input" placeholder="••••••••" required>
-        </div>
-        <div style="display:flex; gap:10px; margin-top:20px;">
-          <button type="submit" class="btn btn-primary" style="flex:1; background:#31c978; color:white; height:44px; border-radius:12px; border:none; font-weight:600; cursor:pointer; justify-content:center;">Войти</button>
-          <button type="button" id="fakeSubmitReg" class="btn btn-light" style="flex:1; height:44px; border-radius:12px; border:1px solid #e2e8f0; background:white; font-weight:600; cursor:pointer; justify-content:center;">Регистрация</button>
-        </div>
+
+        <button type="button" class="btn btn-google" id="googleAuthBtn">
+          <i class="fab fa-google"></i>
+          Войти через Google
+        </button>
       </form>
     </div>
   </div>
 
-  <div id="pmsToast" class="pms-toast">Успешно!</div>
+  <!-- =========================
+       LANDING PAGE
+  ========================== -->
+  <section id="landingPage" class="landing-page">
+    <header class="landing-header">
+      <div class="container navbar">
+        <a href="#" class="brand">
+          <div class="brand-mark">Y</div>
+          <div class="brand-text">
+            <strong>Yolnama</strong>
+            <span>PMS для гидов и водителей</span>
+          </div>
+        </a>
 
+        <div class="navbar-actions">
+          <div class="lang-switcher">
+            <i class="fas fa-globe"></i>
+            <select id="langSelect">
+              <option value="ru">RU</option>
+              <option value="en">EN</option>
+              <option value="uz">UZ</option>
+            </select>
+          </div>
 
-  <div id="mainPmsAppContainer" class="pms-app-hidden">
-    
-    <header class="navbar">
-      <div class="brand">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2331c978'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z'/%3E%3C/svg%3E" class="brand-logo-image" alt="Yolnama">
-        <div>
-          <h1 id="navTitle">Yolnama</h1>
-          <p id="navSubtitle">Операционная система для гидов и водителей</p>
+          <button id="openAuthBtn" class="btn btn-primary" type="button">
+            <i class="fas fa-user"></i>
+            Войти / Регистрация
+          </button>
         </div>
       </div>
-      
-      <div class="nav-actions">
-        <div id="pmsUserBadge" style="color:var(--text-muted); font-size:0.85rem; display:flex; align-items:center;"></div>
-        <div class="lang-select-wrapper">
-          <i class="fas fa-globe"></i>
-          <select id="langSelect">
-            <option value="ru">RU</option>
-            <option value="en">EN</option>
-            <option value="uz">UZ</option>
-          </select>
+    </header>
+
+    <main>
+      <section class="hero-section">
+        <div class="container hero-grid">
+          <div class="hero-content">
+            <span class="section-badge">Tourism PMS</span>
+            <h1>Yolnama — Операционная система для гидов и водителей</h1>
+            <p>
+              Современная PMS/CRM-система для туризма в Узбекистане:
+              календарь занятости, многодневные маршруты, учёт доходов,
+              отчёты и удобная рабочая панель без визуального хаоса.
+            </p>
+
+            <div class="hero-actions">
+              <button id="demoEnterBtn" class="btn btn-primary btn-lg" type="button">
+                <i class="fas fa-play"></i>
+                Попробовать демо-версию
+              </button>
+
+              <button id="heroLoginBtn" class="btn btn-secondary btn-lg" type="button">
+                <i class="fas fa-right-to-bracket"></i>
+                Войти / Регистрация
+              </button>
+            </div>
+
+            <div class="hero-points">
+              <div class="hero-point">
+                <i class="fas fa-check-circle"></i>
+                <span>Авто-бронирование многодневных маршрутов</span>
+              </div>
+              <div class="hero-point">
+                <i class="fas fa-check-circle"></i>
+                <span>Календарь, доходы и отчеты в одном месте</span>
+              </div>
+              <div class="hero-point">
+                <i class="fas fa-check-circle"></i>
+                <span>Демо-режим для теста без обязательного входа</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-panel">
+            <div class="hero-panel-top">
+              <span class="mini-pill blue">PMS</span>
+              <span class="mini-pill green">Travel CRM</span>
+            </div>
+
+            <div class="hero-cards">
+              <article class="hero-card blue">
+                <i class="fas fa-calendar-days"></i>
+                <h3>Календарь занятости</h3>
+                <p>Контроль экскурсий, занятых дней, выходных и личных слотов.</p>
+              </article>
+
+              <article class="hero-card green">
+                <i class="fas fa-wallet"></i>
+                <h3>Доходы</h3>
+                <p>Оплаты, долги, частичные платежи и доход по периодам.</p>
+              </article>
+
+              <article class="hero-card purple full">
+                <i class="fas fa-route"></i>
+                <h3>Маршруты и отчёты</h3>
+                <p>Управление поездками на несколько дней и прозрачная аналитика.</p>
+              </article>
+            </div>
+          </div>
         </div>
-        <button id="routeBtn" class="btn btn-secondary">
-          <i class="fas fa-route"></i> <span id="navRouteBtn">Маршрут</span>
+      </section>
+
+      <section class="features-section">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-badge">Преимущества</span>
+            <h2>Профессиональный вид как у настоящих систем бронирования</h2>
+            <p>
+              Интерфейс строится вокруг рабочих сценариев пользователя:
+              сначала чистая главная страница, затем уже вход в полноценную
+              рабочую панель.
+            </p>
+          </div>
+
+          <div class="features-grid">
+            <article class="feature-card">
+              <div class="feature-icon blue"><i class="fas fa-calendar-check"></i></div>
+              <h3>Календарь</h3>
+              <p>Удобная сетка занятости без перегруженной страницы.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon green"><i class="fas fa-money-bill-wave"></i></div>
+              <h3>Финансы</h3>
+              <p>Доходы, остатки оплат и прозрачный учёт по маршрутам.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon purple"><i class="fas fa-chart-pie"></i></div>
+              <h3>Отчёты</h3>
+              <p>Сводные показатели и аналитика по месяцам и годам.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon orange"><i class="fas fa-map-location-dot"></i></div>
+              <h3>Маршруты</h3>
+              <p>Многодневные поездки с общей суммой и распределением по дням.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="landing-footer">
+      <div class="container footer-row">
+        <span>© 2026 Yolnama</span>
+        <span>Tourism PMS для гидов и водителей в Узбекистане</span>
+      </div>
+    </footer>
+  </section>
+
+  <!-- =========================
+       APP WORKSPACE (HIDDEN)
+  ========================== -->
+  <section id="appWorkspace" class="app-workspace hidden">
+    <header class="app-topbar">
+      <div class="app-topbar-left">
+        <button id="backToLandingBtn" class="btn btn-ghost" type="button">
+          <i class="fas fa-arrow-left"></i>
+          На главную
         </button>
-        <button id="addBtn" class="btn btn-primary">
-          <i class="fas fa-plus"></i> <span id="navAddBtn">Добавить</span>
+
+        <div class="workspace-brand">
+          <div class="brand-mark small">Y</div>
+          <div class="workspace-brand-text">
+            <strong>Yolnama PMS</strong>
+            <span>Рабочая панель</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-topbar-right">
+        <div class="user-badge" id="userBadge">
+          <i class="fas fa-user-circle"></i>
+          <span>Демо-режим</span>
+        </div>
+
+        <button id="workspaceAuthBtn" class="btn btn-secondary" type="button">
+          <i class="fas fa-right-to-bracket"></i>
+          Войти
+        </button>
+
+        <button id="logoutBtn" class="btn btn-danger hidden" type="button">
+          <i class="fas fa-arrow-right-from-bracket"></i>
+          Выйти
         </button>
       </div>
     </header>
 
-    <div class="main-layout">
-      <aside class="sidebar">
-        <div class="sidebar-card">
-          <h2 id="authTitle">Аккаунт</h2>
-          <p id="authSubtitle" class="auth-subtitle">Войдите, чтобы синхронизировать записи и открывать календарь с любого устройства.</p>
-          
-          <div id="authGuestState">
-            <div class="form-group">
-              <label id="lblEmail">Email</label>
-              <input type="email" id="authEmailInput" placeholder="example@mail.com">
-            </div>
-            <div class="form-group">
-              <label id="lblPassword">Пароль</label>
-              <input type="password" id="authPasswordInput" placeholder="••••••••">
-            </div>
-            <div class="auth-buttons">
-              <button id="loginBtn" class="btn btn-primary">Войти</button>
-              <button id="registerBtn" class="btn btn-secondary">Регистрация</button>
-            </div>
-            <div class="auth-divider-text"><span id="lblFastAuth">Быстрый вход</span></div>
-            <button id="googleBtn" class="btn btn-light google-btn">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style="margin-right:6px;">
-              <span id="lblGoogleBtn">Войти через Google</span>
-            </button>
+    <div class="workspace-shell">
+      <!-- Sidebar -->
+      <aside class="workspace-sidebar">
+        <div class="sidebar-profile">
+          <div class="profile-avatar">
+            <i class="fas fa-user"></i>
           </div>
-
-          <div id="authUserState" class="hidden">
-            <p><span id="lblLoggedInAs">Вы вошли как</span> <strong id="userEmailDisplay">—</strong></p>
-            <button id="logoutBtn" class="btn btn-danger" style="margin-top: 12px; width: 100%;">
-              <i class="fas fa-sign-out-alt"></i> <span id="lblLogoutBtn">Выйти</span>
-            </button>
+          <div class="profile-info">
+            <strong id="profileName">Demo User</strong>
+            <span id="profileStatus">Гость / Демо-режим</span>
           </div>
         </div>
 
-        <div class="sidebar-card">
-          <div class="card-header-flex">
-            <h3 id="statTitle">Статистика месяца</h3>
-            <button id="viewStatsDetailsBtn" class="btn-text-link">Детали</button>
-          </div>
-          <div class="stats-grid">
-            <div class="stat-box">
-              <div class="stat-num" id="statExcursions" style="color: var(--primary);">0</div>
-              <div class="stat-label" id="lblExcursions">Экскурсии</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-num" id="statBusy" style="color: var(--danger);">0</div>
-              <div class="stat-label" id="lblBusy">Занят</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-num" id="statHoliday" style="color: var(--success);">0</div>
-              <div class="stat-label" id="lblHoliday">Выходной</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-num" id="statTourists" style="color: var(--purple);">0</div>
-              <div class="stat-label" id="lblTourists">Туристы</div>
-            </div>
-          </div>
-        </div>
+        <nav class="sidebar-nav">
+          <button class="sidebar-link active" type="button">
+            <i class="fas fa-calendar-days"></i>
+            <span>Календарь</span>
+          </button>
 
-        <div class="sidebar-card">
-          <h3 id="incomeTitle">Доход за месяц</h3>
-          <div id="incomeList" class="income-list">
-            <div class="income-row">0 UZS</div>
-          </div>
-        </div>
+          <button class="sidebar-link" type="button">
+            <i class="fas fa-route"></i>
+            <span>Мои маршруты</span>
+          </button>
 
-        <div class="sidebar-card">
-          <h3 id="legendTitle">Обозначения</h3>
-          <div class="legend-grid">
-            <span class="legend-pill status-excursion" id="legExcursion">Экскурсия</span>
-            <span class="legend-pill status-busy" id="legBusy">Занят</span>
-            <span class="legend-pill status-holiday" id="legHoliday">Выходной</span>
-            <span class="legend-pill status-personal" id="legPersonal">Личное</span>
-          </div>
-        </div>
+          <button class="sidebar-link" type="button">
+            <i class="fas fa-wallet"></i>
+            <span>Финансы и отчеты</span>
+          </button>
+
+          <button class="sidebar-link" type="button">
+            <i class="fas fa-gear"></i>
+            <span>Настройки аккаунта</span>
+          </button>
+        </nav>
       </aside>
 
-      <section class="content-area">
-        <div class="toolbar">
-          <div class="toolbar-left">
-            <button id="prevMonth" class="btn btn-secondary btn-icon"><i class="fas fa-chevron-left"></i></button>
-            <h2 id="currentMonthYear" class="month-title">Загрузка...</h2>
-            <button id="nextMonth" class="btn btn-secondary btn-icon"><i class="fas fa-chevron-right"></i></button>
-            <button id="todayBtnClick" class="btn btn-secondary"><span id="toolbarToday">Сегодня</span></button>
-          </div>
-          
-          <div class="toolbar-right">
-            <div class="view-switcher">
-              <button id="setViewGrid" class="btn btn-secondary active"><i class="fas fa-th"></i> <span id="toolbarGrid">Сетка</span></button>
-              <button id="setViewList" class="btn btn-secondary"><i class="fas fa-list"></i> <span id="toolbarList">Список</span></button>
-            </div>
+      <!-- Main -->
+      <main class="workspace-main">
+        <div class="workspace-placeholder">
+          <div class="placeholder-card">
+            <span class="section-badge">Шаг 1</span>
+            <h2>Новый shell рабочей панели готов</h2>
+            <p>
+              Здесь на следующем шаге мы аккуратно встроим существующий
+              календарь, маршруты, финансы и отчеты — без разрушения логики Supabase.
+            </p>
           </div>
         </div>
-
-        <div class="filter-bar">
-          <div class="filter-bar-header" id="toggleFilterBar">
-            <div class="filter-bar-title">
-              <i class="fas fa-sliders-h"></i>
-              <strong id="toolbarTitle">Поиск и фильтры</strong>
-              <span id="toolbarHint" class="filter-hint">Быстрый поиск по текущему месяцу</span>
-            </div>
-            <button class="btn-text-link" id="btnToggleFilters">
-              <span id="toolbarCollapse">Свернуть</span> <i class="fas fa-chevron-up" id="filterChevron"></i>
-            </button>
-          </div>
-          
-          <div class="filter-bar-content" id="filterBarContent">
-            <div class="filter-inputs-grid">
-              <div class="search-wrapper">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" id="searchInput" placeholder="Поиск по городу, клиенту, экскурсии или группе">
-              </div>
-              <select id="filterStatus">
-                <option value="" id="statusAll">Все статусы</option>
-                <option value="excursion">Экскурсия</option>
-                <option value="busy">Занят</option>
-                <option value="holiday">Выходной</option>
-                <option value="personal">Личное</option>
-              </select>
-              <button id="resetFilters" class="btn btn-secondary"><i class="fas fa-undo"></i> <span id="resetBtn">Сбросить</span></button>
-            </div>
-            <div class="filter-results-info"><span id="resultsLabel">Записей:</span> <strong id="filterCount">0</strong></div>
-          </div>
-        </div>
-
-        <div id="gridView" class="grid-view"></div>
-        <div id="listView" class="list-view hidden"></div>
-      </section>
+      </main>
     </div>
-  </div>
+  </section>
 
-  <button id="fabAdd" class="fab"><i class="fas fa-plus"></i></button>
-
-
-  <div id="bookingModal" class="modal-backdrop">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="modalTitle">Новая запись</h3>
-        <button id="closeBookingModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
-      </div>
-      <form id="bookingForm">
-        <input type="hidden" id="bookingId">
-        
-        <div class="form-group">
-          <label id="lblStatusType">Статус / Тип дня</label>
-          <div class="status-selector-grid">
-            <label class="status-radio-label">
-              <input type="radio" name="status" value="excursion" checked>
-              <span class="status-radio-pill status-excursion" id="formExcursion">Экскурсия</span>
-            </label>
-            <label class="status-radio-label">
-              <input type="radio" name="status" value="busy">
-              <span class="status-radio-pill status-busy" id="formBusy">Занят</span>
-            </label>
-            <label class="status-radio-label">
-              <input type="radio" name="status" value="holiday">
-              <span class="status-radio-pill status-holiday" id="formHoliday">Выходной</span>
-            </label>
-            <label class="status-radio-label">
-              <input type="radio" name="status" value="personal">
-              <span class="status-radio-pill status-personal" id="formPersonal">Личное</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label id="lblDate">Дата</label>
-          <input type="date" id="bookingDate" required>
-        </div>
-
-        <div id="excursionFields">
-          <div class="form-row-2">
-            <div class="form-group">
-              <label id="lblCity">Город</label>
-              <input type="text" id="bookingCity" placeholder="Самарканд, Ташкент...">
-            </div>
-            <div class="form-group">
-              <label id="lblClient">Заказчик (Компания / Имя)</label>
-              <input type="text" id="bookingClient" placeholder="Восток Тур">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label id="lblTourName">Экскурсия / группа</label>
-            <input type="text" id="bookingTourName" placeholder="Обзорная по городу">
-          </div>
-
-          <div class="form-row-2">
-            <div class="form-group">
-              <label id="lblStartTime">Начало</label>
-              <input type="time" id="bookingStartTime" value="09:00">
-            </div>
-            <div class="form-group">
-              <label id="lblEndTime">Окончание</label>
-              <input type="time" id="bookingEndTime" value="18:00">
-            </div>
-          </div>
-
-          <div class="form-row-2">
-            <div class="form-group">
-              <label id="lblPrice">Стоимость</label>
-              <input type="number" id="bookingPrice" placeholder="0" min="0">
-            </div>
-            <div class="form-group">
-              <label id="lblCurrency">Валюта</label>
-              <select id="bookingCurrency">
-                <option value="UZS">UZS (сум)</option>
-                <option value="USD">USD ($)</option>
-                <option value="EUR">EUR (€)</option>
-                <option value="RUB">RUB (₽)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row-2">
-            <div class="form-group">
-              <label id="lblGroupSize">Количество туристов</label>
-              <input type="number" id="bookingGroupSize" placeholder="0" min="0">
-            </div>
-            <div class="form-group">
-              <label id="lblPaymentStatus">Статус оплаты</label>
-              <select id="bookingPaymentStatus">
-                <option value="unpaid" id="optUnpaid">Не оплачено</option>
-                <option value="partial" id="optPartial">Частичная оплата</option>
-                <option value="paid" id="optPaid">Оплачено</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row-2 hidden" id="partialPaymentRow">
-            <div class="form-group">
-              <label id="lblPaidAmount">Уже оплачено</label>
-              <input type="number" id="bookingPaidAmount" placeholder="0" min="0">
-            </div>
-            <div class="form-group">
-              <label id="lblRemainingAmount">Осталось оплатить</label>
-              <input type="number" id="bookingRemainingAmount" placeholder="0" readonly style="background: var(--surface2);">
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group" style="margin-top:6px;">
-          <label id="lblNotes">Заметки / Пожелания</label>
-          <textarea id="bookingNotes" rows="2" placeholder="Дополнительная информация..."></textarea>
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" id="deleteBookingBtn" class="btn btn-danger hidden"><i class="fas fa-trash-alt"></i> <span id="btnDelete">Удалить</span></button>
-          <div style="flex:1;"></div>
-          <button type="button" id="cancelBookingBtn" class="btn btn-secondary"><span id="btnCancel">Отмена</span></button>
-          <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <span id="btnSave">Сохранить</span></button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div id="routeModal" class="modal-backdrop">
-    <div class="modal-content" style="max-width: 600px;">
-      <div class="modal-header">
-        <h3 id="routeModalTitle">Бронь маршрута</h3>
-        <button id="closeRouteModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
-      </div>
-      <form id="routeForm">
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblRouteStart">Дата начала</label>
-            <input type="date" id="routeStartDate" required>
-          </div>
-          <div class="form-group">
-            <label id="lblRouteEnd">Дата окончания</label>
-            <input type="date" id="routeEndDate" required>
-          </div>
-        </div>
-
-        <button type="button" id="generateRouteDaysBtn" class="btn btn-secondary" style="width:100%; margin-bottom:12px; justify-content:center;">
-          <span id="btnGenDays">Сгенерировать дни</span>
-        </button>
-
-        <div id="routeDaysContainer" class="route-days-container"></div>
-
-        <div class="form-row-2" style="margin-top: 12px;">
-          <div class="form-group">
-            <label id="lblRouteClient">Заказчик</label>
-            <input type="text" id="routeClient" placeholder="Компания / Имя">
-          </div>
-          <div class="form-group">
-            <label id="lblRouteGroupSize">Количество туристов</label>
-            <input type="number" id="routeGroupSize" placeholder="0" min="0">
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblRouteDefPrice">Стоимость по умолчанию</label>
-            <input type="number" id="routeDefaultPrice" placeholder="0" min="0">
-          </div>
-          <div class="form-group">
-            <label id="lblRouteDefCurr">Валюта</label>
-            <select id="routeDefaultCurrency">
-              <option value="UZS">UZS (сум)</option>
-              <option value="USD">USD ($)</option>
-              <option value="EUR">EUR (€)</option>
-              <option value="RUB">RUB (₽)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label id="lblRouteNotes">Общие заметки к туру</label>
-          <textarea id="routeNotes" rows="2" placeholder="Общая нитка маршрута..."></textarea>
-        </div>
-
-        <div class="modal-actions">
-          <div style="flex:1;"></div>
-          <button type="button" id="cancelRouteBtn" class="btn btn-secondary"><span id="btnRouteCancel">Отмена</span></button>
-          <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <span id="btnRouteSave">Сохранить</span></button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div id="detailModal" class="modal-backdrop">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="detailModalTitle">Информация о дне</h3>
-        <button id="closeDetailModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
-      </div>
-      <div id="detailModalBody" class="detail-body"></div>
-      <div class="modal-actions" style="border-top:1px solid var(--border); padding-top:12px; margin-top:12px;">
-        <button id="detailCloseBtn" class="btn btn-secondary"><span id="lblClose">Закрыть</span></button>
-        <button id="detailDuplicateBtn" class="btn btn-secondary" style="background-color: var(--primary-lt); color: var(--primary); border-color: transparent;"><i class="fas fa-copy"></i> <span id="lblDuplicate">Дублировать</span></button>
-        <button id="detailEditBtn" class="btn btn-primary"><i class="fas fa-edit"></i> <span id="lblEdit">Редактировать</span></button>
-      </div>
-    </div>
-  </div>
-
-  <div id="statsModal" class="modal-backdrop">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="statsModalTitle">Детальная статистика</h3>
-        <button id="closeStatsModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="stats-modal-year-nav">
-        <button id="statsPrevYearBtn" type="button"><i class="fas fa-chevron-left"></i></button>
-        <span id="statsModalYearLabel"></span>
-        <button id="statsNextYearBtn" type="button"><i class="fas fa-chevron-right"></i></button>
-      </div>
-      <div id="statsModalBody"></div>
-      <div style="display:flex;justify-content:flex-end;margin-top:20px;">
-        <button id="statsModalClose2" class="btn btn-secondary"><span id="lblStatsClose">Закрыть</span></button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const STATUS_ORDER = ['excursion', 'busy', 'holiday', 'personal'];
-
-    const TRANSLATIONS = {
-      ru: {
-        title: 'Yolnama', subtitle: 'Операционная система для гидов и водителей', gridBtn: 'Сетка', listBtn: 'Список', todayBtn: 'Сегодня', addSingleBtn: 'Добавить', addMultiBtn: 'Маршрут', statTitle: 'Статистика месяца', incomeTitle: 'Доход за месяц', legendTitle: 'Обозначения', statsExcursions: 'Экскурсии', statsBusy: 'Занят', statsHoliday: 'Выходной', statsTourists: 'Туристы', searchPlaceholder: 'Поиск по городу, клиенту...', statusAll: 'Все статусы', resetBtn: 'Сбросить', resultsLabel: 'Записей', toolbarTitle: 'Поиск и фильтры', toolbarHint: 'Быстрый поиск по текущему месяцу', toolbarCollapse: 'Свернуть', toolbarExpand: 'Показать', noEvents: 'Нет записей за выбранный месяц', legExcursion: 'Экскурсия', legBusy: 'Занят', legHoliday: 'Выходной', legPersonal: 'Личное', authTitle: 'Аккаунт', authSubtitle: 'Войдите, чтобы синхронизировать записи.', lblEmail: 'Email', lblPassword: 'Пароль', loginBtn: 'Войти', registerBtn: 'Регистрация', lblFastAuth: 'Быстрый вход', lblGoogleBtn: 'Войти через Google', lblLoggedInAs: 'Вы вошли как', lblLogoutBtn: 'Выйти', modalTitleNew: 'Новая запись', modalTitleEdit: 'Редактировать запись', lblStatusType: 'Статус / Тип дня', formExcursion: 'Экскурсия', formBusy: 'Занят', formHoliday: 'Выходной', formPersonal: 'Личное', lblDate: 'Дата', lblCity: 'Город', lblClient: 'Заказчик', lblTourName: 'Экскурсия / группа', lblStartTime: 'Начало', lblEndTime: 'Окончание', lblPrice: 'Стоимость', lblCurrency: 'Валюта', lblGroupSize: 'Количество туристов', lblPaymentStatus: 'Статус оплаты', optUnpaid: 'Не оплачено', optPartial: 'Частичная оплата', optPaid: 'Оплачено', lblPaidAmount: 'Уже оплачено', lblRemainingAmount: 'Осталось оплатить', lblNotes: 'Заметки / Пожелания', btnDelete: 'Удалить', btnCancel: 'Отмена', btnSave: 'Сохранить', routeModalTitle: 'Бронь маршрута', lblRouteStart: 'Дата начала', lblRouteEnd: 'Дата окончания', btnGenDays: 'Сгенерировать дни', lblRouteClient: 'Заказчик', lblRouteGroupSize: 'Количество туристов', lblRouteDefPrice: 'Стоимость по умолчанию', lblRouteDefCurr: 'Валюта', lblRoutePayStatus: 'Статус оплаты', optRUnpaid: 'Не оплачено', optRPartial: 'Частичная оплата', optRPaid: 'Оплачено', lblRoutePaidAmt: 'Уже оплачено', lblRouteNotes: 'Общие заметки', btnRouteCancel: 'Отмена', btnRouteSave: 'Сохранить', detailModalTitle: 'Информация о дне', lblClose: 'Закрыть', lblDuplicate: 'Дублировать', lblEdit: 'Редактировать', statsModalTitle: 'Детальная статистика', lblStatsClose: 'Закрыть', lblDetails: 'Детали'
-      },
-      en: {
-        title: 'Yolnama', subtitle: 'Operating system for guides and drivers', gridBtn: 'Grid', listBtn: 'List', todayBtn: 'Today', addSingleBtn: 'Add Single', addMultiBtn: 'Route', statTitle: 'Month Statistics', incomeTitle: 'Month Income', legendTitle: 'Legend', statsExcursions: 'Tours', statsBusy: 'Busy', statsHoliday: 'Day Off', statsTourists: 'Tourists', searchPlaceholder: 'Search by city, client...', statusAll: 'All statuses', resetBtn: 'Reset', resultsLabel: 'Records:', toolbarTitle: 'Search & Filters', toolbarHint: 'Quick search within month', toolbarCollapse: 'Collapse', toolbarExpand: 'Expand', noEvents: 'No events found for this month', legExcursion: 'Tour', legBusy: 'Busy', legHoliday: 'Day Off', legPersonal: 'Personal', authTitle: 'Account', authSubtitle: 'Log in to sync records.', lblEmail: 'Email', lblPassword: 'Password', loginBtn: 'Log In', registerBtn: 'Sign Up', lblFastAuth: 'Fast Access', lblGoogleBtn: 'Sign in with Google', lblLoggedInAs: 'Logged in as', lblLogoutBtn: 'Log Out', modalTitleNew: 'New Event', modalTitleEdit: 'Edit Event', lblStatusType: 'Status / Day Type', formExcursion: 'Tour', formBusy: 'Busy', formHoliday: 'Day Off', formPersonal: 'Personal', lblDate: 'Date', lblCity: 'City', lblClient: 'Client', lblTourName: 'Tour Name', lblStartTime: 'Start Time', lblEndTime: 'End Time', lblPrice: 'Price', lblCurrency: 'Currency', lblGroupSize: 'Tourists Count', lblPaymentStatus: 'Payment Status', optUnpaid: 'Unpaid', optPartial: 'Partial', optPaid: 'Paid', lblPaidAmount: 'Paid Amount', lblRemainingAmount: 'Remaining', lblNotes: 'Notes', btnDelete: 'Delete', btnCancel: 'Cancel', btnSave: 'Save', routeModalTitle: 'Route Booking', lblRouteStart: 'Start Date', lblRouteEnd: 'End Date', btnGenDays: 'Generate Days', lblRouteClient: 'Client', lblRouteGroupSize: 'Tourists Count', lblRouteDefPrice: 'Default Price', lblRouteDefCurr: 'Currency', lblRoutePayStatus: 'Payment Status', optRUnpaid: 'Unpaid', optRPartial: 'Partial', optRPaid: 'Paid', lblRoutePaidAmt: 'Paid Amount', lblRouteNotes: 'General Notes', btnRouteCancel: 'Cancel', btnRouteSave: 'Save', detailModalTitle: 'Day Details', lblClose: 'Close', lblDuplicate: 'Duplicate', lblEdit: 'Edit', statsModalTitle: 'Detailed Statistics', lblStatsClose: 'Close', lblDetails: 'Details'
-      },
-      uz: {
-        title: 'Yolnama', subtitle: 'Gidlar va haydovchilar uchun operatsion tizim', gridBtn: 'Setka', listBtn: 'Ro‘yxat', todayBtn: 'Bugun', addSingleBtn: 'Qo‘shish', addMultiBtn: 'Yo‘nalish', statTitle: 'Oylik statistika', incomeTitle: 'Oylik daromad', legendTitle: 'Belgilar', statsExcursions: 'Ekskursiyalar', statsBusy: 'Band', statsHoliday: 'Dam olish', statsTourists: 'Turistlar', searchPlaceholder: 'Shahar, mijoz bo‘yicha qidiruv...', statusAll: 'Barcha statuslar', resetBtn: 'Tashlash', resultsLabel: 'Yozuvlar:', toolbarTitle: 'Qidiruv va filtrlar', toolbarHint: 'Joriy oy bo‘yicha tezkor qidiruv', toolbarCollapse: 'Yashirish', toolbarExpand: 'Ko‘rsatish', noEvents: 'Tanlangan oy uchun yozuvlar yo‘q', legExcursion: 'Ekskursiya', legBusy: 'Band', legHoliday: 'Dam olish', legPersonal: 'Shaxsiy', authTitle: 'Akkaunt', authSubtitle: 'Yozuvlarni sinxronizatsiya qilish uchun kiring.', lblEmail: 'Email', lblPassword: 'Parol', loginBtn: 'Kirish', registerBtn: 'Ro‘yxatdan o‘tish', lblFastAuth: 'Tezkor kirish', lblGoogleBtn: 'Google orqali kirish', lblLoggedInAs: 'Profil:', lblLogoutBtn: 'Chiqish', modalTitleNew: 'Yangi yozuv', modalTitleEdit: 'Yozuvni tahrirlash', lblStatusType: 'Status / Kun turi', formExcursion: 'Ekskursiya', formBusy: 'Band', formHoliday: 'Dam olish', formPersonal: 'Shaxsiy', lblDate: 'Sana', lblCity: 'Shahar', lblClient: 'Buyurtmachi', lblTourName: 'Ekskursiya turi', lblStartTime: 'Boshlanishi', lblEndTime: 'Tugashi', lblPrice: 'Qiymati', lblCurrency: 'Valyuta', lblGroupSize: 'Turistlar soni', lblPaymentStatus: 'To‘lov statusi', optUnpaid: 'To‘lanmagan', optPartial: 'Qisman', optPaid: 'To‘langan', lblPaidAmount: 'To‘langan summa', lblRemainingAmount: 'To‘lanishi kerak', lblNotes: 'Eslatmalar', btnDelete: 'O‘chirish', btnCancel: 'Bekor qilish', btnSave: 'Saqlash', routeModalTitle: 'Yo‘nalishni band qilish', lblRouteStart: 'Boshlanish sanasi', lblRouteEnd: 'Tugash sanasi', btnGenDays: 'Kunlarni yaratish', lblRouteClient: 'Buyurtmachi', lblRouteGroupSize: 'Turistlar soni', lblRouteDefPrice: 'Standart qiymat', lblRouteDefCurr: 'Valyuta', lblRoutePayStatus: 'To‘lov statusi', optRUnpaid: 'To‘lanmagan', optRPartial: 'Qisman', optRPaid: 'To‘langan', lblRoutePaidAmt: 'To‘langan summa', lblRouteNotes: 'Umumiy eslatmalar', btnRouteCancel: 'Bekor qilish', btnRouteSave: 'Saqlash', detailModalTitle: 'Kun haqida ma’lumot', lblClose: 'Yopish', lblDuplicate: 'Nusxa olish', lblEdit: 'Tahrirlash', statsModalTitle: 'Batafsil statistika', lblStatsClose: 'Yopish', lblDetails: 'Batafsil'
-      }
-    };
-
-    let bookings = [];
-    let currentNavDate = new Date();
-    let currentView = 'grid'; 
-    let generatedRouteDays = [];
-    let statsYear = new Date().getFullYear();
-
-    // DOM Элементы
-    const currentMonthYearEl = document.getElementById('currentMonthYear');
-    const gridViewEl = document.getElementById('gridView');
-    const listViewEl = document.getElementById('listView');
-    const prevMonthBtn = document.getElementById('prevMonth');
-    const nextMonthBtn = document.getElementById('nextMonth');
-    const todayBtn = document.getElementById('todayBtnClick');
-    const setViewGridBtn = document.getElementById('setViewGrid');
-    const setViewListBtn = document.getElementById('setViewList');
-    const addBtn = document.getElementById('addBtn');
-    const routeBtn = document.getElementById('routeBtn');
-    const fabAdd = document.getElementById('fabAdd');
-    const bookingModal = document.getElementById('bookingModal');
-    const closeBookingModal = document.getElementById('closeBookingModal');
-    const cancelBookingBtn = document.getElementById('cancelBookingBtn');
-    const bookingForm = document.getElementById('bookingForm');
-    const deleteBookingBtn = document.getElementById('deleteBookingBtn');
-    const routeModal = document.getElementById('routeModal');
-    const closeRouteModal = document.getElementById('closeRouteModal');
-    const cancelRouteBtn = document.getElementById('cancelRouteBtn');
-    const routeForm = document.getElementById('routeForm');
-    const generateRouteDaysBtn = document.getElementById('generateRouteDaysBtn');
-    const routeDaysContainer = document.getElementById('routeDaysContainer');
-    const detailModal = document.getElementById('detailModal');
-    const closeDetailModal = document.getElementById('closeDetailModal');
-    const detailCloseBtn = document.getElementById('detailCloseBtn');
-    const detailEditBtn = document.getElementById('detailEditBtn');
-    const detailDuplicateBtn = document.getElementById('detailDuplicateBtn');
-    const detailModalBody = document.getElementById('detailModalBody');
-    const statsModal = document.getElementById('statsModal');
-    const closeStatsModal = document.getElementById('closeStatsModal');
-    const statsModalClose2 = document.getElementById('statsModalClose2');
-    const viewStatsDetailsBtn = document.getElementById('viewStatsDetailsBtn');
-    const statsModalBody = document.getElementById('statsModalBody');
-    const statsModalYearLabel = document.getElementById('statsModalYearLabel');
-    const statsPrevYearBtn = document.getElementById('statsPrevYearBtn');
-    const statsNextYearBtn = document.getElementById('statsNextYearBtn');
-    const searchInput = document.getElementById('searchInput');
-    const filterStatus = document.getElementById('filterStatus');
-    const resetFiltersBtn = document.getElementById('resetFilters');
-    const filterCountEl = document.getElementById('filterCount');
-    const toggleFilterBar = document.getElementById('toggleFilterBar');
-    const filterBarContent = document.getElementById('filterBarContent');
-    const btnToggleFilters = document.getElementById('btnToggleFilters');
-    const filterChevron = document.getElementById('filterChevron');
-    const excursionFields = document.getElementById('excursionFields');
-    const partialPaymentRow = document.getElementById('partialPaymentRow');
-    const langSelect = document.getElementById('langSelect');
-
-    const landingPage = document.getElementById('landingPageSection');
-    const mainApp = document.getElementById('mainPmsAppContainer');
-    const authModal = document.getElementById('customAuthModal');
-    const toast = document.getElementById('pmsToast');
-
-    function showToast(msg) {
-      if (toast) {
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
-      }
-    }
-
-    // Главная функция открытия самого приложения Календаря
-    function openMainCalendarInterface(userEmail = "Демо-Режим") {
-      landingPage.classList.add('pms-app-hidden');
-      authModal.classList.remove('active');
-      mainApp.classList.remove('pms-app-hidden');
-      
-      if(userEmail === "Демо-Режим") {
-        document.getElementById('authGuestState').classList.remove('hidden');
-        document.getElementById('authUserState').classList.add('hidden');
-        document.getElementById('pmsUserBadge').innerHTML = `<span>Режим: <b>Демо (Гость)</b></span>`;
-      } else {
-        document.getElementById('authGuestState').classList.add('hidden');
-        document.getElementById('authUserState').classList.remove('hidden');
-        document.getElementById('userEmailDisplay').textContent = userEmail;
-        document.getElementById('pmsUserBadge').innerHTML = `
-          <span>Аккаунт: <b>${userEmail}</b></span>
-          <button class="btn-top-logout" id="topLogoutBtn">Выйти</button>
-        `;
-        document.getElementById('topLogoutBtn')?.addEventListener('click', logoutAction);
-      }
-      
-      render();
-      // Лечит ломающуюся CSS Grid разметку, принудительно пересчитывая размеры окна
-      setTimeout(() => { window.dispatchEvent(new Event('resize')); }, 60);
-    }
-
-    function logoutAction() {
-      mainApp.classList.add('pms-app-hidden');
-      landingPage.classList.remove('pms-app-hidden');
-      showToast("Вы успешно вышли из системы");
-    }
-
-    function init() {
-      // Подгрузка тестовых или сохраненных локально данных
-      const local = localStorage.getItem('tour_flow_bookings');
-      if (local) { try { bookings = JSON.parse(local); } catch(e) { bookings = []; } }
-      
-      setupLandingClickHandlers();
-      setupAppClickHandlers();
-      applyLanguage(langSelect.value);
-    }
-
-    function setupLandingClickHandlers() {
-      // Логика кнопок Лендинга
-      document.getElementById('landingDemoBtn')?.addEventListener('click', () => {
-        openMainCalendarInterface("Демо-Режим");
-        showToast("Демо-режим успешно запущен!");
-      });
-
-      document.getElementById('landingLoginBtn')?.addEventListener('click', () => {
-        document.getElementById('authModalHeaderTitle').textContent = "Вход в Yolnama";
-        authModal.classList.add('active');
-      });
-
-      document.getElementById('landingRegisterBtn')?.addEventListener('click', () => {
-        document.getElementById('authModalHeaderTitle').textContent = "Регистрация в Yolnama";
-        authModal.classList.add('active');
-      });
-
-      document.getElementById('closeAuthModalBtn')?.addEventListener('click', () => {
-        authModal.classList.remove('active');
-      });
-
-      document.getElementById('fakeGoogleBtn')?.addEventListener('click', () => {
-        openMainCalendarInterface("google_account@yolnama.uz");
-        showToast("Вход через Google выполнен!");
-      });
-
-      document.getElementById('fakeSubmitReg')?.addEventListener('click', () => {
-        openMainCalendarInterface("new_user@yolnama.uz");
-        showToast("Регистрация завершена успешно!");
-      });
-
-      document.getElementById('fakeAuthForm')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = document.getElementById('fakeEmailInput').value || "user@yolnama.uz";
-        openMainCalendarInterface(email);
-        showToast("Успешный вход в аккаунт!");
-      });
-
-      // Формы авторизации внутри левого сайдбара календаря
-      safeClick('loginBtn', () => {
-        const email = document.getElementById('authEmailInput').value || "user@yolnama.uz";
-        openMainCalendarInterface(email);
-        showToast("Вход выполнен!");
-      });
-      safeClick('registerBtn', () => {
-        openMainCalendarInterface("registered_user@yolnama.uz");
-        showToast("Регистрация выполнена успешно!");
-      });
-      safeClick('googleBtn', () => {
-        openMainCalendarInterface("google_user@yolnama.uz");
-        showToast("Авторизация через Google успешна!");
-      });
-      safeClick('logoutBtn', logoutAction);
-    }
-
-    function setupAppClickHandlers() {
-      safeClick('prevMonth', () => { currentNavDate.setMonth(currentNavDate.getMonth() - 1); render(); });
-      safeClick('nextMonth', () => { currentNavDate.setMonth(currentNavDate.getMonth() + 1); render(); });
-      safeClick('todayBtnClick', () => { currentNavDate = new Date(); render(); });
-
-      safeClick('setViewGrid', () => { currentView = 'grid'; updateViewToggle(); render(); });
-      safeClick('setViewList', () => { currentView = 'list'; updateViewToggle(); render(); });
-
-      const openNewBooking = () => openBookingModalForNew(toDateString(new Date()));
-      safeClick('addBtn', openNewBooking);
-      safeClick('fabAdd', openNewBooking);
-      safeClick('routeBtn', openRouteModalNew);
-
-      safeClick('closeBookingModal', () => closeModal(bookingModal));
-      safeClick('cancelBookingBtn', () => closeModal(bookingModal));
-      safeSubmit('bookingForm', onBookingFormSubmit);
-      safeClick('deleteBookingBtn', onDeleteBookingClick);
-
-      safeClick('closeRouteModal', () => closeModal(routeModal));
-      safeClick('cancelRouteBtn', () => closeModal(routeModal));
-      safeClick('generateRouteDaysBtn', onGenerateRouteDaysClick);
-      safeSubmit('routeForm', onRouteFormSubmit);
-
-      safeClick('closeDetailModal', () => closeModal(detailModal));
-      safeClick('detailCloseBtn', () => closeModal(detailModal));
-      safeClick('detailEditBtn', onDetailEditClick);
-      safeClick('detailDuplicateBtn', onDetailDuplicateClick);
-
-      safeClick('closeStatsModal', () => closeModal(statsModal));
-      safeClick('statsModalClose2', () => closeModal(statsModal));
-      safeClick('viewStatsDetailsBtn', openStatsModalView);
-      safeClick('statsPrevYearBtn', () => { statsYear--; renderStatsModalContent(); });
-      safeClick('statsNextYearBtn', () => { statsYear++; renderStatsModalContent(); });
-
-      searchInput?.addEventListener('input', render);
-      filterStatus?.addEventListener('change', render);
-      safeClick('resetFilters', () => { if(searchInput) searchInput.value = ''; if(filterStatus) filterStatus.value = ''; render(); });
-
-      btnToggleFilters?.addEventListener('click', () => {
-        filterBarContent.classList.toggle('hidden');
-        const isCollapsed = filterBarContent.classList.contains('hidden');
-        const lang = langSelect.value;
-        setTxtBySelector('#btnToggleFilters span', isCollapsed ? TRANSLATIONS[lang].toolbarExpand : TRANSLATIONS[lang].toolbarCollapse);
-        if (filterChevron) filterChevron.className = isCollapsed ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
-      });
-
-      document.querySelectorAll('input[name="status"]').forEach(radio => {
-        radio.addEventListener('change', (e) => toggleFormFieldsByStatus(e.target.value));
-      });
-
-      document.getElementById('bookingPaymentStatus')?.addEventListener('change', (e) => {
-        if (e.target.value === 'partial') {
-          partialPaymentRow.classList.remove('hidden');
-          updateRemainingAmount();
-        } else {
-          partialPaymentRow.classList.add('hidden');
-        }
-      });
-
-      document.getElementById('bookingPrice')?.addEventListener('input', updateRemainingAmount);
-      document.getElementById('bookingPaidAmount')?.addEventListener('input', updateRemainingAmount);
-
-      langSelect?.addEventListener('change', (e) => {
-        applyLanguage(e.target.value);
-        render();
-      });
-    }
-
-    function updateRemainingAmount() {
-      const price = Number(getVal('bookingPrice')) || 0;
-      const paid = Number(getVal('bookingPaidAmount')) || 0;
-      setVal('bookingRemainingAmount', Math.max(0, price - paid));
-    }
-
-    function applyLanguage(lang) {
-      const t = TRANSLATIONS[lang]; if (!t) return;
-      setTxt('navTitle', t.title); setTxt('navSubtitle', t.subtitle);
-      setTxt('navRouteBtn', t.addMultiBtn); setTxt('navAddBtn', t.addSingleBtn);
-      setTxt('statTitle', t.statTitle); setTxt('incomeTitle', t.incomeTitle); setTxt('legendTitle', t.legendTitle);
-      setTxt('legExcursion', t.legExcursion); setTxt('legBusy', t.legBusy); setTxt('legHoliday', t.legHoliday); setTxt('legPersonal', t.legPersonal);
-      setTxt('toolbarToday', t.todayBtn); setTxt('toolbarGrid', t.gridBtn); setTxt('toolbarList', t.listBtn);
-      setTxt('toolbarTitle', t.toolbarTitle); setTxt('toolbarHint', t.toolbarHint); setTxt('resetBtn', t.resetBtn);
-      setTxt('resultsLabel', t.resultsLabel); setTxt('statusAll', t.statusAll);
-    }
-
-    function updateViewToggle() {
-      if (currentView === 'grid') {
-        setViewGridBtn?.classList.add('active'); setViewListBtn?.classList.remove('active');
-        gridViewEl?.classList.remove('hidden'); listViewEl?.classList.add('hidden');
-      } else {
-        setViewGridBtn?.classList.remove('active'); setViewListBtn?.classList.add('active');
-        gridViewEl?.classList.add('hidden'); listViewEl?.classList.remove('hidden');
-      }
-    }
-
-    function openModal(modal) { modal?.classList.add('active'); document.body.style.overflow = 'hidden'; }
-    function closeModal(modal) { modal?.classList.remove('active'); document.body.style.overflow = ''; }
-    function toggleFormFieldsByStatus(status) { if (status === 'excursion') excursionFields?.classList.remove('hidden'); else excursionFields?.classList.add('hidden'); }
-
-    function openBookingModalForNew(dateStr) {
-      const lang = langSelect.value;
-      setTxt('modalTitle', TRANSLATIONS[lang].modalTitleNew);
-      bookingForm?.reset(); setVal('bookingId', ''); setVal('bookingDate', dateStr);
-      deleteBookingBtn?.classList.add('hidden'); toggleFormFieldsByStatus('excursion');
-      partialPaymentRow?.classList.add('hidden'); openModal(bookingModal);
-    }
-
-    function openBookingModalForEdit(id) {
-      const lang = langSelect.value; const item = bookings.find(b => b.id === id); if (!item) return;
-      setTxt('modalTitle', TRANSLATIONS[lang].modalTitleEdit); setVal('bookingId', item.id); setVal('bookingDate', item.date);
-      const radio = bookingForm?.querySelector(`input[name="status"][value="${item.status}"]`); if (radio) radio.checked = true;
-      toggleFormFieldsByStatus(item.status);
-      setVal('bookingCity', item.city || ''); setVal('bookingClient', item.client_name || '');
-      setVal('bookingTourName', item.tour_name || ''); setVal('bookingStartTime', item.start_time || '09:00');
-      setVal('bookingEndTime', item.end_time || '18:00'); setVal('bookingPrice', item.price || '');
-      setVal('bookingCurrency', item.currency || 'UZS'); setVal('bookingGroupSize', item.group_size || '');
-      setVal('bookingPaymentStatus', item.payment_status || 'unpaid'); setVal('bookingPaidAmount', item.paid_amount || '');
-      setVal('bookingNotes', item.notes || '');
-      if (item.payment_status === 'partial') { partialPaymentRow?.classList.remove('hidden'); updateRemainingAmount(); } else { partialPaymentRow?.classList.add('hidden'); }
-      deleteBookingBtn?.classList.remove('hidden'); openModal(bookingModal);
-    }
-
-    function onBookingFormSubmit(e) {
-      e.preventDefault(); const id = getVal('bookingId'); const status = bookingForm.querySelector('input[name="status"]:checked').value; const date = getVal('bookingDate');
-      const isEx = (status === 'excursion'); const payStatus = isEx ? getVal('bookingPaymentStatus') : 'unpaid';
-      const row = {
-        id: id || generateId(), date, status, city: isEx ? getVal('bookingCity') : '', client_name: isEx ? getVal('bookingClient') : '', tour_name: isEx ? getVal('bookingTourName') : '',
-        start_time: isEx ? getVal('bookingStartTime') : '', end_time: isEx ? getVal('bookingEndTime') : '', price: isEx ? (Number(getVal('bookingPrice')) || 0) : 0, currency: isEx ? getVal('bookingCurrency') : 'UZS',
-        group_size: isEx ? (Number(getVal('bookingGroupSize')) || 0) : 0, payment_status: payStatus, paid_amount: (isEx && payStatus === 'partial') ? (Number(getVal('bookingPaidAmount')) || 0) : 0, notes: getVal('bookingNotes')
-      };
-      if (id) { const idx = bookings.findIndex(b => b.id === id); if (idx !== -1) bookings[idx] = row; } else { bookings.push(row); }
-      localStorage.setItem('tour_flow_bookings', JSON.stringify(bookings)); closeModal(bookingModal); closeModal(detailModal); render();
-    }
-
-    function onDeleteBookingClick() {
-      const id = getVal('bookingId'); if (!id) return;
-      bookings = bookings.filter(b => b.id !== id);
-      localStorage.setItem('tour_flow_bookings', JSON.stringify(bookings)); closeModal(bookingModal); closeModal(detailModal); render();
-    }
-
-    function openRouteModalNew() {
-      routeForm?.reset(); generatedRouteDays = []; if (routeDaysContainer) routeDaysContainer.innerHTML = '';
-      setVal('routeStartDate', toDateString(new Date())); setVal('routeEndDate', toDateString(new Date())); openModal(routeModal);
-    }
-
-    function onGenerateRouteDaysClick() {
-      const startStr = getVal('routeStartDate'); const endStr = getVal('routeEndDate'); if (!startStr || !endStr) return;
-      const start = new Date(startStr); const end = new Date(endStr); if (routeDaysContainer) routeDaysContainer.innerHTML = '';
-      generatedRouteDays = []; if (end < start) return;
-      let curr = new Date(start);
-      while (curr <= end) { generatedRouteDays.push({ date: toDateString(curr), city: '', note: '' }); curr.setDate(curr.getDate() + 1); }
-      generatedRouteDays.forEach((day, i) => {
-        const row = document.createElement('div'); row.className = 'route-day-row';
-        row.innerHTML = `<span class="route-day-date">${day.date}</span><input type="text" placeholder="Город" data-idx="${i}" class="route-day-city" style="padding:4px;border:1px solid #ccc;"><input type="text" placeholder="Заметка" data-idx="${i}" class="route-day-note" style="padding:4px;border:1px solid #ccc;">`;
-        routeDaysContainer?.appendChild(row);
-      });
-    }
-
-    function onRouteFormSubmit(e) {
-      e.preventDefault(); if (generatedRouteDays.length === 0) onGenerateRouteDaysClick();
-      const citiesInputs = routeDaysContainer.querySelectorAll('.route-day-city');
-      const notesInputs = routeDaysContainer.querySelectorAll('.route-day-note');
-      citiesInputs.forEach(inp => { const idx = inp.getAttribute('data-idx'); generatedRouteDays[idx].city = inp.value; });
-      notesInputs.forEach(inp => { const idx = inp.getAttribute('data-idx'); generatedRouteDays[idx].note = inp.value; });
-      const client = getVal('routeClient'); const size = Number(getVal('routeGroupSize')) || 0;
-      const defPrice = Number(getVal('routeDefaultPrice')) || 0; const defCurr = getVal('routeDefaultCurrency'); const globalNotes = getVal('routeNotes');
-
-      generatedRouteDays.forEach(day => {
-        bookings.push({
-          id: generateId(), date: day.date, status: 'excursion', city: day.city || '...', client_name: client, tour_name: globalNotes || 'Маршрут',
-          start_time: '09:00', end_time: '18:00', price: defPrice, currency: defCurr, group_size: size, payment_status: 'unpaid', paid_amount: 0, notes: day.note
-        });
-      });
-      localStorage.setItem('tour_flow_bookings', JSON.stringify(bookings)); closeModal(routeModal); render();
-    }
-
-    function openDetailModalView(id) {
-      const item = bookings.find(b => b.id === id); if (!item) return;
-      detailModalBody?.setAttribute('data-id', id);
-      let html = `<div style="margin-bottom: 8px;"><span class="badge status-${item.status}">${item.status}</span></div><div class="detail-row"><strong>Sana:</strong> <span>${item.date}</span></div>`;
-      if (item.status === 'excursion') {
-        html += `<div class="detail-row"><strong>Shahar:</strong> <span>${item.city || '—'}</span></div><div class="detail-row"><strong>Mijoz:</strong> <span>${item.client_name || '—'}</span></div><div class="detail-row"><strong>Ekskursiya:</strong> <span>${item.tour_name || '—'}</span></div><div class="detail-row"><strong>Qiymati:</strong> <span>${item.price} ${item.currency}</span></div>`;
-      }
-      if (item.notes) html += `<div style="margin-top:8px;"><strong>Eslatma:</strong> <p style="background:#f1f5f9;padding:6px;border-radius:4px;">${item.notes}</p></div>`;
-      if (detailModalBody) detailModalBody.innerHTML = html; openModal(detailModal);
-    }
-
-    function onDetailEditClick() { const id = detailModalBody?.getAttribute('data-id'); if (id) openBookingModalForEdit(id); }
-    function onDetailDuplicateClick() {
-      const id = detailModalBody?.getAttribute('data-id'); const item = bookings.find(b => b.id === id); if (!item) return;
-      const dup = { ...item, id: generateId() }; bookings.push(dup); localStorage.setItem('tour_flow_bookings', JSON.stringify(bookings));
-      closeModal(detailModal); render(); openBookingModalForEdit(dup.id);
-    }
-
-    function render() {
-      if (mainApp.classList.contains('pms-app-hidden')) return;
-      const targetYear = currentNavDate.getFullYear(); const targetMonth = currentNavDate.getMonth();
-      const activeBookings = bookings.filter(b => { const d = new Date(b.date); return d.getFullYear() === targetYear && d.getMonth() === targetMonth; });
-      if (filterCountEl) filterCountEl.textContent = activeBookings.length;
-      const names = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
-      if (currentMonthYearEl) currentMonthYearEl.textContent = `${names[targetMonth]} ${targetYear}`;
-
-      renderSidebarStats(activeBookings);
-      if (currentView === 'grid') renderGridView(targetYear, targetMonth, activeBookings); else renderListView(activeBookings);
-    }
-
-    function renderSidebarStats(monthItems) {
-      let exc = 0, busy = 0, hol = 0, tourists = 0; let incMap = {};
-      monthItems.forEach(b => { if (b.status === 'excursion') { exc++; tourists += (b.group_size || 0); incMap[b.currency] = (incMap[b.currency] || 0) + (b.price || 0); } else if (b.status === 'busy') busy++; else if (b.status === 'holiday') hol++; });
-      setTxt('statExcursions', exc); setTxt('statBusy', busy); setTxt('statHoliday', hol); setTxt('statTourists', tourists);
-      const incList = document.getElementById('incomeList'); if (incList) { incList.innerHTML = ''; Object.keys(incMap).forEach(c => { const r = document.createElement('div'); r.className='income-row'; r.innerHTML=`<span>${c}:</span> <strong>${incMap[c].toLocaleString()}</strong>`; incList.appendChild(r); }); if(incList.innerHTML==='') incList.innerHTML='<div class="income-row">0 UZS</div>'; }
-    }
-
-    function renderGridView(year, month, activeBookings) {
-      if (!gridViewEl) return; gridViewEl.innerHTML = '';
-      ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].forEach(l => { const d = document.createElement('div'); d.className = 'day-label'; d.textContent = l; gridViewEl.appendChild(d); });
-      const firstDay = new Date(year, month, 1); let offset = firstDay.getDay() - 1; if (offset === -1) offset = 6;
-      const totalDays = new Date(year, month + 1, 0).getDate();
-      for (let i = 0; i < offset; i++) { const em = document.createElement('div'); em.className = 'day-cell empty'; gridViewEl.appendChild(em); }
-      const todayStr = toDateString(new Date());
-
-      for (let d = 1; d <= totalDays; d++) {
-        const cell = document.createElement('div'); const dStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-        cell.className = 'day-cell'; if (dStr === todayStr) cell.classList.add('today');
-        cell.innerHTML = `<div class="day-num">${d}</div>`;
-        const container = document.createElement('div'); container.className='pills-container';
-        const dayItems = activeBookings.filter(b => b.date === dStr);
-        dayItems.slice(0,3).forEach(item => {
-          const pill = document.createElement('div'); pill.className=`booking-pill status-${item.status}`; pill.textContent = item.status==='excursion'?(item.city||'Тур'):item.status;
-          pill.addEventListener('click', (e) => { e.stopPropagation(); openDetailModalView(item.id); }); container.appendChild(pill);
-        });
-        cell.appendChild(container); cell.addEventListener('click', () => openBookingModalForNew(dStr)); gridViewEl.appendChild(cell);
-      }
-    }
-
-    function renderListView(activeBookings) {
-      if (!listViewEl) return; listViewEl.innerHTML = '';
-      activeBookings.forEach(item => {
-        const r = document.createElement('div'); r.className = 'list-item';
-        r.innerHTML = `<div><span class="list-item-date">${item.date}</span> <strong class="list-item-title">${item.tour_name || item.status}</strong></div><div class="badge status-${item.status}">${item.status}</div>`;
-        r.addEventListener('click', () => openDetailModalView(item.id)); listViewEl.appendChild(r);
-      });
-    }
-
-    function openStatsModalView() { statsYear = currentNavDate.getFullYear(); renderStatsModalContent(); openModal(statsModal); }
-    function renderStatsModalContent() { if (statsModalYearLabel) statsModalYearLabel.textContent = statsYear; if (statsModalBody) statsModalBody.innerHTML = '<p style="padding:20px;text-align:center;">Статистика готова</p>'; }
-    function toDateString(v) { const d = new Date(v); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
-    function generateId() { return `id-${Math.random().toString(36).slice(2, 11)}`; }
-    function safeClick(id, cb) { document.getElementById(id)?.addEventListener('click', cb); }
-    function safeSubmit(id, cb) { document.getElementById(id)?.addEventListener('submit', cb); }
-    function getVal(id) { return document.getElementById(id)?.value || ''; }
-    function setVal(id, v) { const n = document.getElementById(id); if (n) n.value = v; }
-    function setTxt(id, v) { const n = document.getElementById(id); if (n) n.textContent = v; }
-    function setTxtBySelector(sel, v) { const n = document.querySelector(sel); if (n) n.textContent = v; }
-
-    init();
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
