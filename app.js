@@ -1283,5 +1283,258 @@ function escapeHtml(value) {
     .replace(/\"/g, '&quot;')
     .replace(/'/g, '&#039;');
 }
+const body = document.body;
+const toastContainer = document.getElementById('toastContainer');
 
+const landingPage = document.getElementById('landingPage');
+const appWorkspace = document.getElementById('appWorkspace');
+
+const authModal = document.getElementById('authModal');
+const openAuthBtn = document.getElementById('openAuthBtn');
+const heroLoginBtn = document.getElementById('heroLoginBtn');
+const workspaceAuthBtn = document.getElementById('workspaceAuthBtn');
+const closeAuthModal = document.getElementById('closeAuthModal');
+const authForm = document.getElementById('authForm');
+const registerBtn = document.getElementById('registerBtn');
+const googleAuthBtn = document.getElementById('googleAuthBtn');
+
+const demoEnterBtn = document.getElementById('demoEnterBtn');
+const backToLandingBtn = document.getElementById('backToLandingBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+const userBadge = document.getElementById('userBadge');
+const profileName = document.getElementById('profileName');
+const profileStatus = document.getElementById('profileStatus');
+
+const openMobileSidebar = document.getElementById('openMobileSidebar');
+const closeMobileSidebar = document.getElementById('closeMobileSidebar');
+const mobileSidebarBackdrop = document.getElementById('mobileSidebarBackdrop');
+
+const openBookingBtn = document.getElementById('openBookingBtn');
+const openRouteBtn = document.getElementById('openRouteBtn');
+const openStatsBtn = document.getElementById('openStatsBtn');
+const bookingModal = document.getElementById('bookingModal');
+const routeModal = document.getElementById('routeModal');
+const statsModal = document.getElementById('statsModal');
+const allModalBackdrops = document.querySelectorAll('.modal-backdrop');
+const closeModalButtons = document.querySelectorAll('.js-close-modal');
+
+const sidebarLinks = document.querySelectorAll('.workspace-sidebar .sidebar-link');
+const mobileSidebarLinks = document.querySelectorAll('.mobile-nav .sidebar-link');
+const tabPanels = document.querySelectorAll('.tab-panel');
+
+const uiState = {
+  authenticated: false,
+  demo: false,
+  email: 'demo@yolnama.com'
+};
+
+function setBodyScrollLock(locked) {
+  body.classList.toggle('no-scroll', locked);
+}
+
+function openModal(modal) {
+  if (!modal) return;
+  modal.classList.add('is-open');
+  modal.setAttribute('aria-hidden', 'false');
+  setBodyScrollLock(true);
+}
+
+function closeModal(modal) {
+  if (!modal) return;
+  modal.classList.remove('is-open');
+  modal.setAttribute('aria-hidden', 'true');
+  if (!document.querySelector('.modal-backdrop.is-open') && !mobileSidebarBackdrop.classList.contains('is-open')) {
+    setBodyScrollLock(false);
+  }
+}
+
+function closeAllModals() {
+  allModalBackdrops.forEach(closeModal);
+}
+
+function openDrawer() {
+  mobileSidebarBackdrop.classList.add('is-open');
+  mobileSidebarBackdrop.setAttribute('aria-hidden', 'false');
+  setBodyScrollLock(true);
+}
+
+function closeDrawer() {
+  mobileSidebarBackdrop.classList.remove('is-open');
+  mobileSidebarBackdrop.setAttribute('aria-hidden', 'true');
+  if (!document.querySelector('.modal-backdrop.is-open')) {
+    setBodyScrollLock(false);
+  }
+}
+
+function showToast(message, type = 'info') {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<i class="fas fa-circle-info"></i><span>${message}</span>`;
+  toastContainer.appendChild(toast);
+  setTimeout(() => toast.remove(), 2600);
+}
+
+function showWorkspace(mode = 'demo') {
+  landingPage.classList.add('hidden');
+  appWorkspace.classList.remove('hidden');
+
+  if (mode === 'demo') {
+    uiState.demo = true;
+    uiState.authenticated = false;
+    userBadge.innerHTML = '<i class="fas fa-flask"></i><span>Демо-режим</span>';
+    profileName.textContent = 'Demo User';
+    profileStatus.textContent = 'Гость / Демо-режим';
+    workspaceAuthBtn.classList.remove('hidden');
+    logoutBtn.classList.add('hidden');
+  }
+}
+
+function showLanding() {
+  appWorkspace.classList.add('hidden');
+  landingPage.classList.remove('hidden');
+  closeDrawer();
+  closeAllModals();
+}
+
+function applyLoggedInUI(email = 'demo@yolnama.com') {
+  uiState.authenticated = true;
+  uiState.demo = false;
+  uiState.email = email;
+
+  userBadge.innerHTML = `<i class="fas fa-circle-check"></i><span>${email}</span>`;
+  profileName.textContent = 'Авторизованный пользователь';
+  profileStatus.textContent = email;
+  workspaceAuthBtn.classList.add('hidden');
+  logoutBtn.classList.remove('hidden');
+
+  landingPage.classList.add('hidden');
+  appWorkspace.classList.remove('hidden');
+}
+
+function applyLoggedOutUI() {
+  uiState.authenticated = false;
+  uiState.demo = true;
+  uiState.email = 'demo@yolnama.com';
+
+  userBadge.innerHTML = '<i class="fas fa-flask"></i><span>Демо-режим</span>';
+  profileName.textContent = 'Demo User';
+  profileStatus.textContent = 'Гость / Демо-режим';
+  workspaceAuthBtn.classList.remove('hidden');
+  logoutBtn.classList.add('hidden');
+}
+
+function activateTab(tabId) {
+  tabPanels.forEach((panel) => {
+    panel.classList.toggle('hidden', panel.id !== tabId);
+    panel.classList.toggle('active', panel.id === tabId);
+  });
+
+  sidebarLinks.forEach((link) => {
+    link.classList.toggle('active', link.dataset.tab === tabId);
+  });
+
+  const mobileMap = {
+    calendarTab: 'calendarTabMobile',
+    routesTab: 'routesTabMobile',
+    financeTab: 'financeTabMobile',
+    settingsTab: 'settingsTabMobile'
+  };
+
+  mobileSidebarLinks.forEach((link) => {
+    link.classList.toggle('active', link.dataset.tabTarget === mobileMap[tabId]);
+  });
+}
+
+openAuthBtn?.addEventListener('click', () => openModal(authModal));
+heroLoginBtn?.addEventListener('click', () => openModal(authModal));
+workspaceAuthBtn?.addEventListener('click', () => openModal(authModal));
+closeAuthModal?.addEventListener('click', () => closeModal(authModal));
+
+authModal?.addEventListener('click', (e) => {
+  if (e.target === authModal) closeModal(authModal);
+});
+
+authForm?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  closeModal(authModal);
+  applyLoggedInUI('demo@yolnama.com');
+  showToast('UI-этап: вход успешно имитирован', 'success');
+});
+
+registerBtn?.addEventListener('click', () => {
+  closeModal(authModal);
+  applyLoggedInUI('new.user@yolnama.com');
+  showToast('UI-этап: регистрация успешно имитирована', 'success');
+});
+
+googleAuthBtn?.addEventListener('click', () => {
+  closeModal(authModal);
+  applyLoggedInUI('google.user@yolnama.com');
+  showToast('UI-этап: вход через Google успешно имитирован', 'success');
+});
+
+demoEnterBtn?.addEventListener('click', () => {
+  showWorkspace('demo');
+  showToast('Открыта демо-версия системы', 'success');
+});
+
+backToLandingBtn?.addEventListener('click', showLanding);
+logoutBtn?.addEventListener('click', () => {
+  applyLoggedOutUI();
+  showToast('Вы вышли из аккаунта', 'info');
+});
+
+openMobileSidebar?.addEventListener('click', openDrawer);
+closeMobileSidebar?.addEventListener('click', closeDrawer);
+mobileSidebarBackdrop?.addEventListener('click', (e) => {
+  if (e.target === mobileSidebarBackdrop) closeDrawer();
+});
+
+openBookingBtn?.addEventListener('click', () => openModal(bookingModal));
+openRouteBtn?.addEventListener('click', () => openModal(routeModal));
+openStatsBtn?.addEventListener('click', () => openModal(statsModal));
+
+closeModalButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    closeAllModals();
+  });
+});
+
+allModalBackdrops.forEach((backdrop) => {
+  backdrop.addEventListener('click', (e) => {
+    if (e.target === backdrop) closeModal(backdrop);
+  });
+});
+
+sidebarLinks.forEach((link) => {
+  link.addEventListener('click', () => {
+    activateTab(link.dataset.tab);
+  });
+});
+
+mobileSidebarLinks.forEach((link) => {
+  link.addEventListener('click', () => {
+    const reverseMap = {
+      calendarTabMobile: 'calendarTab',
+      routesTabMobile: 'routesTab',
+      financeTabMobile: 'financeTab',
+      settingsTabMobile: 'settingsTab'
+    };
+    activateTab(reverseMap[link.dataset.tabTarget]);
+    closeDrawer();
+  });
+});
+
+document.querySelectorAll('.calendar-day').forEach((day) => {
+  day.addEventListener('click', () => openModal(bookingModal));
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeAllModals();
+    closeDrawer();
+  }
+});
+
+activateTab('calendarTab');
 init();
