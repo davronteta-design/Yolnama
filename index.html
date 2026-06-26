@@ -21,8 +21,8 @@
       </button>
       <div class="modal-copy">
         <span class="section-badge">Авторизация</span>
-        <h2>Войти / Регистрация</h2>
-        <p>Красивый UI-слой для Email/Пароль и Google. На следующем этапе сюда аккуратно возвращается твоя существующая логика Supabase без поломки интерфейса.</p>
+        <h2 id="authModalTitle">Войти / Регистрация</h2>
+        <p id="authModalText">Войдите через Email/пароль или Google. После входа записи будут доступны на ваших устройствах через Supabase. Без входа можно полноценно тестировать интерфейс в демо-режиме.</p>
       </div>
       <form id="authForm" class="stack-md">
         <label class="field">
@@ -34,10 +34,11 @@
           <input id="authPassword" type="password" placeholder="••••••••" />
         </label>
         <div class="auth-actions">
-          <button class="btn btn-primary" type="submit"><i class="fas fa-right-to-bracket"></i> Войти</button>
+          <button id="loginBtn" class="btn btn-primary" type="submit"><i class="fas fa-right-to-bracket"></i> Войти</button>
           <button id="registerBtn" class="btn btn-secondary" type="button"><i class="fas fa-user-plus"></i> Регистрация</button>
         </div>
         <button id="googleAuthBtn" class="btn btn-google" type="button"><i class="fab fa-google"></i> Войти через Google</button>
+        <p id="authModeHint" class="auth-mode-hint">Если вы не хотите входить прямо сейчас, откройте календарь в демо-режиме — изменения останутся только в браузере.</p>
       </form>
     </div>
   </div>
@@ -79,7 +80,7 @@
         </div>
         <button class="modal-close js-close-modal" type="button"><i class="fas fa-times"></i></button>
       </div>
-      <form class="stack-md">
+      <form id="bookingForm" class="stack-md">
         <div class="form-grid cols-2">
           <label class="field"><span>Дата</span><input type="date" /></label>
           <label class="field"><span>Статус</span>
@@ -115,7 +116,7 @@
         <label class="field"><span>Заметки</span><textarea rows="4" placeholder="Дополнительная информация"></textarea></label>
         <div class="modal-actions">
           <button class="btn btn-secondary js-close-modal" type="button">Отмена</button>
-          <button class="btn btn-primary" type="button">Сохранить</button>
+          <button id="bookingSaveBtn" class="btn btn-primary" type="submit">Сохранить</button>
         </div>
       </form>
     </div>
@@ -130,7 +131,7 @@
         </div>
         <button class="modal-close js-close-modal" type="button"><i class="fas fa-times"></i></button>
       </div>
-      <form class="stack-md">
+      <form id="routeForm" class="stack-md">
         <div class="form-grid cols-2">
           <label class="field"><span>Дата начала</span><input type="date" /></label>
           <label class="field"><span>Дата окончания</span><input type="date" /></label>
@@ -172,7 +173,7 @@
 
         <div class="modal-actions">
           <button class="btn btn-secondary js-close-modal" type="button">Отмена</button>
-          <button class="btn btn-primary" type="button">Сохранить маршрут</button>
+          <button id="routeSaveBtn" class="btn btn-primary" type="submit">Сохранить маршрут</button>
         </div>
       </form>
     </div>
@@ -339,10 +340,21 @@
     <div class="workspace-shell">
       <aside class="workspace-sidebar">
         <div class="sidebar-profile">
-          <div class="profile-avatar"><i class="fas fa-user"></i></div>
+          <div id="profileAvatar" class="profile-avatar">
+            <img id="profileAvatarImage" alt="Аватар пользователя" hidden />
+            <span id="profileAvatarFallback">D</span>
+          </div>
           <div class="profile-info">
             <strong id="profileName">Demo User</strong>
             <span id="profileStatus">Гость / Демо-режим</span>
+          </div>
+        </div>
+
+        <div id="demoModeNote" class="demo-note-card">
+          <div class="demo-note-icon"><i class="fas fa-flask"></i></div>
+          <div>
+            <strong>Демо-режим активен</strong>
+            <p>Можно тестировать календарь без входа. Данные не отправляются в Supabase и не синхронизируются между устройствами.</p>
           </div>
         </div>
 
@@ -468,17 +480,29 @@
         </section>
 
         <section id="settingsTab" class="tab-panel hidden">
-          <div class="placeholder-card wide-card">
+          <div class="placeholder-card wide-card account-card">
             <span class="section-badge">Настройки</span>
             <h2>Настройки аккаунта</h2>
-            <p>Сюда будет аккуратно перенесён блок профиля, языка, учётной записи и авторизации Supabase/Google.</p>
+            <p id="settingsAuthDescription">Войдите через Email/пароль или Google, чтобы хранить записи в Supabase. Без входа можно работать в демо-режиме без синхронизации.</p>
+            <div class="account-summary">
+              <div class="account-summary-avatar" id="settingsAvatar">D</div>
+              <div>
+                <strong id="settingsUserName">Demo User</strong>
+                <div id="settingsUserEmail" class="account-summary-email">demo@yolnama.com</div>
+              </div>
+            </div>
+            <div class="modal-actions">
+              <button id="settingsLoginBtn" class="btn btn-primary" type="button"><i class="fas fa-right-to-bracket"></i> Войти</button>
+              <button id="settingsLogoutBtn" class="btn btn-secondary hidden" type="button"><i class="fas fa-arrow-right-from-bracket"></i> Выйти</button>
+            </div>
           </div>
         </section>
       </main>
     </div>
   </section>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
