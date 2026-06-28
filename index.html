@@ -1,485 +1,469 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yolnama — Операционная система для гидов и водителей</title>
-  <meta name="description" content="Yolnama — календарь, маршруты, финансы и отчёты для гидов и водителей." />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tour Flow — Календарь экскурсовода</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg: #f4f7fe;
+      --surface: #ffffff;
+      --surface2: #f8fafc;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    /* Навигационная панель (Header) */
+    .navbar {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      padding: 16px 28px;
+      border-radius: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      color: #fff;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand i { font-size: 1.8rem; }
+    .brand h1 { font-size: 1.4rem; font-weight: 700; margin: 0; }
+    .brand p { font-size: 0.85rem; opacity: 0.85; }
+
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+
+    /* Кнопки */
+    .btn {
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-primary { background: #fff; color: var(--primary); }
+    .btn-primary:hover { background: #f8fafc; transform: translateY(-1px); }
+    .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--surface2); }
+    .btn-secondary.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .btn-danger { background: #ef4444; color: #fff; }
+    .btn-danger:hover { background: #dc2626; }
+
+    /* Селектор языка */
+    .lang-select-wrapper { background: rgba(255,255,255,0.15); padding: 4px 8px; border-radius: 8px; display: flex; align-items: center; gap: 6px; }
+    .lang-select-wrapper i { font-size: 0.9rem; }
+    .lang-select-wrapper select { background: transparent; border: none; color: white; font-weight: 600; font-size: 0.88rem; outline: none; cursor: pointer; }
+    .lang-select-wrapper select option { color: var(--text); }
+
+    /* Основная сетка контента */
+    .main-layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; align-items: start; }
+
+    /* Левая боковая панель статистики */
+    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+    .sidebar-card { background: var(--surface); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); }
+    .sidebar-card h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+
+    .stats-subgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat-mini-box { background: var(--surface2); border-radius: 12px; padding: 14px; text-align: center; border: 1px solid var(--border); }
+    .stat-mini-box .stat-num { font-size: 1.5rem; font-weight: 700; margin-bottom: 2px; }
+    .stat-mini-box .stat-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
+
+    .income-amount { font-size: 1.6rem; font-weight: 700; color: #10b981; margin-top: 4px; }
+
+    .legend-list { display: flex; flex-direction: column; gap: 8px; }
+    .legend-item { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; padding: 8px 12px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); }
+
+    /* Правая панель — Календарь */
+    .calendar-container { background: var(--surface); border-radius: 16px; padding: 24px; box-shadow: var(--shadow); }
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+    .calendar-header h2 { font-size: 1.4rem; font-weight: 700; }
+
+    /* Сетка календаря */
+    .weekday-label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); padding: 10px 0; text-align: center; }
+    .day-cell {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      min-height: 110px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .day-cell:hover { background: #fff; border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.03); transform: translateY(-1px); }
+    .day-cell.other-month { opacity: 0.4; }
+    .day-cell.today { background: #eff6ff; border-color: #3b82f6; box-shadow: inset 0 0 0 1px #3b82f6; }
+    .day-cell.today .day-num { background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .day-cell.weekend-cell { background: #fdf2f2; }
+    .day-cell.weekend-cell.other-month { opacity: 0.25; }
+
+    .day-num { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; display: inline-block; }
+    .day-income-tag { font-size: 0.72rem; color: #10b981; font-weight: 700; margin-bottom: 2px; }
+
+    /* Пилюли броней */
+    .booking-pill {
+      font-size: 0.75rem;
+      padding: 3px 6px;
+      border-radius: 6px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+
+    /* Список (List View) */
+    .list-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s ease; }
+    .list-item:hover { background: #fff; border-color: var(--primary); transform: translateX(2px); }
+
+    /* Модальные окна */
+    .modal-backdrop {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: all 0.25s ease; z-index: 1000;
+    }
+    .modal-backdrop.active { opacity: 1; pointer-events: auto; }
+    .modal-content {
+      background: var(--surface); border-radius: 20px; width: 100%; max-width: 540px;
+      padding: 24px; box-shadow: var(--shadow-lg); transform: scale(0.95); transition: all 0.25s ease;
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal-backdrop.active .modal-content { transform: scale(1); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-header h3 { font-size: 1.2rem; font-weight: 700; }
+    .close-modal-btn { background: none; border: none; font-size: 1.2rem; color: var(--text-muted); cursor: pointer; }
+
+    /* Формы */
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+    .form-control {
+      width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);
+      font-family: inherit; font-size: 0.92rem; outline: none; transition: border-color 0.2s;
+    }
+    .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* Радио-кнопки типов статуса */
+    .status-radio-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
+    .status-radio-label {
+      border: 1px solid var(--border); border-radius: 10px; padding: 10px;
+      display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.88rem; font-weight: 500;
+    }
+    .status-radio-label input { display: none; }
+    .status-radio-label:has(input:checked) { border-color: var(--primary); background: #eff6ff; color: var(--primary); font-weight: 600; }
+
+    /* Динамическая генерация дней для маршрута */
+    .route-day-row {
+      background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+      padding: 12px; margin-bottom: 8px; display: grid; grid-template-columns: 100px 1fr 120px; gap: 8px; align-items: center;
+    }
+    .route-day-date { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+
+    /* Адаптивность */
+    @media (max-width: 992px) {
+      .main-layout { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
 
-  <div id="authModal" class="modal-backdrop" aria-hidden="true">
-    <div class="modal auth-modal">
-      <button id="closeAuthModal" class="modal-close" type="button" aria-label="Закрыть">
-        <i class="fas fa-times"></i>
-      </button>
-      <div class="modal-copy">
-        <span class="section-badge" data-i18n="authBadge">Авторизация</span>
-        <h2 id="authModalTitle" data-i18n="authTitle">Войти / Регистрация</h2>
-        <p id="authModalText" data-i18n="authText">Войдите через Email/пароль или Google. Если не хотите входить сейчас — откройте демо-режим и тестируйте календарь локально.</p>
+  <header class="navbar">
+    <div class="brand">
+      <i class="fas fa-map-location-dot"></i>
+      <div class="header-title">
+        <h1>Tour Flow</h1>
+        <p>Календарь экскурсовода</p>
       </div>
-      <form id="authForm" class="stack-md">
-        <label class="field">
-          <span data-i18n="email">Email</span>
-          <input id="authEmail" type="email" placeholder="demo@yolnama.com" />
-        </label>
-        <label class="field">
-          <span data-i18n="password">Пароль</span>
-          <input id="authPassword" type="password" placeholder="••••••••" />
-        </label>
-        <div class="auth-actions">
-          <button id="loginBtn" class="btn btn-primary" type="submit"><i class="fas fa-right-to-bracket"></i> <span data-i18n="login">Войти</span></button>
-          <button id="registerBtn" class="btn btn-secondary" type="button"><i class="fas fa-user-plus"></i> <span data-i18n="register">Регистрация</span></button>
-        </div>
-        <button id="googleAuthBtn" class="btn btn-google" type="button"><i class="fab fa-google"></i> <span data-i18n="googleLogin">Войти через Google</span></button>
-        <p class="auth-tip" id="authModeHint" data-i18n="authHint">Если не хотите входить прямо сейчас, откройте календарь в демо-режиме — данные останутся только в браузере.</p>
-      </form>
     </div>
-  </div>
-
-  <div id="mobileSidebarBackdrop" class="drawer-backdrop" aria-hidden="true">
-    <aside class="mobile-drawer">
-      <div class="drawer-head">
-        <div>
-          <span class="section-badge" data-i18n="navBadge">Навигация</span>
-          <h3 data-i18n="sections">Разделы</h3>
-        </div>
-        <button id="closeMobileSidebar" class="modal-close" type="button" aria-label="Закрыть">
-          <i class="fas fa-times"></i>
-        </button>
+    
+    <div class="nav-actions">
+      <div class="lang-select-wrapper">
+        <i class="fas fa-globe"></i>
+        <select id="langSelect">
+          <option value="ru">RU</option>
+          <option value="en">EN</option>
+          <option value="uz">UZ</option>
+        </select>
       </div>
-      <nav class="sidebar-nav mobile-nav">
-        <button class="sidebar-link active" type="button" data-tab-target="calendarTabMobile"><i class="fas fa-calendar-days"></i><span data-i18n="tabCalendar">Календарь</span></button>
-        <button class="sidebar-link" type="button" data-tab-target="routesTabMobile"><i class="fas fa-route"></i><span data-i18n="tabRoutes">Мои маршруты</span></button>
-        <button class="sidebar-link" type="button" data-tab-target="financeTabMobile"><i class="fas fa-wallet"></i><span data-i18n="tabFinance">Финансы и отчёты</span></button>
-        <button class="sidebar-link" type="button" data-tab-target="settingsTabMobile"><i class="fas fa-gear"></i><span data-i18n="tabSettings">Настройки аккаунта</span></button>
-      </nav>
+      <button id="addRouteBtn" class="btn btn-primary"><i class="fas fa-route"></i> Маршрут</button>
+      <button id="addBookingBtn" class="btn btn-primary" style="background: rgba(255,255,255,0.2); color:#fff;"><i class="fas fa-plus"></i> Добавить</button>
+    </div>
+  </header>
+
+  <main class="main-layout">
+    
+    <aside class="sidebar">
+      
+      <div class="sidebar-card">
+        <h3 id="statTitle"><i class="fas fa-chart-pie"></i> Статистика месяца</h3>
+        <div class="stats-subgrid">
+          <div class="stat-mini-box" style="border-top: 3px solid #2563eb;">
+            <div id="excursions-count" class="stat-num" style="color: #2563eb;">0</div>
+            <div class="stat-label">Экскурсии</div>
+          </div>
+          <div class="stat-mini-box" style="border-top: 3px solid #dc2626;">
+            <div id="busy-count" class="stat-num" style="color: #dc2626;">0</div>
+            <div class="stat-label">Занят</div>
+          </div>
+          <div class="stat-mini-box" style="border-top: 3px solid #16a34a;">
+            <div id="holiday-count" class="stat-num" style="color: #16a34a;">0</div>
+            <div class="stat-label">Выходной</div>
+          </div>
+          <div class="stat-mini-box" style="border-top: 3px solid #7c3aed;">
+            <div id="tourists-count" class="stat-num" style="color: #7c3aed;">0</div>
+            <div class="stat-label">Туристы</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h3 id="incomeTitle"><i class="fas fa-wallet"></i> Доход за месяц</h3>
+        <div id="total-income">
+          <div class="income-amount">0 UZS</div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h3 id="legendTitle"><i class="fas fa-tags"></i> Обозначения</h3>
+        <div class="legend-list">
+          <div class="legend-item"><i class="fas fa-map-marked-alt" style="color: #2563eb;"></i> <span>Экскурсия</span></div>
+          <div class="legend-item"><i class="fas fa-ban" style="color: #dc2626;"></i> <span>Занят</span></div>
+          <div class="legend-item"><i class="fas fa-umbrella-beach" style="color: #16a34a;"></i> <span>Выходной</span></div>
+          <div class="legend-item"><i class="fas fa-user-clock" style="color: #d97706;"></i> <span>Личное</span></div>
+        </div>
+      </div>
+
     </aside>
-  </div>
 
-  <section id="landingPage" class="landing-page">
-    <header class="landing-header">
-      <div class="container navbar">
-        <a href="#" class="brand">
-          <span class="brand-mark" aria-hidden="true">Y</span>
-          <span class="brand-text">
-            <strong>Yolnama</strong>
-            <span data-i18n="brandSub">Операционная система для гидов и водителей</span>
-          </span>
-        </a>
-        <div class="navbar-actions">
-          <label class="lang-switcher" aria-label="Language">
-            <i class="fas fa-globe"></i>
-            <select id="langSelect">
-              <option value="ru">RU</option>
-              <option value="en">EN</option>
-              <option value="uz">UZ</option>
-            </select>
-          </label>
-          <button id="openAuthBtn" class="btn btn-primary" type="button"><i class="fas fa-user"></i> <span data-i18n="loginRegister">Войти / Регистрация</span></button>
+    <section class="calendar-container">
+      
+      <div class="calendar-header">
+        <h2 id="currentMonthLabel">Загрузка...</h2>
+        
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button id="todayBtn" class="btn btn-secondary">Сегодня</button>
+          <button id="prevMonthBtn" class="btn btn-secondary"><i class="fas fa-chevron-left"></i></button>
+          <button id="nextMonthBtn" class="btn btn-secondary"><i class="fas fa-chevron-right"></i></button>
+          
+          <div style="width: 1px; height: 24px; background: var(--border); margin: 0 4px;"></div>
+          
+          <button id="viewGridBtn" class="btn btn-secondary active"><i class="fas fa-th"></i> Сетка</button>
+          <button id="viewListBtn" class="btn btn-secondary"><i class="fas fa-list"></i> Список</button>
         </div>
       </div>
-    </header>
 
-    <main>
-      <section class="hero-section">
-        <div class="container hero-grid">
-          <div class="hero-copy">
-            <span class="section-badge">Tourism PMS</span>
-            <h1 data-i18n="heroTitle">Yolnama — Операционная система для гидов и водителей</h1>
-            <p data-i18n="heroText">Современная CRM/PMS-система: календарь занятости, бронирование маршрутов, учёт доходов и аккуратная рабочая панель без визуального хаоса.</p>
-            <div class="hero-actions">
-              <button id="demoEnterBtn" class="btn btn-primary btn-lg" type="button"><i class="fas fa-play"></i> <span data-i18n="demoBtn">Попробовать демо-версию</span></button>
-              <button id="heroLoginBtn" class="btn btn-secondary btn-lg" type="button"><i class="fas fa-right-to-bracket"></i> <span data-i18n="loginRegister">Войти / Регистрация</span></button>
-            </div>
-            <div class="hero-points">
-              <div class="hero-point"><i class="fas fa-check-circle"></i><span data-i18n="point1">Календарь, маршруты и финансы в одном месте</span></div>
-              <div class="hero-point"><i class="fas fa-check-circle"></i><span data-i18n="point2">Демо-режим без обязательной регистрации</span></div>
-              <div class="hero-point"><i class="fas fa-check-circle"></i><span data-i18n="point3">Чистый интерфейс для ПК и мобильных устройств</span></div>
-            </div>
+      <div id="calendar-grid-view">
+        <div id="weekdaysHeader" style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 8px;">
           </div>
-          <div class="hero-panel">
-            <div class="hero-panel-top">
-              <span class="mini-pill blue">PMS</span>
-              <span class="mini-pill green">Travel CRM</span>
-            </div>
-            <div class="hero-cards">
-              <article class="hero-card blue">
-                <i class="fas fa-calendar-days"></i>
-                <h3 data-i18n="featureCalendar">Календарь</h3>
-                <p data-i18n="featureCalendarText">Контроль экскурсий, занятых дней, выходных и личных слотов.</p>
-              </article>
-              <article class="hero-card green">
-                <i class="fas fa-wallet"></i>
-                <h3 data-i18n="featureFinance">Доходы</h3>
-                <p data-i18n="featureFinanceText">Оплаты, суммы по валютам и понятная сводка по месяцам.</p>
-              </article>
-              <article class="hero-card purple full">
-                <i class="fas fa-route"></i>
-                <h3 data-i18n="featureRoutes">Маршруты и отчёты</h3>
-                <p data-i18n="featureRoutesText">Многодневные поездки, быстрые формы и статистика по годам.</p>
-              </article>
-            </div>
+        <div id="calendarGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;">
           </div>
-        </div>
-      </section>
-
-      <section class="features-section">
-        <div class="container">
-          <div class="section-head center">
-            <span class="section-badge" data-i18n="featuresBadge">Преимущества</span>
-            <h2 data-i18n="featuresTitle">Профессиональный интерфейс как у CRM для бронирования</h2>
-            <p data-i18n="featuresText">Сначала пользователь видит чистую главную страницу, а полноценная рабочая панель открывается только после входа или запуска демо.</p>
-          </div>
-          <div class="features-grid">
-            <article class="feature-card">
-              <div class="feature-icon blue"><i class="fas fa-calendar-days"></i></div>
-              <h3 data-i18n="featureCalendar">Календарь</h3>
-              <p data-i18n="card1">Удобная сетка занятости без бесконечной простыни блоков и форм.</p>
-            </article>
-            <article class="feature-card">
-              <div class="feature-icon green"><i class="fas fa-wallet"></i></div>
-              <h3 data-i18n="featureFinance">Финансы</h3>
-              <p data-i18n="card2">Доходы, остатки оплат и прозрачный учёт по маршрутам и клиентам.</p>
-            </article>
-            <article class="feature-card">
-              <div class="feature-icon purple"><i class="fas fa-chart-column"></i></div>
-              <h3 data-i18n="featureStats">Статистика</h3>
-              <p data-i18n="card3">Сводные показатели по месяцам и годам в одном окне.</p>
-            </article>
-            <article class="feature-card">
-              <div class="feature-icon orange"><i class="fas fa-map-location-dot"></i></div>
-              <h3 data-i18n="featureRoutes">Маршруты</h3>
-              <p data-i18n="card4">Многодневные поездки с автоматическим созданием дней маршрута.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="landing-footer">
-      <div class="container footer-row">
-        <span>© 2026 Yolnama</span>
-        <span data-i18n="footerText">Tourism PMS для гидов и водителей в Узбекистане</span>
       </div>
-    </footer>
-  </section>
 
-  <section id="appWorkspace" class="app-workspace hidden">
-    <header class="app-topbar">
-      <div class="app-topbar-left">
-        <button id="backToLandingBtn" class="btn btn-ghost" type="button"><i class="fas fa-arrow-left"></i> <span data-i18n="toLanding">На главную</span></button>
-        <button id="openMobileSidebar" class="btn btn-secondary mobile-only" type="button"><i class="fas fa-bars"></i> <span data-i18n="menu">Меню</span></button>
-        <div class="workspace-brand">
-          <span class="brand-mark small" aria-hidden="true">Y</span>
-          <div class="workspace-brand-text">
-            <strong>Yolnama</strong>
-            <span data-i18n="workspaceSub">Рабочая панель</span>
+      <div id="calendar-list-view" style="display: none;">
+        <div id="list-view-container">
           </div>
-        </div>
       </div>
-      <div class="app-topbar-right">
-        <div id="userBadge" class="user-badge"><i class="fas fa-flask"></i><span data-i18n="demoMode">Демо-режим</span></div>
-        <button id="workspaceAuthBtn" class="btn btn-secondary" type="button"><i class="fas fa-right-to-bracket"></i> <span data-i18n="login">Войти</span></button>
-        <button id="logoutBtn" class="btn btn-danger hidden" type="button"><i class="fas fa-arrow-right-from-bracket"></i> <span data-i18n="logout">Выйти</span></button>
+
+    </section>
+
+  </main>
+
+  <div id="bookingModal" class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Новая запись</h3>
+        <button id="closeBookingModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
       </div>
-    </header>
-
-    <div class="workspace-shell">
-      <aside class="workspace-sidebar">
-        <div class="sidebar-profile">
-          <div id="profileAvatar" class="profile-avatar">
-            <img id="profileAvatarImage" alt="Аватар пользователя" hidden />
-            <span id="profileAvatarFallback">Y</span>
-          </div>
-          <div class="profile-info">
-            <strong id="profileName">Demo User</strong>
-            <span id="profileStatus">Гость / Демо-режим</span>
-          </div>
-        </div>
-
-        <div id="demoModeNote" class="demo-note-card">
-          <div class="demo-note-icon"><i class="fas fa-flask"></i></div>
-          <div>
-            <strong data-i18n="demoActive">Демо-режим активен</strong>
-            <p data-i18n="demoActiveText">Можно тестировать календарь без входа. Данные сохраняются только в этом браузере.</p>
-          </div>
-        </div>
-
-        <nav class="sidebar-nav">
-          <button class="sidebar-link active" type="button" data-tab="calendarTab"><i class="fas fa-calendar-days"></i><span data-i18n="tabCalendar">Календарь</span></button>
-          <button class="sidebar-link" type="button" data-tab="routesTab"><i class="fas fa-route"></i><span data-i18n="tabRoutes">Мои маршруты</span></button>
-          <button class="sidebar-link" type="button" data-tab="financeTab"><i class="fas fa-wallet"></i><span data-i18n="tabFinance">Финансы и отчёты</span></button>
-          <button class="sidebar-link" type="button" data-tab="settingsTab"><i class="fas fa-gear"></i><span data-i18n="tabSettings">Настройки аккаунта</span></button>
-        </nav>
-      </aside>
-
-      <main class="workspace-main">
-        <section id="calendarTab" class="tab-panel active">
-          <div class="main-head">
-            <div>
-              <span class="section-badge" data-i18n="tabCalendar">Календарь</span>
-              <h2 data-i18n="calendarHeading">Занятость и бронирование</h2>
-              <p data-i18n="calendarSub">Все формы открываются в модальных окнах, а календарь и статистика остаются чистыми и удобными.</p>
-            </div>
-            <div class="main-head-actions">
-              <button id="openStatsBtn" class="btn btn-secondary" type="button"><i class="fas fa-chart-column"></i> <span data-i18n="reports">Отчёты</span></button>
-              <button id="openRouteBtn" class="btn btn-secondary" type="button"><i class="fas fa-route"></i> <span data-i18n="newRoute">Новый маршрут</span></button>
-              <button id="openBookingBtn" class="btn btn-primary" type="button"><i class="fas fa-plus"></i> <span data-i18n="newEntry">Новая запись</span></button>
-            </div>
-          </div>
-
-          <div class="content-grid">
-            <aside class="context-sidebar">
-              <div class="panel-card">
-                <h3 data-i18n="quickStats">Краткая статистика</h3>
-                <div class="stats-mini-grid">
-                  <div class="mini-stat"><span data-i18n="featureCalendar">Календарь</span><strong id="statExcursions">0</strong></div>
-                  <div class="mini-stat"><span data-i18n="busy">Занят</span><strong id="statBusy">0</strong></div>
-                  <div class="mini-stat"><span data-i18n="tourists">Туристы</span><strong id="statTourists">0</strong></div>
-                  <div class="mini-stat"><span data-i18n="income">Доход</span><strong id="statIncome">0</strong></div>
-                </div>
-              </div>
-
-              <div class="panel-card">
-                <h3 data-i18n="filters">Фильтры</h3>
-                <div class="stack-sm">
-                  <label class="field compact-field">
-                    <span data-i18n="search">Поиск</span>
-                    <input id="searchInput" type="text" placeholder="Самарканд, клиент, тур" />
-                  </label>
-                  <label class="field compact-field">
-                    <span data-i18n="status">Статус</span>
-                    <select id="statusFilter">
-                      <option value="all">Все</option>
-                      <option value="excursion">Экскурсия</option>
-                      <option value="busy">Занят</option>
-                      <option value="holiday">Выходной</option>
-                      <option value="personal">Личное</option>
-                    </select>
-                  </label>
-                  <button id="resetFiltersBtn" class="btn btn-secondary full-width" type="button"><i class="fas fa-rotate-left"></i> <span data-i18n="resetFilters">Сбросить</span></button>
-                </div>
-              </div>
-
-              <div class="panel-card">
-                <h3 data-i18n="legend">Обозначения</h3>
-                <div class="legend-list">
-                  <div class="legend-item"><span class="status-dot excursion"></span><span data-i18n="excursion">Экскурсия</span></div>
-                  <div class="legend-item"><span class="status-dot busy"></span><span data-i18n="busy">Занят</span></div>
-                  <div class="legend-item"><span class="status-dot holiday"></span><span data-i18n="holiday">Выходной</span></div>
-                  <div class="legend-item"><span class="status-dot personal"></span><span data-i18n="personal">Личное</span></div>
-                </div>
-              </div>
-            </aside>
-
-            <div class="calendar-card">
-              <div class="calendar-toolbar">
-                <div class="calendar-nav-inline">
-                  <button id="prevMonthBtn" class="icon-btn" type="button"><i class="fas fa-chevron-left"></i></button>
-                  <button id="todayBtn" class="btn btn-ghost" type="button" data-i18n="today">Сегодня</button>
-                  <button id="nextMonthBtn" class="icon-btn" type="button"><i class="fas fa-chevron-right"></i></button>
-                </div>
-                <h3 id="currentMonthLabel" class="calendar-title">Загрузка…</h3>
-                <div class="view-switch">
-                  <button id="viewGridBtn" class="view-btn active" type="button" data-i18n="grid">Сетка</button>
-                  <button id="viewListBtn" class="view-btn" type="button" data-i18n="list">Список</button>
-                </div>
-              </div>
-
-              <div id="calendar-grid-view">
-                <div id="weekdaysHeader" class="calendar-weekdays"></div>
-                <div id="calendarGrid" class="calendar-grid"></div>
-              </div>
-
-              <div id="calendar-list-view" class="calendar-list hidden">
-                <div id="list-view-container" class="list-view-container"></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="routesTab" class="tab-panel hidden">
-          <div class="placeholder-card wide-card">
-            <span class="section-badge" data-i18n="tabRoutes">Мои маршруты</span>
-            <h2 data-i18n="routesHeading">Список маршрутов</h2>
-            <p data-i18n="routesSub">Здесь отображаются маршруты, созданные через форму многодневной брони.</p>
-            <div id="routesList" class="stack-md"></div>
-          </div>
-        </section>
-
-        <section id="financeTab" class="tab-panel hidden">
-          <div class="placeholder-card wide-card">
-            <span class="section-badge" data-i18n="tabFinance">Финансы и отчёты</span>
-            <h2 data-i18n="financeHeading">Доходы и сводка</h2>
-            <p data-i18n="financeSub">Суммы автоматически считаются по всем экскурсионным записям в календаре.</p>
-            <div id="financeSummary" class="finance-summary-grid"></div>
-            <div id="financeList" class="stack-md"></div>
-          </div>
-        </section>
-
-        <section id="settingsTab" class="tab-panel hidden">
-          <div class="placeholder-card wide-card account-card">
-            <span class="section-badge" data-i18n="tabSettings">Настройки аккаунта</span>
-            <h2 data-i18n="settingsHeading">Настройки аккаунта</h2>
-            <p id="settingsAuthDescription" data-i18n="settingsSub">Войдите через Email/пароль или Google, чтобы использовать авторизацию. Без входа можно полноценно работать в демо-режиме.</p>
-            <div class="account-summary">
-              <div class="account-summary-avatar" id="settingsAvatar">Y</div>
-              <div>
-                <strong id="settingsUserName">Demo User</strong>
-                <div id="settingsUserEmail" class="account-summary-email">demo@yolnama.com</div>
-              </div>
-            </div>
-            <div class="modal-actions top-gap">
-              <button id="settingsLoginBtn" class="btn btn-primary" type="button"><i class="fas fa-right-to-bracket"></i> <span data-i18n="login">Войти</span></button>
-              <button id="settingsLogoutBtn" class="btn btn-secondary hidden" type="button"><i class="fas fa-arrow-right-from-bracket"></i> <span data-i18n="logout">Выйти</span></button>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
-  </section>
-
-  <div id="bookingModal" class="modal-backdrop" aria-hidden="true">
-    <div class="modal modal-lg">
-      <div class="modal-head">
-        <div>
-          <span class="section-badge" data-i18n="tabCalendar">Календарь</span>
-          <h3 id="bookingModalTitle" data-i18n="newEntry">Новая запись</h3>
-        </div>
-        <button class="modal-close js-close-modal" type="button"><i class="fas fa-times"></i></button>
-      </div>
-      <form id="bookingForm" class="stack-md">
-        <input type="hidden" id="bookingId" />
-        <div class="form-grid cols-2">
-          <label class="field"><span data-i18n="date">Дата</span><input id="bookingDate" type="date" required /></label>
-          <label class="field"><span data-i18n="status">Статус</span>
-            <select id="bookingStatus">
-              <option value="excursion">Экскурсия</option>
-              <option value="busy">Занят</option>
-              <option value="holiday">Выходной</option>
-              <option value="personal">Личное</option>
-            </select>
-          </label>
-        </div>
-        <div id="conditionalFields" class="stack-md">
-          <div class="form-grid cols-2">
-            <label class="field"><span data-i18n="city">Город</span><input id="bookingCity" type="text" placeholder="Самарканд" /></label>
-            <label class="field"><span data-i18n="client">Заказчик</span><input id="bookingClient" type="text" placeholder="Компания / Имя" /></label>
-          </div>
-          <label class="field"><span data-i18n="tourName">Экскурсия / группа</span><input id="bookingTour" type="text" placeholder="Название тура или группы" /></label>
-          <div class="form-grid cols-3">
-            <label class="field"><span data-i18n="start">Начало</span><input id="bookingStart" type="time" value="09:00" /></label>
-            <label class="field"><span data-i18n="end">Окончание</span><input id="bookingEnd" type="time" value="18:00" /></label>
-            <label class="field"><span data-i18n="tourists">Туристы</span><input id="bookingGroup" type="number" min="0" placeholder="0" /></label>
-          </div>
-          <div class="form-grid cols-2">
-            <label class="field"><span data-i18n="price">Стоимость</span><input id="bookingPrice" type="number" placeholder="0" min="0" /></label>
-            <label class="field"><span data-i18n="currency">Валюта</span>
-              <select id="bookingCurrency">
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="UZS">UZS</option>
-                <option value="RUB">RUB</option>
-              </select>
+      <form id="bookingForm">
+        <input type="hidden" id="bookingId">
+        
+        <div class="form-group">
+          <label id="lblStatus">Статус / Тип дня</label>
+          <div class="status-radio-group">
+            <label class="status-radio-label">
+              <input type="radio" name="status" value="excursion" id="statusExcursion" checked>
+              <i class="fas fa-map-marked-alt"></i> Экскурсия
+            </label>
+            <label class="status-radio-label">
+              <input type="radio" name="status" value="busy" id="statusBusy">
+              <i class="fas fa-ban"></i> Занят
+            </label>
+            <label class="status-radio-label">
+              <input type="radio" name="status" value="holiday" id="statusHoliday">
+              <i class="fas fa-umbrella-beach"></i> Выходной
+            </label>
+            <label class="status-radio-label">
+              <input type="radio" name="status" value="personal" id="statusPersonal">
+              <i class="fas fa-user-clock"></i> Личное
             </label>
           </div>
         </div>
-        <label class="field"><span data-i18n="notes">Заметки</span><textarea id="bookingNotes" rows="4" placeholder="Дополнительная информация"></textarea></label>
-        <div class="modal-actions between">
-          <button id="deleteBookingBtn" class="btn btn-danger hidden" type="button"><i class="fas fa-trash"></i> <span data-i18n="delete">Удалить</span></button>
-          <div class="inline-actions">
-            <button class="btn btn-secondary js-close-modal" type="button"><span data-i18n="cancel">Отмена</span></button>
-            <button id="saveBookingBtn" class="btn btn-primary" type="submit"><span data-i18n="save">Сохранить</span></button>
+
+        <div class="form-group">
+          <label id="lblDate">Дата</label>
+          <input type="date" id="bookingDate" class="form-control" required>
+        </div>
+
+        <div id="conditionalFields">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label id="lblCity">Город</label>
+              <input type="text" id="bookingCity" class="form-control" placeholder="Самарканд, Бухара...">
+            </div>
+            <div class="form-group">
+              <label id="lblClient">Заказчик (Компания / Имя)</label>
+              <input type="text" id="bookingClient" class="form-control" placeholder="Восток Тур">
+            </div>
+          </div>
+          <div class="form-group">
+            <label id="lblTour">Название экскурсии</label>
+            <input type="text" id="bookingTour" class="form-control" placeholder="Сердце Самарканда">
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label id="lblStart">Начало</label>
+              <input type="time" id="bookingStart" class="form-control" value="09:00">
+            </div>
+            <div class="form-group">
+              <label id="lblEnd">Окончание</label>
+              <input type="time" id="bookingEnd" class="form-control" value="18:00">
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label id="lblPrice">Стоимость</label>
+              <input type="number" id="bookingPrice" class="form-control" placeholder="0" min="0">
+            </div>
+            <div class="form-group">
+              <label id="lblCurrency">Валюта</label>
+              <select id="bookingCurrency" class="form-control">
+                <option value="UZS">UZS (сум)</option>
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="RUB">RUB (₽)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label id="lblGroup">Количество туристов</label>
+            <input type="number" id="bookingGroup" class="form-control" placeholder="15" min="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label id="lblNotes">Заметки / Пожелания</label>
+          <textarea id="bookingNotes" class="form-control" rows="3" placeholder="Дополнительная информация..."></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 20px; gap:8px;">
+          <button type="button" id="deleteBookingBtn" class="btn btn-danger" style="display: none;">Удалить</button>
+          <div style="display: flex; gap: 8px; margin-left: auto;">
+            <button type="button" id="cancelBookingBtn" class="btn btn-secondary">Отмена</button>
+            <button type="submit" id="saveBookingBtn" class="btn btn-secondary" style="background: var(--primary); color:white; border-color:var(--primary);">Сохранить</button>
           </div>
         </div>
       </form>
     </div>
   </div>
 
-  <div id="routeModal" class="modal-backdrop" aria-hidden="true">
-    <div class="modal modal-xl">
-      <div class="modal-head">
-        <div>
-          <span class="section-badge" data-i18n="tabRoutes">Маршруты</span>
-          <h3 data-i18n="newRoute">Новый маршрут</h3>
-        </div>
-        <button class="modal-close js-close-modal" type="button"><i class="fas fa-times"></i></button>
+  <div id="routeModal" class="modal-backdrop">
+    <div class="modal-content" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 id="routeModalTitle">Бронь маршрута</h3>
+        <button id="closeRouteModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
       </div>
-      <form id="routeForm" class="stack-md">
-        <div class="form-grid cols-2">
-          <label class="field"><span data-i18n="startDate">Дата начала</span><input id="routeStart" type="date" required /></label>
-          <label class="field"><span data-i18n="endDate">Дата окончания</span><input id="routeEnd" type="date" required /></label>
-        </div>
-        <div class="form-grid cols-2">
-          <label class="field"><span data-i18n="client">Заказчик</span><input id="routeClient" type="text" placeholder="Название компании" required /></label>
-          <label class="field"><span data-i18n="tourists">Количество туристов</span><input id="routeGroupSize" type="number" min="0" placeholder="0" /></label>
-        </div>
-        <div class="form-grid cols-2">
-          <label class="field"><span data-i18n="defaultPrice">Стоимость по умолчанию</span><input id="routePrice" type="number" placeholder="100" min="0" /></label>
-          <label class="field"><span data-i18n="currency">Валюта</span>
-            <select id="routeCurrency">
-              <option value="USD">USD</option>
-              <option value="EUR">EUR</option>
-              <option value="UZS">UZS</option>
-              <option value="RUB">RUB</option>
-            </select>
-          </label>
-        </div>
-        <label class="field"><span data-i18n="notes">Общие заметки</span><textarea id="routeNotes" rows="3" placeholder="Комментарий по маршруту"></textarea></label>
-        <div class="route-box">
-          <div class="route-box-head">
-            <strong data-i18n="routeDays">Дни маршрута</strong>
-            <button id="btnGenerateRouteDays" class="btn btn-secondary" type="button"><i class="fas fa-wand-magic-sparkles"></i> <span data-i18n="generateDays">Сгенерировать дни</span></button>
+      <form id="routeForm">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label id="lblRouteStart">Дата начала</label>
+            <input type="date" id="routeStart" class="form-control" required>
           </div>
-          <div id="routeDaysContainer" class="stack-sm"></div>
+          <div class="form-group">
+            <label id="lblRouteEnd">Дата окончания</label>
+            <input type="date" id="routeEnd" class="form-control" required>
+          </div>
         </div>
-        <div class="modal-actions">
-          <button class="btn btn-secondary js-close-modal" type="button"><span data-i18n="cancel">Отмена</span></button>
-          <button id="saveRouteBtn" class="btn btn-primary" type="submit"><span data-i18n="saveRoute">Сохранить маршрут</span></button>
+
+        <button type="button" id="btnGenerateRouteDays" class="btn btn-secondary" style="width: 100%; margin-bottom: 16px; justify-content: center; background:#f1f5f9;"><i class="fas fa-gears"></i> Сгенерировать дни</button>
+
+        <div id="routeDaysContainer" style="max-height: 220px; overflow-y: auto; margin-bottom: 16px; padding-right: 4px;"></div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label id="lblRouteClient">Заказчик</label>
+            <input type="text" id="routeClient" class="form-control" required placeholder="Название компании">
+          </div>
+          <div class="form-group">
+            <label id="lblRouteGroup">Количество туристов</label>
+            <input type="number" id="routeGroupSize" class="form-control" placeholder="15" min="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label id="lblRouteCurrency">Валюта по умолчанию</label>
+          <select id="routeCurrency" class="form-control">
+            <option value="UZS">UZS (сум)</option>
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label id="lblRouteNotes">Общие заметки</label>
+          <textarea id="routeNotes" class="form-control" rows="2" placeholder="Группа из 15 человек, без Шахрисабза..."></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px;">
+          <button type="button" id="cancelRouteBtn" class="btn btn-secondary">Отмена</button>
+          <button type="submit" id="saveRouteBtn" class="btn btn-secondary" style="background: var(--primary); color:white; border-color:var(--primary);">Сохранить</button>
         </div>
       </form>
     </div>
   </div>
 
-  <div id="detailModal" class="modal-backdrop" aria-hidden="true">
-    <div class="modal">
-      <div class="modal-head">
-        <div>
-          <span class="section-badge" data-i18n="details">Детали</span>
-          <h3 data-i18n="dayInfo">Информация о дне</h3>
-        </div>
-        <button class="modal-close js-close-modal" type="button"><i class="fas fa-times"></i></button>
+  <div id="detailModal" class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="detailModalTitle">Информация о дне</h3>
+        <button id="closeDetailModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
       </div>
-      <div id="detailBody" class="detail-body"></div>
-      <div class="modal-actions">
-        <button class="btn btn-secondary js-close-modal" type="button"><span data-i18n="close">Закрыть</span></button>
-        <button id="detailEditBtn" class="btn btn-primary" type="button"><i class="fas fa-pen"></i> <span data-i18n="edit">Редактировать</span></button>
+      <div id="detailBody" style="margin-bottom: 20px;">
+        </div>
+      <div style="display: flex; justify-content: flex-end; gap: 8px;">
+        <button id="closeDetailModal2" class="btn btn-secondary">Закрыть</button>
+        <button id="detailEditBtn" class="btn btn-secondary" style="background: var(--primary); color:white; border-color:var(--primary);"><i class="fas fa-edit"></i> Редактировать</button>
       </div>
     </div>
   </div>
 
-  <div id="statsModal" class="modal-backdrop" aria-hidden="true">
-    <div class="modal modal-xl">
-      <div class="modal-head">
-        <div>
-          <span class="section-badge" data-i18n="reports">Отчёты</span>
-          <h3 data-i18n="yearStats">Годовая статистика</h3>
-        </div>
-        <button class="modal-close js-close-modal" type="button"><i class="fas fa-times"></i></button>
-      </div>
-      <div id="statsModalBody" class="stats-modal-body"></div>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+  <script src="js/app.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
